@@ -1,2 +1,0 @@
-# workspace-booking
-Workspace Booking

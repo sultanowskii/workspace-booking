@@ -1,0 +1,117 @@
+CREATE table office
+(
+id serial primary key,
+name text not null unique,
+address text not null
+);
+
+CREATE table room
+(
+id serial primary key,
+office_id integer not null references office(id),
+name text not null unique
+);
+
+CREATE table room_wall
+(
+room_id integer not null references room(id),
+x1 double precision not null,
+y1 double precision not null,
+x2 double precision not null,
+y2 double precision not null
+);
+
+CREATE table meeting_room
+(
+id serial primary key,
+room_id integer not null references room(id),
+name text not null unique
+);
+
+
+CREATE table meeting_room_visual
+(
+meeting_room_id integer not null references meeting_room(id),
+x double precision not null,
+y double precision not null,
+width double precision not null check (width > 0),
+height double precision not null check (height > 0)
+);
+
+CREATE table workplace
+(
+id serial primary key,
+room_id integer not null references room(id),
+number_of_monitors integer not null check (number_of_monitors >= 0)
+);
+
+CREATE table _user
+(
+id serial primary key, 
+login text not null unique CHECK (length(login) BETWEEN 4 AND 20), 
+password text not null unique CHECK (length(password) BETWEEN 4 AND 20), 
+account_type text not null
+);
+
+CREATE table employee_group
+(
+id serial primary key,
+name text not null unique
+);
+
+CREATE table office_employee_group
+(
+id serial primary key,
+office_id integer not null references office(id),
+employee_group_id integer not null references employee_group(id)
+);
+
+CREATE table employee
+(
+id serial primary key,
+user_id integer not null references _user(id),
+employee_group_id integer not null references employee_group(id),
+full_name text not null
+);
+
+CREATE table workplace_booking
+(
+id serial primary key,
+employee_id integer not null references employee(id),
+workplace_id integer not null references workplace(id),
+_date date not null
+);
+
+CREATE table admin
+(
+id serial primary key,
+user_id integer not null references _user(id),
+full_name text not null
+);
+
+CREATE table meeting_room_booking
+(
+id serial primary key,
+employee_id integer not null references employee(id),
+meeting_room_id integer not null references meeting_room(id),
+_date date not null,
+start_time time not null,
+end_time time not null,
+description text not null
+);
+
+CREATE table meeting_participant
+(
+id serial primary key,
+meeting_room_booking_id integer not null references meeting_room_booking(id),
+employee_id integer not null references employee(id)
+);
+
+CREATE table workplace_visual
+(
+workplace_id integer not null references workplace(id),
+x double precision not null,
+y double precision not null, 
+width double precision not null check (width > 0),
+height double precision not null check (height > 0)
+);

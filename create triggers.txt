@@ -1,0 +1,114 @@
+CREATE OR REPLACE FUNCTION check_office_exists()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM office WHERE id = NEW.office_id) THEN
+    RAISE EXCEPTION 'Office with ID % not found', NEW.office_id;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_office_before_room_insert
+BEFORE INSERT ON room
+FOR EACH ROW
+EXECUTE PROCEDURE check_office_exists();
+
+
+CREATE OR REPLACE FUNCTION check_room_name_unique()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM room WHERE name = NEW.name) THEN
+    RAISE EXCEPTION 'Room name % already exists', NEW.name;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_room_name_unique_insert
+BEFORE INSERT ON room
+FOR EACH ROW
+EXECUTE PROCEDURE check_room_name_unique();
+
+CREATE OR REPLACE FUNCTION check_meeting_room_booking_times()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.end_time <= NEW.start_time THEN
+    RAISE EXCEPTION 'End time must be after start time';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_meeting_room_booking_times_insert
+BEFORE INSERT ON meeting_room_booking
+FOR EACH ROW
+EXECUTE PROCEDURE check_meeting_room_booking_times();
+
+CREATE OR REPLACE FUNCTION check_positive_monitors()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.number_of_monitors < 0 THEN
+    RAISE EXCEPTION 'Number of monitors cannot be negative';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_positive_monitors_insert
+BEFORE INSERT ON workplace
+FOR EACH ROW
+EXECUTE PROCEDURE check_positive_monitors();
+
+CREATE OR REPLACE FUNCTION check_user_login_password_length()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF LENGTH(NEW.login) < 4 OR LENGTH(NEW.login) > 20 THEN
+    RAISE EXCEPTION 'Login length must be between 4 and 20 characters';
+  END IF;
+  IF LENGTH(NEW.password) < 4 OR LENGTH(NEW.password) > 20 THEN
+    RAISE EXCEPTION 'Password length must be between 4 and 20 characters';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_user_login_password_length_insert
+BEFORE INSERT ON _user
+FOR EACH ROW
+EXECUTE PROCEDURE check_user_login_password_length();
+
+
+CREATE OR REPLACE FUNCTION check_employee_group_exists()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM employee_group WHERE id = NEW.employee_group_id) THEN
+    RAISE EXCEPTION 'Employee group with ID % not found', NEW.employee_group_id;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_employee_group_before_employee_insert
+BEFORE INSERT ON employee
+FOR EACH ROW
+EXECUTE PROCEDURE check_employee_group_exists();
+
+CREATE OR REPLACE FUNCTION check_positive_dimensions()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.width <= 0 OR NEW.height <= 0 THEN
+    RAISE EXCEPTION 'Width and height must be greater than zero';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_positive_dimensions_meeting_room_visual_insert
+BEFORE INSERT ON meeting_room_visual
+FOR EACH ROW
+EXECUTE PROCEDURE check_positive_dimensions();
+
+CREATE TRIGGER check_positive_dimensions_workplace_visual_insert
+BEFORE INSERT ON workplace_visual
+FOR EACH ROW
+EXECUTE PROCEDURE check_positive_dimensions();
