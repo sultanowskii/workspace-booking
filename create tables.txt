@@ -1,51 +1,51 @@
-CREATE table office
+create table offices
 (
 id serial primary key,
 name text not null unique,
 address text not null
 );
 
-CREATE table room
+create table rooms
 (
 id serial primary key,
-office_id integer not null references office(id),
+offices_id integer not null references offices(id),
 name text not null unique
 );
 
-CREATE table room_wall
+create table room_walls
 (
-room_id integer not null references room(id),
+rooms_id integer not null references rooms(id),
 x1 double precision not null,
 y1 double precision not null,
 x2 double precision not null,
 y2 double precision not null
 );
 
-CREATE table meeting_room
+create table meeting_rooms
 (
 id serial primary key,
-room_id integer not null references room(id),
+rooms_id integer not null references rooms(id),
 name text not null unique
 );
 
 
-CREATE table meeting_room_visual
+create table meeting_rooms_visual
 (
-meeting_room_id integer not null references meeting_room(id),
+meeting_rooms_id integer not null references meeting_rooms(id),
 x double precision not null,
 y double precision not null,
 width double precision not null check (width > 0),
 height double precision not null check (height > 0)
 );
 
-CREATE table workplace
+create table workplaces
 (
 id serial primary key,
-room_id integer not null references room(id),
+rooms_id integer not null references rooms(id),
 number_of_monitors integer not null check (number_of_monitors >= 0)
 );
 
-CREATE table _user
+create table users
 (
 id serial primary key, 
 login text not null unique CHECK (length(login) BETWEEN 4 AND 20), 
@@ -53,63 +53,63 @@ password text not null unique CHECK (length(password) BETWEEN 4 AND 20),
 account_type text not null
 );
 
-CREATE table employee_group
+create table employee_groups
 (
 id serial primary key,
 name text not null unique
 );
 
-CREATE table office_employee_group
+create table office_employee_groups
 (
 id serial primary key,
-office_id integer not null references office(id),
-employee_group_id integer not null references employee_group(id)
+offices_id integer not null references offices(id),
+employee_groups_id integer not null references employee_groups(id)
 );
 
-CREATE table employee
+create table employees
 (
 id serial primary key,
-user_id integer not null references _user(id),
-employee_group_id integer not null references employee_group(id),
+users_id integer not null references users(id),
+employee_groups_id integer not null references employee_groups(id),
 full_name text not null
 );
 
-CREATE table workplace_booking
+create table workplaces_booking
 (
 id serial primary key,
-employee_id integer not null references employee(id),
-workplace_id integer not null references workplace(id),
+employees_id integer not null references employees(id),
+workplaces_id integer not null references workplaces(id),
 _date date not null
 );
 
-CREATE table admin
+create table admins
 (
 id serial primary key,
-user_id integer not null references _user(id),
+users_id integer not null references users(id),
 full_name text not null
 );
 
-CREATE table meeting_room_booking
+create table meeting_rooms_booking
 (
 id serial primary key,
-employee_id integer not null references employee(id),
-meeting_room_id integer not null references meeting_room(id),
+employees_id integer not null references employees(id),
+meeting_rooms_id integer not null references meeting_rooms(id),
 _date date not null,
 start_time time not null,
 end_time time not null,
 description text not null
 );
 
-CREATE table meeting_participant
+create table meeting_participants
 (
 id serial primary key,
-meeting_room_booking_id integer not null references meeting_room_booking(id),
-employee_id integer not null references employee(id)
+meeting_rooms_booking_id integer not null references meeting_rooms_booking(id),
+employees_id integer not null references employees(id)
 );
 
-CREATE table workplace_visual
+create table workplaces_visual
 (
-workplace_id integer not null references workplace(id),
+workplaces_id integer not null references workplaces(id),
 x double precision not null,
 y double precision not null, 
 width double precision not null check (width > 0),
