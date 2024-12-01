@@ -1,26 +1,3 @@
-DROP DATABASE IF EXISTS is_db;
-
-CREATE DATABASE is_db
-    WITH OWNER = postgres
-    ENCODING = 'UTF8'
-    CONNECTION LIMIT = -1;
-
-DROP TABLE IF EXISTS meeting_participant;
-DROP TABLE IF EXISTS meeting_room_booking;
-DROP TABLE IF EXISTS admin;
-DROP TABLE IF EXISTS employee;
-DROP TABLE IF EXISTS office_employee_group;
-DROP TABLE IF EXISTS employee_group;
-DROP TABLE IF EXISTS _user;
-DROP TABLE IF EXISTS workplace;
-DROP TABLE IF EXISTS workplace_booking;
-DROP TABLE IF EXISTS meeting_room;
-DROP TABLE IF EXISTS room_wall;
-DROP TABLE IF EXISTS room;
-DROP TABLE IF EXISTS meeting_room_visual;
-DROP TABLE IF EXISTS workplace_visual;
-DROP TABLE IF EXISTS office;
-
 INSERT INTO office (name, address) VALUES
 ('Head Office', '123 Main St, Anytown'),
 ('Branch Office', '456 Oak Ave, Otherville');
@@ -30,14 +7,14 @@ INSERT INTO employee_group (name) VALUES
 ('Sales'),
 ('Marketing');
 
-INSERT INTO _user (login, password, account_type) VALUES
-('john.doe', 'password123', 'employee'),  --  hashed passwords????
-('jane.doe', 'securepass', 'employee'),  
-('admin', 'adminpass', 'admin');  
+INSERT INTO users (username, password, role) VALUES
+('john.doe', 'password123', 'EMPLOYEE'),  -- hashed passwords?
+('jane.doe', 'securepass', 'EMPLOYEE'),
+('admin', 'adminpass', 'ADMIN');
 
 INSERT INTO employee (user_id, employee_group_id, full_name) VALUES
-((SELECT id FROM _user WHERE login = 'john.doe'), (SELECT id FROM employee_group WHERE name = 'Engineering'), 'John Doe'),
-((SELECT id FROM _user WHERE login = 'jane.doe'), (SELECT id FROM employee_group WHERE name = 'Sales'), 'Jane Doe');
+((SELECT id FROM users WHERE username = 'john.doe'), (SELECT id FROM employee_group WHERE name = 'Engineering'), 'John Doe'),
+((SELECT id FROM users WHERE username = 'jane.doe'), (SELECT id FROM employee_group WHERE name = 'Sales'), 'Jane Doe');
 
 INSERT INTO office_employee_group (office_id, employee_group_id) VALUES
 ((SELECT id FROM office WHERE name = 'Head Office'), (SELECT id FROM employee_group WHERE name = 'Engineering')),
@@ -68,10 +45,10 @@ INSERT INTO meeting_room_visual (meeting_room_id, x, y, width, height) VALUES
 INSERT INTO workplace_visual (workplace_id, x, y, width, height) VALUES
 ((SELECT id FROM workplace WHERE number_of_monitors = 2), 2, 2, 3, 2);
 
-INSERT INTO workplace_booking (employee_id, workplace_id, _date) VALUES
+INSERT INTO workplace_booking (employee_id, workplace_id, booking_date) VALUES
 ((SELECT id FROM employee WHERE full_name = 'John Doe'), (SELECT id FROM workplace WHERE number_of_monitors = 2), '2024-11-16');
 
-INSERT INTO meeting_room_booking (employee_id, meeting_room_id, _date, start_time, end_time, description) VALUES
+INSERT INTO meeting_room_booking (employee_id, meeting_room_id, booking_date, start_time, end_time, description) VALUES
 ((SELECT id FROM employee WHERE full_name = 'Jane Doe'), (SELECT id FROM meeting_room WHERE name = 'Meeting room A'), '2024-11-16', '10:00', '11:00', 'Team Meeting');
 
 INSERT INTO meeting_participant (meeting_room_booking_id, employee_id) VALUES
@@ -79,4 +56,4 @@ INSERT INTO meeting_participant (meeting_room_booking_id, employee_id) VALUES
 ((SELECT id FROM meeting_room_booking WHERE description = 'Team Meeting'), (SELECT id FROM employee WHERE full_name = 'Jane Doe'));
 
 INSERT INTO admin (user_id, full_name) VALUES
-((SELECT id FROM _user WHERE login = 'admin'), 'Nick Hosh');
+((SELECT id FROM users WHERE username = 'admin'), 'Nick Hosh');
