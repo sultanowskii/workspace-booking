@@ -99,30 +99,34 @@ LEFT JOIN meeting_room_booking mrb
     ON mrb.meeting_room_id = mr.id
     AND mrb.booking_date = '2024-11-01'
     AND mrb.start_time <= '13:00:00'
-    AND mrb.end_time = '13:00:00'
+    AND mrb.end_time > '13:00:00'
 INNER JOIN meeting_room_visual mrv ON mrv.meeting_room_id = mr.id
 WHERE mr.room_id = 4;
                                                                                   QUERY PLAN                                                                                  
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Nested Loop Left Join  (cost=1000.28..82923.46 rows=2 width=247) (actual time=0.397..85.373 rows=2 loops=1)
-   Join Filter: (mrb.meeting_room_id = mr.id)
-   Rows Removed by Join Filter: 20034
-   ->  Nested Loop  (cost=0.29..217.83 rows=2 width=65) (actual time=0.024..0.637 rows=2 loops=1)
-         ->  Seq Scan on meeting_room mr  (cost=0.00..201.23 rows=2 width=29) (actual time=0.011..0.597 rows=2 loops=1)
-               Filter: (room_id = 4)
-               Rows Removed by Filter: 10016
-         ->  Index Scan using meeting_room_visual_meeting_room_id_key on meeting_room_visual mrv  (cost=0.29..8.30 rows=1 width=36) (actual time=0.015..0.015 rows=1 loops=2)
-               Index Cond: (meeting_room_id = mr.id)
-   ->  Materialize  (cost=1000.00..82520.77 rows=6722 width=181) (actual time=0.185..41.728 rows=10018 loops=2)
-         ->  Gather  (cost=1000.00..82487.16 rows=6722 width=181) (actual time=0.366..82.037 rows=10018 loops=1)
+ Nested Loop  (cost=1201.55..84739.04 rows=5 width=247) (actual time=2.094..88.764 rows=2 loops=1)
+   ->  Hash Right Join  (cost=1201.25..84717.33 rows=5 width=210) (actual time=2.063..88.725 rows=2 loops=1)
+         Hash Cond: (mrb.meeting_room_id = mr.id)
+         ->  Gather  (cost=1000.00..84447.00 rows=26305 width=181) (actual time=0.335..86.339 rows=10018 loops=1)
                Workers Planned: 2
                Workers Launched: 2
-               ->  Parallel Seq Scan on meeting_room_booking mrb  (cost=0.00..80814.96 rows=2801 width=181) (actual time=0.033..79.452 rows=3339 loops=3)
-                     Filter: ((start_time <= '13:00:00'::time without time zone) AND (booking_date = '2024-11-01'::date) AND (end_time = '13:00:00'::time without time zone))
+               ->  Parallel Seq Scan on meeting_room_booking mrb  (cost=0.00..80816.50 rows=10960 width=181) (actual time=0.079..80.540 rows=3339 loops=3)
+                     Filter: ((start_time <= '13:00:00'::time without time zone) AND (end_time > '13:00:00'::time without time zone) AND (booking_date = '2024-11-01'::date))
                      Rows Removed by Filter: 798101
- Planning Time: 0.493 ms
- Execution Time: 85.681 ms
-(18 rows)
+         ->  Hash  (cost=201.23..201.23 rows=2 width=29) (actual time=1.718..1.719 rows=2 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Seq Scan on meeting_room mr  (cost=0.00..201.23 rows=2 width=29) (actual time=0.011..1.715 rows=2 loops=1)
+                     Filter: (room_id = 4)
+                     Rows Removed by Filter: 10016
+   ->  Memoize  (cost=0.30..8.31 rows=1 width=36) (actual time=0.015..0.015 rows=1 loops=2)
+         Cache Key: mr.id
+         Cache Mode: logical
+         Hits: 0  Misses: 2  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+         ->  Index Scan using meeting_room_visual_meeting_room_id_key on meeting_room_visual mrv  (cost=0.29..8.30 rows=1 width=36) (actual time=0.011..0.011 rows=1 loops=2)
+               Index Cond: (meeting_room_id = mr.id)
+ Planning Time: 0.539 ms
+ Execution Time: 88.823 ms
+(22 rows)
 ```
 
 Добавим индексы (по аналогии с workplace):
@@ -150,22 +154,22 @@ LEFT JOIN meeting_room_booking mrb
     ON mrb.meeting_room_id = mr.id
     AND mrb.booking_date = '2024-11-01'
     AND mrb.start_time <= '13:00:00'
-    AND mrb.end_time = '13:00:00'
+    AND mrb.end_time > '13:00:00'
 INNER JOIN meeting_room_visual mrv ON mrv.meeting_room_id = mr.id
 WHERE mr.room_id = 4;
-                                                                                    QUERY PLAN                                                                                    
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Nested Loop  (cost=1.00..102.36 rows=2 width=247) (actual time=0.033..0.238 rows=2 loops=1)
-   ->  Nested Loop Left Join  (cost=0.72..85.75 rows=2 width=210) (actual time=0.025..0.225 rows=2 loops=1)
-         ->  Index Scan using idx_meeting_room_room_id on meeting_room mr  (cost=0.29..8.32 rows=2 width=29) (actual time=0.009..0.010 rows=2 loops=1)
+                                                                                  QUERY PLAN                                                                                  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop Left Join  (cost=1.00..102.40 rows=5 width=247) (actual time=0.057..0.262 rows=2 loops=1)
+   ->  Nested Loop  (cost=0.57..24.93 rows=2 width=65) (actual time=0.042..0.049 rows=2 loops=1)
+         ->  Index Scan using idx_meeting_room_room_id on meeting_room mr  (cost=0.29..8.32 rows=2 width=29) (actual time=0.030..0.031 rows=2 loops=1)
                Index Cond: (room_id = 4)
-         ->  Index Scan using idx_meeting_room_booking_meeting_room_id on meeting_room_booking mrb  (cost=0.43..38.71 rows=1 width=181) (actual time=0.010..0.103 rows=1 loops=2)
+         ->  Index Scan using meeting_room_visual_meeting_room_id_key on meeting_room_visual mrv  (cost=0.29..8.30 rows=1 width=36) (actual time=0.004..0.004 rows=1 loops=2)
                Index Cond: (meeting_room_id = mr.id)
-               Filter: ((start_time <= '13:00:00'::time without time zone) AND (booking_date = '2024-11-01'::date) AND (end_time = '13:00:00'::time without time zone))
-               Rows Removed by Filter: 239
-   ->  Index Scan using meeting_room_visual_meeting_room_id_key on meeting_room_visual mrv  (cost=0.29..8.30 rows=1 width=36) (actual time=0.003..0.004 rows=1 loops=2)
+   ->  Index Scan using idx_meeting_room_booking_meeting_room_id on meeting_room_booking mrb  (cost=0.43..38.71 rows=3 width=181) (actual time=0.010..0.103 rows=1 loops=2)
          Index Cond: (meeting_room_id = mr.id)
- Planning Time: 0.652 ms
- Execution Time: 0.281 ms
+         Filter: ((start_time <= '13:00:00'::time without time zone) AND (end_time > '13:00:00'::time without time zone) AND (booking_date = '2024-11-01'::date))
+         Rows Removed by Filter: 239
+ Planning Time: 0.866 ms
+ Execution Time: 0.304 ms
 (12 rows)
 ```

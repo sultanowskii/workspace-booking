@@ -25,6 +25,6 @@ LEFT JOIN meeting_room_booking mrb
     ON mrb.meeting_room_id = mr.id
     AND mrb.booking_date = '2024-11-01'
     AND mrb.start_time <= '13:00:00'
-    AND mrb.end_time = '13:00:00'
+    AND mrb.end_time > '13:00:00'
 INNER JOIN meeting_room_visual mrv ON mrv.meeting_room_id = mr.id
 WHERE mr.room_id = 4;
