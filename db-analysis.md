@@ -38,19 +38,19 @@ WHERE w.room_id = 4;
 Как видно, здесь можно ускорить несколько моментов:
 
 - Фильтрация по room_id действует через seq scan (здесь будет полезен b-tree)
-- Join с workplace_booking (составной b-tree - так как во многих случаях при join/фильтрации колонки booking_date, workplace_id будут использоваться вместе)
+- Join с workplace_booking (b-tree на workplace_id)
 
 Индексы:
 
 ```psql
 CREATE INDEX idx_workplace_room_id ON workplace(room_id);
-CREATE INDEX idx_workplace_booking_date_workplace_id ON workplace_booking(booking_date, workplace_id);
+CREATE INDEX idx_workplace_booking_workplace_id ON workplace_booking(workplace_id);
 ```
 
 И действительно, заметно значительное ускорение после создания индексов:
 
 ```psql
-EXPLAIN ANALYZE
+workspace_booking=# EXPLAIN ANALYZE
 SELECT
     w.*,
     wv.*,
@@ -63,19 +63,20 @@ FROM workplace w
 LEFT JOIN workplace_booking wb ON wb.workplace_id = w.id AND wb.booking_date = '2024-11-01'
 INNER JOIN workplace_visual wv ON wv.workplace_id = w.id
 WHERE w.room_id = 4;
-                                                                                 QUERY PLAN                                                                                 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Nested Loop  (cost=1.28..3246.43 rows=200 width=49) (actual time=0.039..1.569 rows=200 loops=1)
-   ->  Nested Loop Left Join  (cost=0.85..1573.43 rows=200 width=16) (actual time=0.030..0.883 rows=200 loops=1)
-         ->  Index Scan using idx_workplace_room_id on workplace w  (cost=0.43..12.93 rows=200 width=12) (actual time=0.013..0.075 rows=200 loops=1)
+                                                                              QUERY PLAN                                                                               
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=1.15..3213.43 rows=200 width=49) (actual time=0.055..1.479 rows=200 loops=1)
+   ->  Nested Loop Left Join  (cost=0.72..1540.43 rows=200 width=16) (actual time=0.045..0.784 rows=200 loops=1)
+         ->  Index Scan using idx_workplace_room_id on workplace w  (cost=0.43..12.93 rows=200 width=12) (actual time=0.028..0.088 rows=200 loops=1)
                Index Cond: (room_id = 4)
-         ->  Index Scan using idx_workplace_booking_date_workplace_id on workplace_booking wb  (cost=0.42..7.80 rows=1 width=8) (actual time=0.003..0.003 rows=1 loops=200)
-               Index Cond: ((booking_date = '2024-11-01'::date) AND (workplace_id = w.id))
+         ->  Index Scan using idx_workplace_booking_workplace_id on workplace_booking wb  (cost=0.30..7.64 rows=1 width=8) (actual time=0.003..0.003 rows=1 loops=200)
+               Index Cond: (workplace_id = w.id)
+               Filter: (booking_date = '2024-11-01'::date)
    ->  Index Scan using workplace_visual_workplace_id_key on workplace_visual wv  (cost=0.43..8.37 rows=1 width=36) (actual time=0.003..0.003 rows=1 loops=200)
          Index Cond: (workplace_id = w.id)
- Planning Time: 0.641 ms
- Execution Time: 1.622 ms
-(10 rows)
+ Planning Time: 1.552 ms
+ Execution Time: 1.575 ms
+(11 rows)
 ```
 
 ## Получение всех переговорок в помещении сегодня с отметкой по занятости
@@ -128,7 +129,7 @@ WHERE mr.room_id = 4;
 
 ```psql
 CREATE INDEX idx_meeting_room_room_id ON meeting_room (room_id);
-CREATE INDEX idx_meeting_room_booking_booking_date_range ON meeting_room_booking (booking_date, start_time, end_time, meeting_room_id);
+CREATE INDEX idx_meeting_room_booking_meeting_room_id ON meeting_room_booking (meeting_room_id);
 ```
 
 После добавления индексов также заметно значительное сокращение времени исполнения запроса:
@@ -152,17 +153,19 @@ LEFT JOIN meeting_room_booking mrb
     AND mrb.end_time = '13:00:00'
 INNER JOIN meeting_room_visual mrv ON mrv.meeting_room_id = mr.id
 WHERE mr.room_id = 4;
-                                                                                                QUERY PLAN                                                                                                
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Nested Loop  (cost=1.00..4144.89 rows=2 width=247) (actual time=1.863..5.573 rows=2 loops=1)
-   ->  Nested Loop Left Join  (cost=0.72..4128.28 rows=2 width=210) (actual time=1.852..5.559 rows=2 loops=1)
-         ->  Index Scan using idx_meeting_room_room_id on meeting_room mr  (cost=0.29..8.32 rows=2 width=29) (actual time=0.010..0.014 rows=2 loops=1)
+                                                                                    QUERY PLAN                                                                                    
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=1.00..102.36 rows=2 width=247) (actual time=0.033..0.238 rows=2 loops=1)
+   ->  Nested Loop Left Join  (cost=0.72..85.75 rows=2 width=210) (actual time=0.025..0.225 rows=2 loops=1)
+         ->  Index Scan using idx_meeting_room_room_id on meeting_room mr  (cost=0.29..8.32 rows=2 width=29) (actual time=0.009..0.010 rows=2 loops=1)
                Index Cond: (room_id = 4)
-         ->  Index Scan using idx_meeting_room_booking_booking_date_range on meeting_room_booking mrb  (cost=0.43..2059.97 rows=1 width=181) (actual time=1.535..2.767 rows=1 loops=2)
-               Index Cond: ((booking_date = '2024-11-01'::date) AND (start_time <= '13:00:00'::time without time zone) AND (end_time = '13:00:00'::time without time zone) AND (meeting_room_id = mr.id))
-   ->  Index Scan using idx_meeting_room_visual_meeting_room_id on meeting_room_visual mrv  (cost=0.29..8.30 rows=1 width=36) (actual time=0.004..0.004 rows=1 loops=2)
+         ->  Index Scan using idx_meeting_room_booking_meeting_room_id on meeting_room_booking mrb  (cost=0.43..38.71 rows=1 width=181) (actual time=0.010..0.103 rows=1 loops=2)
+               Index Cond: (meeting_room_id = mr.id)
+               Filter: ((start_time <= '13:00:00'::time without time zone) AND (booking_date = '2024-11-01'::date) AND (end_time = '13:00:00'::time without time zone))
+               Rows Removed by Filter: 239
+   ->  Index Scan using meeting_room_visual_meeting_room_id_key on meeting_room_visual mrv  (cost=0.29..8.30 rows=1 width=36) (actual time=0.003..0.004 rows=1 loops=2)
          Index Cond: (meeting_room_id = mr.id)
- Planning Time: 0.556 ms
- Execution Time: 5.613 ms
-(10 rows)
+ Planning Time: 0.652 ms
+ Execution Time: 0.281 ms
+(12 rows)
 ```
