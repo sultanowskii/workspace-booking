@@ -11,3 +11,5 @@
 *.rar
 
 .env
+
+.venv/

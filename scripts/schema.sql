@@ -7,7 +7,7 @@ CREATE TABLE office (
 CREATE TABLE room (
     id SERIAL PRIMARY KEY,
     office_id INTEGER NOT NULL REFERENCES office(id) ON DELETE CASCADE,
-    name TEXT NOT NULL UNIQUE CHECK (length(name) > 0)
+    name TEXT NOT NULL CHECK (length(name) > 0) -- TODO: unique in the office
 );
 
 CREATE TABLE room_wall (
@@ -21,7 +21,7 @@ CREATE TABLE room_wall (
 CREATE TABLE meeting_room (
     id SERIAL PRIMARY KEY,
     room_id INTEGER NOT NULL REFERENCES room(id) ON DELETE CASCADE,
-    name TEXT NOT NULL UNIQUE CHECK (length(name) > 0)
+    name TEXT NOT NULL CHECK (length(name) > 0) -- TODO: unique in the office
 );
 
 CREATE TABLE meeting_room_visual (
@@ -83,7 +83,8 @@ CREATE TABLE workplace_booking (
     workplace_id INTEGER NOT NULL REFERENCES workplace(id) ON DELETE CASCADE,
     booking_date DATE NOT NULL,
 
-    UNIQUE (workplace_id, booking_date)
+    UNIQUE (workplace_id, booking_date),
+    UNIQUE (employee_id, booking_date)
 );
 
 CREATE TABLE meeting_room_booking (
@@ -95,7 +96,6 @@ CREATE TABLE meeting_room_booking (
     end_time TIME NOT NULL,
     description TEXT NOT NULL CHECK (length(description) > 0),
 
-    CHECK (date_trunc('day', start_time) = date_trunc('day', end_time)),
     CHECK (start_time < end_time)
 );
 
