@@ -10,6 +10,12 @@
 *.tar.gz
 *.rar
 
-.env
+# Ignore Gradle project-specific cache directory
+.gradle
 
+# Ignore Gradle build output directory
+build
+
+.env
 .venv/
+.vscode/
