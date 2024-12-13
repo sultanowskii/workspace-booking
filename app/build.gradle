@@ -8,6 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+
+    id 'org.openapi.generator' version '7.10.0'
 }
 
 repositories {
@@ -32,11 +34,19 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 
-    // lombok
+    // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 	testCompileOnly 'org.projectlombok:lombok:1.18.34'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.3.3'
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+
+    // OpenAPI
+    implementation 'org.openapitools:openapi-generator:7.10.0'
+    implementation 'org.openapitools:openapi-generator-gradle-plugin:7.10.0'
 
     // This dependency is used by the application.
     implementation libs.guava
@@ -52,4 +62,23 @@ java {
 application {
     // Define the main class for the application.
     mainClass = 'org.example.App'
+}
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/api/openapi.yaml"
+    outputDir = "$projectDir"
+    apiPackage = "org.wb.api"
+    modelPackage = "org.wb.model"
+    configOptions = [
+        interfaceOnly: "true",
+        openApiNullable: "false",
+        skipDefaultInterface: "true",
+        useSpringBoot3: "true",
+        useSpringController: "true"
+    ]
+    globalProperties = [
+        apis: "",
+        models: ""
+    ]
 }
