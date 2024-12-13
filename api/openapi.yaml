@@ -1,0 +1,9 @@
+openapi: "3.0.4"
+info:
+  version: 1.0.0
+  title: Workplace Booking
+paths:
+  /offices:
+    $ref: './resources/offices.yaml'
+  /offices/{officeId}:
+    $ref: './resources/office.yaml'

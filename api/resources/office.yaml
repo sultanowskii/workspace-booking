@@ -1,0 +1,16 @@
+get:
+  summary: Get office
+  operationId: getOffice
+  parameters:
+    - name: officeId
+      in: path
+      schema:
+        type: integer
+      required: true
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/Office.yaml

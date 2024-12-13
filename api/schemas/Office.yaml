@@ -1,0 +1,13 @@
+name: Office
+description: Office
+type: object
+properties:
+  id:
+    type: integer
+    description: Object ID
+  name:
+    type: string
+    minLength: 1
+  address:
+    type: string
+    minLength: 1
