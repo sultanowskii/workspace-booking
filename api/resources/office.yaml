@@ -2,11 +2,12 @@ get:
   summary: Get office
   operationId: getOffice
   parameters:
-    - name: officeId
-      in: path
-      schema:
-        type: integer
-      required: true
+  - name: officeId
+    in: path
+    schema:
+      type: integer
+      format: int64
+    required: true
   responses:
     '200':
       description: Success

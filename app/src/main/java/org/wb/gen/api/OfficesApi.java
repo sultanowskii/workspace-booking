@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-13T23:45:32.148889992+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-14T14:45:23.078469349+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
 @Tag(name = "offices", description = "the offices API")
@@ -61,7 +61,7 @@ public interface OfficesApi {
     )
     
     ResponseEntity<Office> getOffice(
-        @Parameter(name = "officeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("officeId") Integer officeId
+        @Parameter(name = "officeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("officeId") Long officeId
     );
 
 

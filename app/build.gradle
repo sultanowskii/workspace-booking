@@ -65,14 +65,28 @@ application {
     mainClass = 'org.wb.App'
 }
 
+final OPENAPI_OUTPUT_BASE_DIR = "${projectDir}"
+final OPENAPI_OUTPUT_PACKAGE = "gen"
+final OPENAPI_OUTPUT_DIR = "${OPENAPI_OUTPUT_BASE_DIR}/src/main/java/org/wb/${OPENAPI_OUTPUT_PACKAGE}"
+final OPENAPI_SPEC = "${rootDir}/api/openapi.yaml"
+
+task openApiClean(type: Delete) {
+    outputs.upToDateWhen { false }
+
+    doFirst {
+        println "Cleaning up previously generated code ${OPENAPI_OUTPUT_DIR}"
+    }
+    delete("${OPENAPI_OUTPUT_DIR}")
+}
+
 openApiGenerate {
     generatorName = "spring"
-    inputSpec = "$rootDir/api/openapi.yaml"
-    outputDir = "$projectDir"
+    inputSpec = "${OPENAPI_SPEC}"
+    outputDir = "${OPENAPI_OUTPUT_BASE_DIR}"
     apiPackage = "org.wb.gen.api"
     modelPackage = "org.wb.gen.model"
     configOptions = [
-        interfaceOnly: "false",
+        interfaceOnly: "true",
         openApiNullable: "false",
         skipDefaultInterface: "true",
         useSpringBoot3: "true",
@@ -82,4 +96,14 @@ openApiGenerate {
         apis: "",
         models: ""
     ]
+}
+
+openApiValidate {
+    inputSpec = "${OPENAPI_SPEC}"
+}
+
+task openapi {
+    dependsOn tasks.openApiValidate
+    dependsOn tasks.openApiClean
+    dependsOn tasks.openApiGenerate
 }

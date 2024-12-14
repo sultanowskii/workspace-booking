@@ -3,8 +3,10 @@ description: Office
 type: object
 properties:
   id:
-    type: integer
     description: Object ID
+    schema:
+      type: integer
+      format: int64
   name:
     type: string
     minLength: 1
