@@ -1,0 +1,15 @@
+name: WorkplaceCreate
+description: Workplace
+type: object
+properties:
+  roomId:
+    description: Room ID
+    schema:
+      type: integer
+      format: int64
+  numberOfMonitors:
+    description: Number of monitors
+    schema:
+      type: integer
+      format: int64
+      minimum: 0

@@ -1,12 +1,13 @@
-name: RoomCreate
-description: Room
+name: Employee group
+description: Employee group
 type: object
 properties:
-  officeId:
-    description: Office ID
+  id:
+    description: ID
     schema:
       type: integer
       format: int64
-  address:
+  name:
     description: Name
     type: string
+    minLength: 1

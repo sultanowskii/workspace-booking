@@ -9,5 +9,18 @@ paths:
     $ref: ./resources/offices/office.yaml
   /rooms:
     $ref: ./resources/rooms/rooms.yaml
+  # TODO: room walls
   /rooms/{id}:
     $ref: ./resources/rooms/room.yaml
+  /employeeGroups:
+    $ref: ./resources/employeeGroups/employeeGroups.yaml
+  # TODO: available offices
+  # TODO: employees
+  /employeeGroups/{id}:
+    $ref: ./resources/employeeGroups/employeeGroup.yaml
+  /workplaces:
+    $ref: ./resources/workplaces/workplaces.yaml
+  # TODO: workplace visual
+  # TODO: workplace name/local id???
+  /workplaces/{id}:
+    $ref: ./resources/workplaces/workplace.yaml

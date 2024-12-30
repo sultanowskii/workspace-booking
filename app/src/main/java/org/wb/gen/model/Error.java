@@ -18,31 +18,31 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "Error", description = "Default Abstract Error")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T14:24:22.057047733+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 public class Error {
 
-  private String code;
+  private String message;
 
   private String description;
 
-  public Error code(String code) {
-    this.code = code;
+  public Error message(String message) {
+    this.message = message;
     return this;
   }
 
   /**
-   * Error code
-   * @return code
+   * Error message
+   * @return message
    */
   
-  @Schema(name = "code", description = "Error code", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("code")
-  public String getCode() {
-    return code;
+  @Schema(name = "message", description = "Error message", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("message")
+  public String getMessage() {
+    return message;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setMessage(String message) {
+    this.message = message;
   }
 
   public Error description(String description) {
@@ -74,20 +74,20 @@ public class Error {
       return false;
     }
     Error error = (Error) o;
-    return Objects.equals(this.code, error.code) &&
+    return Objects.equals(this.message, error.message) &&
         Objects.equals(this.description, error.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, description);
+    return Objects.hash(message, description);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Error {\n");
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("}");
     return sb.toString();

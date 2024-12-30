@@ -1,0 +1,26 @@
+get:
+  summary: Get workplaces
+  operationId: getWorkplaces
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../schemas/workplaces/Workplace.yaml
+post:
+  summary: Create workplace
+  operationId: createWorkplace
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../../schemas/workplaces/WorkplaceCreate.yaml
+  responses:
+    '201':
+      description: Success
+      content:
+        application/json:
+          $ref: ../../schemas/workplaces/Workplace.yaml

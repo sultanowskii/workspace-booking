@@ -5,10 +5,9 @@
  */
 package org.wb.gen.api;
 
+import org.wb.gen.model.EmployeeGroup;
+import org.wb.gen.model.EmployeeGroupCreate;
 import org.wb.gen.model.Error;
-import org.wb.gen.model.Room;
-import org.wb.gen.model.RoomCreate;
-import org.wb.gen.model.RoomWithWalls;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,46 +38,46 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
-@Tag(name = "rooms", description = "the rooms API")
-public interface RoomsApi {
+@Tag(name = "employeeGroups", description = "the employeeGroups API")
+public interface EmployeeGroupsApi {
 
     /**
-     * POST /rooms : Create room
+     * POST /employeeGroups : Create employee group
      *
-     * @param roomCreate  (optional)
+     * @param employeeGroup  (optional)
      * @return Success (status code 201)
      */
     @Operation(
-        operationId = "createRoom",
-        summary = "Create room",
+        operationId = "createEmployeeGroup",
+        summary = "Create employee group",
         responses = {
             @ApiResponse(responseCode = "201", description = "Success")
         }
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/rooms",
+        value = "/employeeGroups",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createRoom(
-        @Parameter(name = "RoomCreate", description = "") @Valid @RequestBody(required = false) RoomCreate roomCreate
+    ResponseEntity<Void> createEmployeeGroup(
+        @Parameter(name = "EmployeeGroup", description = "") @Valid @RequestBody(required = false) EmployeeGroup employeeGroup
     );
 
 
     /**
-     * DELETE /rooms/{id} : Delete room
+     * DELETE /employeeGroups/{id} : Delete employee group
      *
      * @param id  (required)
-     * @return Success (status code 201)
+     * @return Success (status code 204)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
-        operationId = "deleteRoom",
-        summary = "Delete room",
+        operationId = "deleteEmployeeGroup",
+        summary = "Delete employee group",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Success"),
+            @ApiResponse(responseCode = "204", description = "Success"),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
@@ -86,28 +85,28 @@ public interface RoomsApi {
     )
     @RequestMapping(
         method = RequestMethod.DELETE,
-        value = "/rooms/{id}",
+        value = "/employeeGroups/{id}",
         produces = { "application/json" }
     )
     
-    ResponseEntity<Void> deleteRoom(
+    ResponseEntity<Void> deleteEmployeeGroup(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
     /**
-     * GET /rooms/{id} : Get room
+     * GET /employeeGroups/{id} : Get employee group
      *
      * @param id  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
-        operationId = "getRoom",
-        summary = "Get room",
+        operationId = "getEmployeeGroup",
+        summary = "Get employee group",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = RoomWithWalls.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -116,54 +115,54 @@ public interface RoomsApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/rooms/{id}",
+        value = "/employeeGroups/{id}",
         produces = { "application/json" }
     )
     
-    ResponseEntity<RoomWithWalls> getRoom(
+    ResponseEntity<EmployeeGroup> getEmployeeGroup(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
     /**
-     * GET /rooms : Get rooms
+     * GET /employeeGroups : Get employee groups
      *
      * @return Success (status code 200)
      */
     @Operation(
-        operationId = "getRooms",
-        summary = "Get rooms",
+        operationId = "getEmployeeGroups",
+        summary = "Get employee groups",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Room.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EmployeeGroup.class)))
             })
         }
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/rooms",
+        value = "/employeeGroups",
         produces = { "application/json" }
     )
     
-    ResponseEntity<List<Room>> getRooms(
+    ResponseEntity<List<EmployeeGroup>> getEmployeeGroups(
         
     );
 
 
     /**
-     * PUT /rooms/{id} : Update Room
+     * PUT /employeeGroups/{id} : Update employee group
      *
      * @param id  (required)
-     * @param roomCreate  (optional)
+     * @param employeeGroupCreate  (optional)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
-        operationId = "updateRoom",
-        summary = "Update Room",
+        operationId = "updateEmployeeGroups",
+        summary = "Update employee group",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = RoomWithWalls.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -172,14 +171,14 @@ public interface RoomsApi {
     )
     @RequestMapping(
         method = RequestMethod.PUT,
-        value = "/rooms/{id}",
+        value = "/employeeGroups/{id}",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    ResponseEntity<RoomWithWalls> updateRoom(
+    ResponseEntity<EmployeeGroup> updateEmployeeGroups(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "RoomCreate", description = "") @Valid @RequestBody(required = false) RoomCreate roomCreate
+        @Parameter(name = "EmployeeGroupCreate", description = "") @Valid @RequestBody(required = false) EmployeeGroupCreate employeeGroupCreate
     );
 
 }

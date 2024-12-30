@@ -1,0 +1,8 @@
+name: Employee group
+description: Employee group
+type: object
+properties:
+  name:
+    description: Name
+    type: string
+    minLength: 1

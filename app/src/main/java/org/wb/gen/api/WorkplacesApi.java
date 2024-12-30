@@ -6,9 +6,8 @@
 package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
-import org.wb.gen.model.Room;
-import org.wb.gen.model.RoomCreate;
-import org.wb.gen.model.RoomWithWalls;
+import org.wb.gen.model.Workplace;
+import org.wb.gen.model.WorkplaceCreate;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,44 +38,44 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
-@Tag(name = "rooms", description = "the rooms API")
-public interface RoomsApi {
+@Tag(name = "workplaces", description = "the workplaces API")
+public interface WorkplacesApi {
 
     /**
-     * POST /rooms : Create room
+     * POST /workplaces : Create workplace
      *
-     * @param roomCreate  (optional)
+     * @param workplaceCreate  (optional)
      * @return Success (status code 201)
      */
     @Operation(
-        operationId = "createRoom",
-        summary = "Create room",
+        operationId = "createWorkplace",
+        summary = "Create workplace",
         responses = {
             @ApiResponse(responseCode = "201", description = "Success")
         }
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/rooms",
+        value = "/workplaces",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createRoom(
-        @Parameter(name = "RoomCreate", description = "") @Valid @RequestBody(required = false) RoomCreate roomCreate
+    ResponseEntity<Void> createWorkplace(
+        @Parameter(name = "WorkplaceCreate", description = "") @Valid @RequestBody(required = false) WorkplaceCreate workplaceCreate
     );
 
 
     /**
-     * DELETE /rooms/{id} : Delete room
+     * DELETE /workplaces/{id} : Delete workplace
      *
      * @param id  (required)
      * @return Success (status code 201)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
-        operationId = "deleteRoom",
-        summary = "Delete room",
+        operationId = "deleteWorkplace",
+        summary = "Delete workplace",
         responses = {
             @ApiResponse(responseCode = "201", description = "Success"),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
@@ -86,28 +85,28 @@ public interface RoomsApi {
     )
     @RequestMapping(
         method = RequestMethod.DELETE,
-        value = "/rooms/{id}",
+        value = "/workplaces/{id}",
         produces = { "application/json" }
     )
     
-    ResponseEntity<Void> deleteRoom(
+    ResponseEntity<Void> deleteWorkplace(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
     /**
-     * GET /rooms/{id} : Get room
+     * GET /workplaces/{id} : Get workplace
      *
      * @param id  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
-        operationId = "getRoom",
-        summary = "Get room",
+        operationId = "getWorkplace",
+        summary = "Get workplace",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = RoomWithWalls.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Workplace.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -116,54 +115,54 @@ public interface RoomsApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/rooms/{id}",
+        value = "/workplaces/{id}",
         produces = { "application/json" }
     )
     
-    ResponseEntity<RoomWithWalls> getRoom(
+    ResponseEntity<Workplace> getWorkplace(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
     /**
-     * GET /rooms : Get rooms
+     * GET /workplaces : Get workplaces
      *
      * @return Success (status code 200)
      */
     @Operation(
-        operationId = "getRooms",
-        summary = "Get rooms",
+        operationId = "getWorkplaces",
+        summary = "Get workplaces",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Room.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Workplace.class)))
             })
         }
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/rooms",
+        value = "/workplaces",
         produces = { "application/json" }
     )
     
-    ResponseEntity<List<Room>> getRooms(
+    ResponseEntity<List<Workplace>> getWorkplaces(
         
     );
 
 
     /**
-     * PUT /rooms/{id} : Update Room
+     * PUT /workplaces/{id} : Update Workplace
      *
      * @param id  (required)
-     * @param roomCreate  (optional)
+     * @param workplaceCreate  (optional)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
-        operationId = "updateRoom",
-        summary = "Update Room",
+        operationId = "updateWorkplace",
+        summary = "Update Workplace",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = RoomWithWalls.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Workplace.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -172,14 +171,14 @@ public interface RoomsApi {
     )
     @RequestMapping(
         method = RequestMethod.PUT,
-        value = "/rooms/{id}",
+        value = "/workplaces/{id}",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    ResponseEntity<RoomWithWalls> updateRoom(
+    ResponseEntity<Workplace> updateWorkplace(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "RoomCreate", description = "") @Valid @RequestBody(required = false) RoomCreate roomCreate
+        @Parameter(name = "WorkplaceCreate", description = "") @Valid @RequestBody(required = false) WorkplaceCreate workplaceCreate
     );
 
 }

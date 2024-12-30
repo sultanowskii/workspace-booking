@@ -1,8 +1,8 @@
 type: object
 description: Default Abstract Error
 properties:
-  code:
-    description: Error code
+  message:
+    description: Error message
     type: string
   description:
     description: Error description

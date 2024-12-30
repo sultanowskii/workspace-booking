@@ -1,0 +1,26 @@
+get:
+  summary: Get employee groups
+  operationId: getEmployeeGroups
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+post:
+  summary: Create employee group
+  operationId: createEmployeeGroup
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+  responses:
+    '201':
+      description: Success
+      content:
+        application/json:
+          $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml

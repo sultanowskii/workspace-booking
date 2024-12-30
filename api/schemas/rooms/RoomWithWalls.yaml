@@ -1,5 +1,5 @@
-name: Room
-description: Room
+name: RoomWithWalls
+description: Room with walls
 type: object
 properties:
   id:

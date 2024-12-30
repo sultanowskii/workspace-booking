@@ -14,20 +14,20 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Room
+ * Workplace
  */
 
-@Schema(name = "Room", description = "Room")
+@Schema(name = "Workplace", description = "Workplace")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class Room {
+public class Workplace {
 
   private Object id;
 
-  private Object officeId;
+  private Object roomId;
 
-  private String address;
+  private Object numberOfMonitors;
 
-  public Room id(Object id) {
+  public Workplace id(Object id) {
     this.id = id;
     return this;
   }
@@ -47,44 +47,44 @@ public class Room {
     this.id = id;
   }
 
-  public Room officeId(Object officeId) {
-    this.officeId = officeId;
+  public Workplace roomId(Object roomId) {
+    this.roomId = roomId;
     return this;
   }
 
   /**
-   * Office ID
-   * @return officeId
+   * Room ID
+   * @return roomId
    */
   
-  @Schema(name = "officeId", description = "Office ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("officeId")
-  public Object getOfficeId() {
-    return officeId;
+  @Schema(name = "roomId", description = "Room ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("roomId")
+  public Object getRoomId() {
+    return roomId;
   }
 
-  public void setOfficeId(Object officeId) {
-    this.officeId = officeId;
+  public void setRoomId(Object roomId) {
+    this.roomId = roomId;
   }
 
-  public Room address(String address) {
-    this.address = address;
+  public Workplace numberOfMonitors(Object numberOfMonitors) {
+    this.numberOfMonitors = numberOfMonitors;
     return this;
   }
 
   /**
-   * Name
-   * @return address
+   * Number of monitors
+   * @return numberOfMonitors
    */
   
-  @Schema(name = "address", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("address")
-  public String getAddress() {
-    return address;
+  @Schema(name = "numberOfMonitors", description = "Number of monitors", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("numberOfMonitors")
+  public Object getNumberOfMonitors() {
+    return numberOfMonitors;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  public void setNumberOfMonitors(Object numberOfMonitors) {
+    this.numberOfMonitors = numberOfMonitors;
   }
 
   @Override
@@ -95,24 +95,24 @@ public class Room {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Room room = (Room) o;
-    return Objects.equals(this.id, room.id) &&
-        Objects.equals(this.officeId, room.officeId) &&
-        Objects.equals(this.address, room.address);
+    Workplace workplace = (Workplace) o;
+    return Objects.equals(this.id, workplace.id) &&
+        Objects.equals(this.roomId, workplace.roomId) &&
+        Objects.equals(this.numberOfMonitors, workplace.numberOfMonitors);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, officeId, address);
+    return Objects.hash(id, roomId, numberOfMonitors);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Room {\n");
+    sb.append("class Workplace {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    officeId: ").append(toIndentedString(officeId)).append("\n");
-    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
+    sb.append("    numberOfMonitors: ").append(toIndentedString(numberOfMonitors)).append("\n");
     sb.append("}");
     return sb.toString();
   }

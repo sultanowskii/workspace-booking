@@ -1,0 +1,20 @@
+name: Workplace
+description: Workplace
+type: object
+properties:
+  id:
+    description: ID
+    schema:
+      type: integer
+      format: int64
+  roomId:
+    description: Room ID
+    schema:
+      type: integer
+      format: int64
+  numberOfMonitors:
+    description: Number of monitors
+    schema:
+      type: integer
+      format: int64
+      minimum: 0

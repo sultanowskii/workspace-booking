@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "RoomWall", description = "Room Wall")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T14:24:22.057047733+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 public class RoomWall {
 
   private Object id;

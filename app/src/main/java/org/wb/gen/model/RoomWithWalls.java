@@ -18,11 +18,11 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Room
+ * Room with walls
  */
 
-@Schema(name = "RoomWithWalls", description = "Room")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T14:24:22.057047733+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Schema(name = "RoomWithWalls", description = "Room with walls")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 public class RoomWithWalls {
 
   private Object id;
