@@ -1,0 +1,26 @@
+get:
+  summary: Get meeting rooms
+  operationId: getMeetingRooms
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../schemas/meetingRooms/MeetingRoom.yaml
+post:
+  summary: Create meeting room
+  operationId: createMeetingRoom
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../../schemas/meetingRooms/MeetingRoomCreate.yaml
+  responses:
+    '201':
+      description: Success
+      content:
+        application/json:
+          $ref: ../../schemas/meetingRooms/MeetingRoom.yaml

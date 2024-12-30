@@ -1,0 +1,18 @@
+name: MeetingRoom
+description: Meeting room
+type: object
+properties:
+  id:
+    description: ID
+    schema:
+      type: integer
+      format: int64
+  roomId:
+    description: Room ID
+    schema:
+      type: integer
+      format: int64
+  name:
+    description: Name
+    type: string
+    minLength: 1

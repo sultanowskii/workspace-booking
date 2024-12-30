@@ -18,7 +18,7 @@ get:
     '404':
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
-  summary: Update Room
+  summary: Update room
   operationId: updateRoom
   parameters:
   - name: id

@@ -13,22 +13,22 @@ properties:
       type: integer
       format: int64
   x1:
-    description: Name
+    description: X1
     schema:
       type: number
       format: double
   y1:
-    description: Name
+    description: Y1
     schema:
       type: number
       format: double
   x2:
-    description: Name
+    description: X2
     schema:
       type: number
       format: double
   y2:
-    description: Name
+    description: Y2
     schema:
       type: number
       format: double

@@ -1,6 +1,6 @@
 get:
-  summary: Get workplace
-  operationId: getWorkplace
+  summary: Get meeting room
+  operationId: getMeetingRoom
   parameters:
   - name: id
     in: path
@@ -14,12 +14,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../../schemas/workplaces/Workplace.yaml
+            $ref: ../../schemas/meetingRooms/MeetingRoom.yaml
     '404':
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
-  summary: Update workplace
-  operationId: updateWorkplace
+  summary: Update meeting room
+  operationId: updateMeetingRoom
   parameters:
   - name: id
     in: path
@@ -31,19 +31,19 @@ put:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/workplaces/WorkplaceCreate.yaml
+          $ref: ../../schemas/meetingRooms/MeetingRoomCreate.yaml
   responses:
     '200':
       description: Success
       content:
         application/json:
           schema:
-            $ref: ../../schemas/workplaces/Workplace.yaml
+            $ref: ../../schemas/meetingRooms/MeetingRoom.yaml
     '404':
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
-  summary: Delete workplace
-  operationId: deleteWorkplace
+  summary: Delete meeting room
+  operationId: deleteMeetingRoom
   parameters:
   - name: id
     in: path

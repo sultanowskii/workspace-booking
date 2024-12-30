@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "RoomWall", description = "Room Wall")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:55:34.595779528+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 public class RoomWall {
 
   private Object id;
@@ -79,11 +79,11 @@ public class RoomWall {
   }
 
   /**
-   * Name
+   * X1
    * @return x1
    */
   
-  @Schema(name = "x1", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "x1", description = "X1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("x1")
   public Object getX1() {
     return x1;
@@ -99,11 +99,11 @@ public class RoomWall {
   }
 
   /**
-   * Name
+   * Y1
    * @return y1
    */
   
-  @Schema(name = "y1", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "y1", description = "Y1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("y1")
   public Object getY1() {
     return y1;
@@ -119,11 +119,11 @@ public class RoomWall {
   }
 
   /**
-   * Name
+   * X2
    * @return x2
    */
   
-  @Schema(name = "x2", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "x2", description = "X2", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("x2")
   public Object getX2() {
     return x2;
@@ -139,11 +139,11 @@ public class RoomWall {
   }
 
   /**
-   * Name
+   * Y2
    * @return y2
    */
   
-  @Schema(name = "y2", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "y2", description = "Y2", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("y2")
   public Object getY2() {
     return y2;

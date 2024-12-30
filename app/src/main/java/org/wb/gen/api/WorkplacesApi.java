@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:20:03.134003969+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:55:34.595779528+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
 @Tag(name = "workplaces", description = "the workplaces API")
@@ -150,7 +150,7 @@ public interface WorkplacesApi {
 
 
     /**
-     * PUT /workplaces/{id} : Update Workplace
+     * PUT /workplaces/{id} : Update workplace
      *
      * @param id  (required)
      * @param workplaceCreate  (optional)
@@ -159,7 +159,7 @@ public interface WorkplacesApi {
      */
     @Operation(
         operationId = "updateWorkplace",
-        summary = "Update Workplace",
+        summary = "Update workplace",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Workplace.class))

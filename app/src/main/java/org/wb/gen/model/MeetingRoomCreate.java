@@ -14,38 +14,38 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Employee group
+ * Meeting room
  */
 
-@Schema(name = "EmployeeGroup", description = "Employee group")
+@Schema(name = "MeetingRoomCreate", description = "Meeting room")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:55:34.595779528+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class EmployeeGroup {
+public class MeetingRoomCreate {
 
-  private Object id;
+  private Object roomId;
 
   private String name;
 
-  public EmployeeGroup id(Object id) {
-    this.id = id;
+  public MeetingRoomCreate roomId(Object roomId) {
+    this.roomId = roomId;
     return this;
   }
 
   /**
-   * ID
-   * @return id
+   * Room ID
+   * @return roomId
    */
   
-  @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("id")
-  public Object getId() {
-    return id;
+  @Schema(name = "roomId", description = "Room ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("roomId")
+  public Object getRoomId() {
+    return roomId;
   }
 
-  public void setId(Object id) {
-    this.id = id;
+  public void setRoomId(Object roomId) {
+    this.roomId = roomId;
   }
 
-  public EmployeeGroup name(String name) {
+  public MeetingRoomCreate name(String name) {
     this.name = name;
     return this;
   }
@@ -73,21 +73,21 @@ public class EmployeeGroup {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EmployeeGroup employeeGroup = (EmployeeGroup) o;
-    return Objects.equals(this.id, employeeGroup.id) &&
-        Objects.equals(this.name, employeeGroup.name);
+    MeetingRoomCreate meetingRoomCreate = (MeetingRoomCreate) o;
+    return Objects.equals(this.roomId, meetingRoomCreate.roomId) &&
+        Objects.equals(this.name, meetingRoomCreate.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name);
+    return Objects.hash(roomId, name);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class EmployeeGroup {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class MeetingRoomCreate {\n");
+    sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();

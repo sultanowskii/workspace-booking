@@ -24,3 +24,9 @@ paths:
   # TODO: workplace name/local id???
   /workplaces/{id}:
     $ref: ./resources/workplaces/workplace.yaml
+  /meetingRooms:
+    $ref: ./resources/meetingRooms/meetingRooms.yaml
+  # TODO: workplace visual
+  # TODO: workplace name/local id???
+  /meetingRooms/{id}:
+    $ref: ./resources/meetingRooms/meetingRoom.yaml
