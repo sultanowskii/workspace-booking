@@ -18,15 +18,17 @@ paths:
   # TODO: employees
   /employeeGroups/{id}:
     $ref: ./resources/employeeGroups/employeeGroup.yaml
+  /employeeGroups/{employeeGroupId}/offices:
+    $ref: ./resources/employeeGroups/employeeGroupOffices.yaml
+  /employeeGroups/{employeeGroupId}/office/{officeId}:
+    $ref: ./resources/employeeGroups/employeeGroupOffice.yaml
   /workplaces:
     $ref: ./resources/workplaces/workplaces.yaml
-  # TODO: workplace visual
   # TODO: workplace name/local id???
   /workplaces/{id}:
     $ref: ./resources/workplaces/workplace.yaml
   /meetingRooms:
     $ref: ./resources/meetingRooms/meetingRooms.yaml
-  # TODO: workplace visual
   # TODO: workplace name/local id???
   /meetingRooms/{id}:
     $ref: ./resources/meetingRooms/meetingRoom.yaml

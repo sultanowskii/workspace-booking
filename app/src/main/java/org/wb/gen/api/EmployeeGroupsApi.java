@@ -7,6 +7,7 @@ package org.wb.gen.api;
 
 import org.wb.gen.model.EmployeeGroup;
 import org.wb.gen.model.EmployeeGroupCreate;
+import org.wb.gen.model.EmployeeGroupOffice;
 import org.wb.gen.model.Error;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,11 +36,41 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:55:34.595779528+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
 @Tag(name = "employeeGroups", description = "the employeeGroups API")
 public interface EmployeeGroupsApi {
+
+    /**
+     * POST /employeeGroups/{employeeGroupId}/office/{officeId} : Add employee group to the office
+     *
+     * @param employeeGroupId  (required)
+     * @param officeId  (required)
+     * @return Success (status code 204)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "addEmployeeGroupToOffice",
+        summary = "Add employee group to the office",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/employeeGroups/{employeeGroupId}/office/{officeId}",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<Void> addEmployeeGroupToOffice(
+        @Parameter(name = "employeeGroupId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("employeeGroupId") Long employeeGroupId,
+        @Parameter(name = "officeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("officeId") Long officeId
+    );
+
 
     /**
      * POST /employeeGroups : Create employee group
@@ -125,6 +156,31 @@ public interface EmployeeGroupsApi {
 
 
     /**
+     * GET /employeeGroups/{employeeGroupId}/offices : Get offices which employee group could visit
+     *
+     * @return Success (status code 200)
+     */
+    @Operation(
+        operationId = "getEmployeeGroupOffices",
+        summary = "Get offices which employee group could visit",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EmployeeGroupOffice.class)))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/employeeGroups/{employeeGroupId}/offices",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<List<EmployeeGroupOffice>> getEmployeeGroupOffices(
+        
+    );
+
+
+    /**
      * GET /employeeGroups : Get employee groups
      *
      * @return Success (status code 200)
@@ -146,6 +202,36 @@ public interface EmployeeGroupsApi {
     
     ResponseEntity<List<EmployeeGroup>> getEmployeeGroups(
         
+    );
+
+
+    /**
+     * DELETE /employeeGroups/{employeeGroupId}/office/{officeId} : Remove employee group from the office
+     *
+     * @param employeeGroupId  (required)
+     * @param officeId  (required)
+     * @return Success (status code 204)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "removeEmployeeGroupFromOffice",
+        summary = "Remove employee group from the office",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/employeeGroups/{employeeGroupId}/office/{officeId}",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<Void> removeEmployeeGroupFromOffice(
+        @Parameter(name = "employeeGroupId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("employeeGroupId") Long employeeGroupId,
+        @Parameter(name = "officeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("officeId") Long officeId
     );
 
 

@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:55:34.595779528+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
 @Tag(name = "rooms", description = "the rooms API")

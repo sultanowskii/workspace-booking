@@ -1,0 +1,14 @@
+name: EmployeeGroupOffice
+description: Employee group office
+type: object
+properties:
+  employeeGroupId:
+    description: Employee group ID
+    schema:
+      type: integer
+      format: int64
+  officeId:
+    description: Office ID
+    schema:
+      type: integer
+      format: int64

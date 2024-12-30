@@ -1,0 +1,12 @@
+get:
+  summary: Get offices which employee group could visit 
+  operationId: getEmployeeGroupOffices
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../schemas/employeeGroups/EmployeeGroupOffice.yaml

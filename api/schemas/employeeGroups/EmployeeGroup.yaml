@@ -1,4 +1,4 @@
-name: Employee group
+name: EmployeeGroup
 description: Employee group
 type: object
 properties:

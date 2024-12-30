@@ -11,3 +11,25 @@ properties:
     description: Name
     type: string
     minLength: 1
+  x:
+    description: X
+    schema:
+      type: number
+      format: double
+  'y':
+    description: 'Y'
+    schema:
+      type: number
+      format: double
+  width:
+    description: Width
+    schema:
+      type: number
+      format: double
+      exclusiveMinimum: 0
+  height:
+    description: Height
+    schema:
+      type: number
+      format: double
+      exclusiveMinimum: 0

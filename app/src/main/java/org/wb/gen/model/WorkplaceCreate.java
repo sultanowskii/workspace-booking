@@ -18,12 +18,20 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "WorkplaceCreate", description = "Workplace")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T15:55:34.595779528+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 public class WorkplaceCreate {
 
   private Object roomId;
 
   private Object numberOfMonitors;
+
+  private Object x;
+
+  private Object y;
+
+  private Object width;
+
+  private Object height;
 
   public WorkplaceCreate roomId(Object roomId) {
     this.roomId = roomId;
@@ -65,6 +73,86 @@ public class WorkplaceCreate {
     this.numberOfMonitors = numberOfMonitors;
   }
 
+  public WorkplaceCreate x(Object x) {
+    this.x = x;
+    return this;
+  }
+
+  /**
+   * X
+   * @return x
+   */
+  
+  @Schema(name = "x", description = "X", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("x")
+  public Object getX() {
+    return x;
+  }
+
+  public void setX(Object x) {
+    this.x = x;
+  }
+
+  public WorkplaceCreate y(Object y) {
+    this.y = y;
+    return this;
+  }
+
+  /**
+   * Y
+   * @return y
+   */
+  
+  @Schema(name = "y", description = "Y", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("y")
+  public Object getY() {
+    return y;
+  }
+
+  public void setY(Object y) {
+    this.y = y;
+  }
+
+  public WorkplaceCreate width(Object width) {
+    this.width = width;
+    return this;
+  }
+
+  /**
+   * Width
+   * @return width
+   */
+  
+  @Schema(name = "width", description = "Width", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("width")
+  public Object getWidth() {
+    return width;
+  }
+
+  public void setWidth(Object width) {
+    this.width = width;
+  }
+
+  public WorkplaceCreate height(Object height) {
+    this.height = height;
+    return this;
+  }
+
+  /**
+   * Height
+   * @return height
+   */
+  
+  @Schema(name = "height", description = "Height", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("height")
+  public Object getHeight() {
+    return height;
+  }
+
+  public void setHeight(Object height) {
+    this.height = height;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -75,12 +163,16 @@ public class WorkplaceCreate {
     }
     WorkplaceCreate workplaceCreate = (WorkplaceCreate) o;
     return Objects.equals(this.roomId, workplaceCreate.roomId) &&
-        Objects.equals(this.numberOfMonitors, workplaceCreate.numberOfMonitors);
+        Objects.equals(this.numberOfMonitors, workplaceCreate.numberOfMonitors) &&
+        Objects.equals(this.x, workplaceCreate.x) &&
+        Objects.equals(this.y, workplaceCreate.y) &&
+        Objects.equals(this.width, workplaceCreate.width) &&
+        Objects.equals(this.height, workplaceCreate.height);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(roomId, numberOfMonitors);
+    return Objects.hash(roomId, numberOfMonitors, x, y, width, height);
   }
 
   @Override
@@ -89,6 +181,10 @@ public class WorkplaceCreate {
     sb.append("class WorkplaceCreate {\n");
     sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
     sb.append("    numberOfMonitors: ").append(toIndentedString(numberOfMonitors)).append("\n");
+    sb.append("    x: ").append(toIndentedString(x)).append("\n");
+    sb.append("    y: ").append(toIndentedString(y)).append("\n");
+    sb.append("    width: ").append(toIndentedString(width)).append("\n");
+    sb.append("    height: ").append(toIndentedString(height)).append("\n");
     sb.append("}");
     return sb.toString();
   }
