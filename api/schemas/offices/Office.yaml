@@ -1,0 +1,17 @@
+name: Office
+description: Office
+type: object
+properties:
+  id:
+    description: ID
+    schema:
+      type: integer
+      format: int64
+  name:
+    description: Name
+    type: string
+    minLength: 1
+  address:
+    description: Address
+    type: string
+    minLength: 1

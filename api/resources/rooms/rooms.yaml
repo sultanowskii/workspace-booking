@@ -1,0 +1,26 @@
+get:
+  summary: Get rooms
+  operationId: getRooms
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../schemas/rooms/Room.yaml
+post:
+  summary: Create room
+  operationId: createRoom
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../../schemas/rooms/RoomCreate.yaml
+  responses:
+    '201':
+      description: Success
+      content:
+        application/json:
+          $ref: ../../schemas/rooms/Room.yaml

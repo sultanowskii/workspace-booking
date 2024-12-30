@@ -1,0 +1,26 @@
+get:
+  summary: Get offices
+  operationId: getOffices
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../schemas/offices/Office.yaml
+post:
+  summary: Create office
+  operationId: createOffice
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../../schemas/offices/OfficeCreate.yaml
+  responses:
+    '201':
+      description: Success
+      content:
+        application/json:
+          $ref: ../../schemas/offices/Office.yaml

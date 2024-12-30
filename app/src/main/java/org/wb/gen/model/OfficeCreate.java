@@ -17,37 +17,15 @@ import jakarta.annotation.Generated;
  * Office
  */
 
-@Schema(name = "Office", description = "Office")
+@Schema(name = "OfficeCreate", description = "Office")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T14:24:22.057047733+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class Office {
-
-  private Object id;
+public class OfficeCreate {
 
   private String name;
 
   private String address;
 
-  public Office id(Object id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * ID
-   * @return id
-   */
-  
-  @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("id")
-  public Object getId() {
-    return id;
-  }
-
-  public void setId(Object id) {
-    this.id = id;
-  }
-
-  public Office name(String name) {
+  public OfficeCreate name(String name) {
     this.name = name;
     return this;
   }
@@ -67,7 +45,7 @@ public class Office {
     this.name = name;
   }
 
-  public Office address(String address) {
+  public OfficeCreate address(String address) {
     this.address = address;
     return this;
   }
@@ -95,22 +73,20 @@ public class Office {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Office office = (Office) o;
-    return Objects.equals(this.id, office.id) &&
-        Objects.equals(this.name, office.name) &&
-        Objects.equals(this.address, office.address);
+    OfficeCreate officeCreate = (OfficeCreate) o;
+    return Objects.equals(this.name, officeCreate.name) &&
+        Objects.equals(this.address, officeCreate.address);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, address);
+    return Objects.hash(name, address);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Office {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class OfficeCreate {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("}");

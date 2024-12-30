@@ -1,0 +1,22 @@
+name: Room
+description: Room
+type: object
+properties:
+  id:
+    description: ID
+    schema:
+      type: integer
+      format: int64
+  officeId:
+    description: Office ID
+    schema:
+      type: integer
+      format: int64
+  address:
+    description: Name
+    type: string
+  walls:
+    description: List of room walls
+    type: array
+    items:
+      $ref: ./RoomWall.yaml

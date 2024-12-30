@@ -14,20 +14,20 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Office
+ * Room
  */
 
-@Schema(name = "Office", description = "Office")
+@Schema(name = "Room", description = "Room")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T14:24:22.057047733+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class Office {
+public class Room {
 
   private Object id;
 
-  private String name;
+  private Object officeId;
 
   private String address;
 
-  public Office id(Object id) {
+  public Room id(Object id) {
     this.id = id;
     return this;
   }
@@ -47,37 +47,37 @@ public class Office {
     this.id = id;
   }
 
-  public Office name(String name) {
-    this.name = name;
+  public Room officeId(Object officeId) {
+    this.officeId = officeId;
     return this;
   }
 
   /**
-   * Name
-   * @return name
+   * Office ID
+   * @return officeId
    */
-  @Size(min = 1) 
-  @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("name")
-  public String getName() {
-    return name;
+  
+  @Schema(name = "officeId", description = "Office ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("officeId")
+  public Object getOfficeId() {
+    return officeId;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setOfficeId(Object officeId) {
+    this.officeId = officeId;
   }
 
-  public Office address(String address) {
+  public Room address(String address) {
     this.address = address;
     return this;
   }
 
   /**
-   * Address
+   * Name
    * @return address
    */
-  @Size(min = 1) 
-  @Schema(name = "address", description = "Address", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "address", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("address")
   public String getAddress() {
     return address;
@@ -95,23 +95,23 @@ public class Office {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Office office = (Office) o;
-    return Objects.equals(this.id, office.id) &&
-        Objects.equals(this.name, office.name) &&
-        Objects.equals(this.address, office.address);
+    Room room = (Room) o;
+    return Objects.equals(this.id, room.id) &&
+        Objects.equals(this.officeId, room.officeId) &&
+        Objects.equals(this.address, room.address);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, address);
+    return Objects.hash(id, officeId, address);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Office {\n");
+    sb.append("class Room {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    officeId: ").append(toIndentedString(officeId)).append("\n");
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -1,0 +1,12 @@
+name: Room
+description: Room
+type: object
+properties:
+  officeId:
+    description: Office ID
+    schema:
+      type: integer
+      format: int64
+  address:
+    description: Name
+    type: string

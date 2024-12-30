@@ -1,0 +1,9 @@
+type: object
+description: Default Abstract Error
+properties:
+  code:
+    description: Error code
+    type: string
+  description:
+    description: Error description
+    type: string

@@ -4,6 +4,10 @@ info:
   title: Workplace Booking
 paths:
   /offices:
-    $ref: './resources/offices.yaml'
-  /offices/{officeId}:
-    $ref: './resources/office.yaml'
+    $ref: ./resources/offices/offices.yaml
+  /offices/{id}:
+    $ref: ./resources/offices/office.yaml
+  /rooms:
+    $ref: ./resources/rooms/rooms.yaml
+  /rooms/{id}:
+    $ref: ./resources/rooms/room.yaml

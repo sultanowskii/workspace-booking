@@ -14,8 +14,10 @@
 .gradle
 
 # Ignore Gradle build output directory
-build
+build/
 
 .env
 .venv/
 .vscode/
+
+bin/

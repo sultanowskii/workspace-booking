@@ -1,0 +1,34 @@
+name: Room Wall
+description: Room Wall
+type: object
+properties:
+  id:
+    description: ID
+    schema:
+      type: integer
+      format: int64
+  roomId:
+    description: Room ID
+    schema:
+      type: integer
+      format: int64
+  x1:
+    description: Name
+    schema:
+      type: number
+      format: double
+  y1:
+    description: Name
+    schema:
+      type: number
+      format: double
+  x2:
+    description: Name
+    schema:
+      type: number
+      format: double
+  y2:
+    description: Name
+    schema:
+      type: number
+      format: double
