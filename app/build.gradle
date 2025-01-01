@@ -90,7 +90,8 @@ openApiGenerate {
         openApiNullable: "false",
         skipDefaultInterface: "true",
         useSpringBoot3: "true",
-        useSpringController: "true"
+        useSpringController: "true",
+        hideGenerationTimestamp: "true"
     ]
     globalProperties = [
         apis: "",

@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "Workplace", description = "Workplace")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class Workplace {
 
   private Object id;
