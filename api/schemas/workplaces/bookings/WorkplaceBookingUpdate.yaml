@@ -1,0 +1,12 @@
+name: WorkplaceBookingUpdate
+description: Workplace booking
+type: object
+properties:
+  workplaceId:
+    description: Workplace ID
+    type: integer
+    format: int64
+  date:
+    description: Date
+    type: string
+    format: date

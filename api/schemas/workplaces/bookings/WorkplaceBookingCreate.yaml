@@ -1,0 +1,16 @@
+name: WorkplaceBookingCreate
+description: Workplace booking
+type: object
+properties:
+  employeeId:
+    description: Employee ID
+    type: integer
+    format: int64
+  workplaceId:
+    description: Workplace ID
+    type: integer
+    format: int64
+  date:
+    description: Date
+    type: string
+    format: date

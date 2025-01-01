@@ -17,11 +17,11 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class RoomCreateUpdate {
 
-  private Object officeId;
+  private Long officeId;
 
   private String address;
 
-  public RoomCreateUpdate officeId(Object officeId) {
+  public RoomCreateUpdate officeId(Long officeId) {
     this.officeId = officeId;
     return this;
   }
@@ -33,11 +33,11 @@ public class RoomCreateUpdate {
   
   @Schema(name = "officeId", description = "Office ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("officeId")
-  public Object getOfficeId() {
+  public Long getOfficeId() {
     return officeId;
   }
 
-  public void setOfficeId(Object officeId) {
+  public void setOfficeId(Long officeId) {
     this.officeId = officeId;
   }
 

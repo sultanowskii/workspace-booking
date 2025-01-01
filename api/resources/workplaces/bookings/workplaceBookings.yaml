@@ -1,0 +1,26 @@
+get:
+  summary: Get workplace bookings
+  operationId: getWorkplaceBookings
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../../schemas/workplaces/bookings/WorkplaceBooking.yaml
+post:
+  summary: Create workplace booking
+  operationId: createWorkplaceBooking
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../../../schemas/workplaces/bookings/WorkplaceBookingCreate.yaml
+  responses:
+    '201':
+      description: Success
+      content:
+        application/json:
+          $ref: ../../../schemas/workplaces/bookings/WorkplaceBooking.yaml

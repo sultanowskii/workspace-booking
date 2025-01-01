@@ -2,8 +2,11 @@ package org.wb.gen.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+
+import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
@@ -14,49 +17,47 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class EmployeeGroupOffice {
 
-  private Object employeeGroupId;
+  private Long employeeGroupId;
 
-  private Object officeId;
+  private Long officeId;
 
-  public EmployeeGroupOffice employeeGroupId(Object employeeGroupId) {
+  public EmployeeGroupOffice employeeGroupId(Long employeeGroupId) {
     this.employeeGroupId = employeeGroupId;
     return this;
   }
 
   /**
    * Employee group ID
-   * 
    * @return employeeGroupId
    */
-
+  
   @Schema(name = "employeeGroupId", description = "Employee group ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("employeeGroupId")
-  public Object getEmployeeGroupId() {
+  public Long getEmployeeGroupId() {
     return employeeGroupId;
   }
 
-  public void setEmployeeGroupId(Object employeeGroupId) {
+  public void setEmployeeGroupId(Long employeeGroupId) {
     this.employeeGroupId = employeeGroupId;
   }
 
-  public EmployeeGroupOffice officeId(Object officeId) {
+  public EmployeeGroupOffice officeId(Long officeId) {
     this.officeId = officeId;
     return this;
   }
 
   /**
    * Office ID
-   * 
    * @return officeId
    */
-
+  
   @Schema(name = "officeId", description = "Office ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("officeId")
-  public Object getOfficeId() {
+  public Long getOfficeId() {
     return officeId;
   }
 
-  public void setOfficeId(Object officeId) {
+  public void setOfficeId(Long officeId) {
     this.officeId = officeId;
   }
 
@@ -99,3 +100,4 @@ public class EmployeeGroupOffice {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

@@ -17,13 +17,13 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class Office {
 
-  private Object id;
+  private Long id;
 
   private String name;
 
   private String address;
 
-  public Office id(Object id) {
+  public Office id(Long id) {
     this.id = id;
     return this;
   }
@@ -35,11 +35,11 @@ public class Office {
   
   @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

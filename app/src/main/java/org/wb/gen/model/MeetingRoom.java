@@ -17,21 +17,21 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class MeetingRoom {
 
-  private Object id;
+  private Long id;
 
-  private Object roomId;
+  private Long roomId;
 
   private String name;
 
-  private Object x;
+  private Double x;
 
-  private Object y;
+  private Double y;
 
-  private Object width;
+  private Double width;
 
-  private Object height;
+  private Double height;
 
-  public MeetingRoom id(Object id) {
+  public MeetingRoom id(Long id) {
     this.id = id;
     return this;
   }
@@ -43,15 +43,15 @@ public class MeetingRoom {
   
   @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
-  public MeetingRoom roomId(Object roomId) {
+  public MeetingRoom roomId(Long roomId) {
     this.roomId = roomId;
     return this;
   }
@@ -63,11 +63,11 @@ public class MeetingRoom {
   
   @Schema(name = "roomId", description = "Room ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("roomId")
-  public Object getRoomId() {
+  public Long getRoomId() {
     return roomId;
   }
 
-  public void setRoomId(Object roomId) {
+  public void setRoomId(Long roomId) {
     this.roomId = roomId;
   }
 
@@ -91,7 +91,7 @@ public class MeetingRoom {
     this.name = name;
   }
 
-  public MeetingRoom x(Object x) {
+  public MeetingRoom x(Double x) {
     this.x = x;
     return this;
   }
@@ -103,15 +103,15 @@ public class MeetingRoom {
   
   @Schema(name = "x", description = "X", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("x")
-  public Object getX() {
+  public Double getX() {
     return x;
   }
 
-  public void setX(Object x) {
+  public void setX(Double x) {
     this.x = x;
   }
 
-  public MeetingRoom y(Object y) {
+  public MeetingRoom y(Double y) {
     this.y = y;
     return this;
   }
@@ -123,15 +123,15 @@ public class MeetingRoom {
   
   @Schema(name = "y", description = "Y", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("y")
-  public Object getY() {
+  public Double getY() {
     return y;
   }
 
-  public void setY(Object y) {
+  public void setY(Double y) {
     this.y = y;
   }
 
-  public MeetingRoom width(Object width) {
+  public MeetingRoom width(Double width) {
     this.width = width;
     return this;
   }
@@ -143,15 +143,15 @@ public class MeetingRoom {
   
   @Schema(name = "width", description = "Width", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("width")
-  public Object getWidth() {
+  public Double getWidth() {
     return width;
   }
 
-  public void setWidth(Object width) {
+  public void setWidth(Double width) {
     this.width = width;
   }
 
-  public MeetingRoom height(Object height) {
+  public MeetingRoom height(Double height) {
     this.height = height;
     return this;
   }
@@ -163,11 +163,11 @@ public class MeetingRoom {
   
   @Schema(name = "height", description = "Height", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("height")
-  public Object getHeight() {
+  public Double getHeight() {
     return height;
   }
 
-  public void setHeight(Object height) {
+  public void setHeight(Double height) {
     this.height = height;
   }
 

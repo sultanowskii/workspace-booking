@@ -35,3 +35,7 @@ paths:
     $ref: ./resources/employees/employees.yaml
   /employees/{id}:
     $ref: ./resources/employees/employee.yaml
+  /workplaceBookings:
+    $ref: ./resources/workplaces/bookings/workplaceBookings.yaml
+  /workplaceBooking/{id}:
+    $ref: ./resources/workplaces/bookings/workplaceBooking.yaml

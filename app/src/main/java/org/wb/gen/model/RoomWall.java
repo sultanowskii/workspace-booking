@@ -17,19 +17,19 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class RoomWall {
 
-  private Object id;
+  private Long id;
 
-  private Object roomId;
+  private Long roomId;
 
-  private Object x1;
+  private Double x1;
 
-  private Object y1;
+  private Double y1;
 
-  private Object x2;
+  private Double x2;
 
-  private Object y2;
+  private Double y2;
 
-  public RoomWall id(Object id) {
+  public RoomWall id(Long id) {
     this.id = id;
     return this;
   }
@@ -41,15 +41,15 @@ public class RoomWall {
   
   @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
-  public RoomWall roomId(Object roomId) {
+  public RoomWall roomId(Long roomId) {
     this.roomId = roomId;
     return this;
   }
@@ -61,15 +61,15 @@ public class RoomWall {
   
   @Schema(name = "roomId", description = "Room ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("roomId")
-  public Object getRoomId() {
+  public Long getRoomId() {
     return roomId;
   }
 
-  public void setRoomId(Object roomId) {
+  public void setRoomId(Long roomId) {
     this.roomId = roomId;
   }
 
-  public RoomWall x1(Object x1) {
+  public RoomWall x1(Double x1) {
     this.x1 = x1;
     return this;
   }
@@ -81,15 +81,15 @@ public class RoomWall {
   
   @Schema(name = "x1", description = "X1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("x1")
-  public Object getX1() {
+  public Double getX1() {
     return x1;
   }
 
-  public void setX1(Object x1) {
+  public void setX1(Double x1) {
     this.x1 = x1;
   }
 
-  public RoomWall y1(Object y1) {
+  public RoomWall y1(Double y1) {
     this.y1 = y1;
     return this;
   }
@@ -101,15 +101,15 @@ public class RoomWall {
   
   @Schema(name = "y1", description = "Y1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("y1")
-  public Object getY1() {
+  public Double getY1() {
     return y1;
   }
 
-  public void setY1(Object y1) {
+  public void setY1(Double y1) {
     this.y1 = y1;
   }
 
-  public RoomWall x2(Object x2) {
+  public RoomWall x2(Double x2) {
     this.x2 = x2;
     return this;
   }
@@ -121,15 +121,15 @@ public class RoomWall {
   
   @Schema(name = "x2", description = "X2", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("x2")
-  public Object getX2() {
+  public Double getX2() {
     return x2;
   }
 
-  public void setX2(Object x2) {
+  public void setX2(Double x2) {
     this.x2 = x2;
   }
 
-  public RoomWall y2(Object y2) {
+  public RoomWall y2(Double y2) {
     this.y2 = y2;
     return this;
   }
@@ -141,11 +141,11 @@ public class RoomWall {
   
   @Schema(name = "y2", description = "Y2", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("y2")
-  public Object getY2() {
+  public Double getY2() {
     return y2;
   }
 
-  public void setY2(Object y2) {
+  public void setY2(Double y2) {
     this.y2 = y2;
   }
 

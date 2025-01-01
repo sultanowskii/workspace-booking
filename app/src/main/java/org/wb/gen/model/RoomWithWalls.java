@@ -20,16 +20,16 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class RoomWithWalls {
 
-  private Object id;
+  private Long id;
 
-  private Object officeId;
+  private Long officeId;
 
   private String address;
 
   @Valid
   private List<@Valid RoomWall> walls = new ArrayList<>();
 
-  public RoomWithWalls id(Object id) {
+  public RoomWithWalls id(Long id) {
     this.id = id;
     return this;
   }
@@ -41,15 +41,15 @@ public class RoomWithWalls {
   
   @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
-  public RoomWithWalls officeId(Object officeId) {
+  public RoomWithWalls officeId(Long officeId) {
     this.officeId = officeId;
     return this;
   }
@@ -61,11 +61,11 @@ public class RoomWithWalls {
   
   @Schema(name = "officeId", description = "Office ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("officeId")
-  public Object getOfficeId() {
+  public Long getOfficeId() {
     return officeId;
   }
 
-  public void setOfficeId(Object officeId) {
+  public void setOfficeId(Long officeId) {
     this.officeId = officeId;
   }
 

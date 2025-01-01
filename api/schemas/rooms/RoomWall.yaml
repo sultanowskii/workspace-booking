@@ -4,31 +4,25 @@ type: object
 properties:
   id:
     description: ID
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64
   roomId:
     description: Room ID
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64
   x1:
     description: X1
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double
   y1:
     description: Y1
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double
   x2:
     description: X2
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double
   y2:
     description: Y2
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double

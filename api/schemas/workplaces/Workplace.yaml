@@ -4,36 +4,29 @@ type: object
 properties:
   id:
     description: ID
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64
   roomId:
     description: Room ID
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64
   numberOfMonitors:
     description: Number of monitors
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64
   x:
     description: X
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double
   'y':
     description: 'Y'
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double
   width:
     description: Width
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double
   height:
     description: Height
-    schema:
-      type: number
-      format: double
+    type: number
+    format: double

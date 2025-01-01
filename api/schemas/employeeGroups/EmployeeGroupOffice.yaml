@@ -4,11 +4,9 @@ type: object
 properties:
   employeeGroupId:
     description: Employee group ID
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64
   officeId:
     description: Office ID
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64

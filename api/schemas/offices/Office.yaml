@@ -4,9 +4,8 @@ type: object
 properties:
   id:
     description: ID
-    schema:
-      type: integer
-      format: int64
+    type: integer
+    format: int64
   name:
     description: Name
     type: string
