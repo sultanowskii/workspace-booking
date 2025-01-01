@@ -17,7 +17,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/workplaces/WorkplaceCreate.yaml
+          $ref: ../../schemas/workplaces/WorkplaceCreateUpdate.yaml
   responses:
     '201':
       description: Success

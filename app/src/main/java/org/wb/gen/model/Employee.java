@@ -14,20 +14,20 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Office
+ * Employee
  */
 
-@Schema(name = "Office", description = "Office")
+@Schema(name = "Employee", description = "Employee")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class Office {
+public class Employee {
 
   private Object id;
 
-  private String name;
+  private String username;
 
-  private String address;
+  private String fullName;
 
-  public Office id(Object id) {
+  public Employee id(Object id) {
     this.id = id;
     return this;
   }
@@ -47,44 +47,44 @@ public class Office {
     this.id = id;
   }
 
-  public Office name(String name) {
-    this.name = name;
+  public Employee username(String username) {
+    this.username = username;
     return this;
   }
 
   /**
-   * Name
-   * @return name
+   * Username
+   * @return username
    */
   
-  @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("name")
-  public String getName() {
-    return name;
+  @Schema(name = "username", description = "Username", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("username")
+  public String getUsername() {
+    return username;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
-  public Office address(String address) {
-    this.address = address;
+  public Employee fullName(String fullName) {
+    this.fullName = fullName;
     return this;
   }
 
   /**
-   * Address
-   * @return address
+   * Full name
+   * @return fullName
    */
   
-  @Schema(name = "address", description = "Address", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("address")
-  public String getAddress() {
-    return address;
+  @Schema(name = "fullName", description = "Full name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("fullName")
+  public String getFullName() {
+    return fullName;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
   }
 
   @Override
@@ -95,24 +95,24 @@ public class Office {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Office office = (Office) o;
-    return Objects.equals(this.id, office.id) &&
-        Objects.equals(this.name, office.name) &&
-        Objects.equals(this.address, office.address);
+    Employee employee = (Employee) o;
+    return Objects.equals(this.id, employee.id) &&
+        Objects.equals(this.username, employee.username) &&
+        Objects.equals(this.fullName, employee.fullName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, address);
+    return Objects.hash(id, username, fullName);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Office {\n");
+    sb.append("class Employee {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    username: ").append(toIndentedString(username)).append("\n");
+    sb.append("    fullName: ").append(toIndentedString(fullName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

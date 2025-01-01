@@ -1,5 +1,5 @@
-name: Office
-description: Office
+name: Employee
+description: Employee
 type: object
 properties:
   id:
@@ -7,9 +7,9 @@ properties:
     schema:
       type: integer
       format: int64
-  name:
-    description: Name
+  username:
+    description: Username
     type: string
-  address:
-    description: Address
+  fullName:
+    description: Full name
     type: string

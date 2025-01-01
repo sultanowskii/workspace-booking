@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "MeetingRoom", description = "Meeting room")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 public class MeetingRoom {
 
   private Object id;
@@ -84,7 +84,7 @@ public class MeetingRoom {
    * Name
    * @return name
    */
-  @Size(min = 1) 
+  
   @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("name")
   public String getName() {

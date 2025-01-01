@@ -1,4 +1,4 @@
-name: MeetingRoom
+name: MeetingRoomCreateUpdate
 description: Meeting room
 type: object
 properties:

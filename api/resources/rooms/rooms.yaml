@@ -17,7 +17,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/rooms/RoomCreate.yaml
+          $ref: ../../schemas/rooms/RoomCreateUpdate.yaml
   responses:
     '201':
       description: Success

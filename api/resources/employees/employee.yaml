@@ -1,6 +1,6 @@
 get:
-  summary: Get room
-  operationId: getRoom
+  summary: Get employee
+  operationId: getEmployee
   parameters:
   - name: id
     in: path
@@ -14,12 +14,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../../schemas/rooms/RoomWithWalls.yaml
+            $ref: ../../schemas/employees/Employee.yaml
     '404':
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
-  summary: Update room
-  operationId: updateRoom
+  # admin-only
+  summary: Update employee
+  operationId: updateEmployee
   parameters:
   - name: id
     in: path
@@ -31,19 +32,20 @@ put:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/rooms/RoomCreateUpdate.yaml
+          $ref: ../../schemas/employees/EmployeeUpdate.yaml
   responses:
     '200':
       description: Success
       content:
         application/json:
           schema:
-            $ref: ../../schemas/rooms/RoomWithWalls.yaml
+            $ref: ../../schemas/employees/Employee.yaml
     '404':
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
-  summary: Delete room
-  operationId: deleteRoom
+  # admin-only
+  summary: Delete employee
+  operationId: deleteEmployee
   parameters:
   - name: id
     in: path
@@ -52,7 +54,7 @@ delete:
       format: int64
     required: true
   responses:
-    '201':
+    '204':
       description: Success
     '404':
       $ref: ../../schemas/common/ResourceNotFound.yaml

@@ -31,7 +31,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/workplaces/WorkplaceCreate.yaml
+          $ref: ../../schemas/workplaces/WorkplaceCreateUpdate.yaml
   responses:
     '200':
       description: Success

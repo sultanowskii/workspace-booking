@@ -1,6 +1,6 @@
 get:
-  summary: Get offices
-  operationId: getOffices
+  summary: Get employees
+  operationId: getEmployees
   responses:
     '200':
       description: Success
@@ -9,18 +9,19 @@ get:
           schema:
             type: array
             items:
-              $ref: ../../schemas/offices/Office.yaml
+              $ref: ../../schemas/employees/Employee.yaml
 post:
-  summary: Create office
-  operationId: createOffice
+  # admin-only
+  summary: Create employee
+  operationId: createEmployee
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/offices/OfficeCreateUpdate.yaml
+          $ref: ../../schemas/employees/EmployeeCreate.yaml
   responses:
     '201':
       description: Success
       content:
         application/json:
-          $ref: ../../schemas/offices/Office.yaml
+          $ref: ../../schemas/employees/Employee.yaml

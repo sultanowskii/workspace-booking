@@ -7,7 +7,7 @@ package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
 import org.wb.gen.model.Workplace;
-import org.wb.gen.model.WorkplaceCreate;
+import org.wb.gen.model.WorkplaceCreateUpdate;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
 @Tag(name = "workplaces", description = "the workplaces API")
@@ -44,7 +44,7 @@ public interface WorkplacesApi {
     /**
      * POST /workplaces : Create workplace
      *
-     * @param workplaceCreate  (optional)
+     * @param workplaceCreateUpdate  (optional)
      * @return Success (status code 201)
      */
     @Operation(
@@ -62,7 +62,7 @@ public interface WorkplacesApi {
     )
     
     ResponseEntity<Void> createWorkplace(
-        @Parameter(name = "WorkplaceCreate", description = "") @Valid @RequestBody(required = false) WorkplaceCreate workplaceCreate
+        @Parameter(name = "WorkplaceCreateUpdate", description = "") @Valid @RequestBody(required = false) WorkplaceCreateUpdate workplaceCreateUpdate
     );
 
 
@@ -153,7 +153,7 @@ public interface WorkplacesApi {
      * PUT /workplaces/{id} : Update workplace
      *
      * @param id  (required)
-     * @param workplaceCreate  (optional)
+     * @param workplaceCreateUpdate  (optional)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -178,7 +178,7 @@ public interface WorkplacesApi {
     
     ResponseEntity<Workplace> updateWorkplace(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "WorkplaceCreate", description = "") @Valid @RequestBody(required = false) WorkplaceCreate workplaceCreate
+        @Parameter(name = "WorkplaceCreateUpdate", description = "") @Valid @RequestBody(required = false) WorkplaceCreateUpdate workplaceCreateUpdate
     );
 
 }

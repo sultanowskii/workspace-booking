@@ -7,7 +7,7 @@ package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
 import org.wb.gen.model.Room;
-import org.wb.gen.model.RoomCreate;
+import org.wb.gen.model.RoomCreateUpdate;
 import org.wb.gen.model.RoomWithWalls;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
 @Tag(name = "rooms", description = "the rooms API")
@@ -45,7 +45,7 @@ public interface RoomsApi {
     /**
      * POST /rooms : Create room
      *
-     * @param roomCreate  (optional)
+     * @param roomCreateUpdate  (optional)
      * @return Success (status code 201)
      */
     @Operation(
@@ -63,7 +63,7 @@ public interface RoomsApi {
     )
     
     ResponseEntity<Void> createRoom(
-        @Parameter(name = "RoomCreate", description = "") @Valid @RequestBody(required = false) RoomCreate roomCreate
+        @Parameter(name = "RoomCreateUpdate", description = "") @Valid @RequestBody(required = false) RoomCreateUpdate roomCreateUpdate
     );
 
 
@@ -154,7 +154,7 @@ public interface RoomsApi {
      * PUT /rooms/{id} : Update room
      *
      * @param id  (required)
-     * @param roomCreate  (optional)
+     * @param roomCreateUpdate  (optional)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -179,7 +179,7 @@ public interface RoomsApi {
     
     ResponseEntity<RoomWithWalls> updateRoom(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "RoomCreate", description = "") @Valid @RequestBody(required = false) RoomCreate roomCreate
+        @Parameter(name = "RoomCreateUpdate", description = "") @Valid @RequestBody(required = false) RoomCreateUpdate roomCreateUpdate
     );
 
 }

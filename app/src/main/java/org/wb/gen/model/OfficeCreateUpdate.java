@@ -17,15 +17,15 @@ import jakarta.annotation.Generated;
  * Office
  */
 
-@Schema(name = "OfficeCreate", description = "Office")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class OfficeCreate {
+@Schema(name = "OfficeCreateUpdate", description = "Office")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+public class OfficeCreateUpdate {
 
   private String name;
 
   private String address;
 
-  public OfficeCreate name(String name) {
+  public OfficeCreateUpdate name(String name) {
     this.name = name;
     return this;
   }
@@ -45,7 +45,7 @@ public class OfficeCreate {
     this.name = name;
   }
 
-  public OfficeCreate address(String address) {
+  public OfficeCreateUpdate address(String address) {
     this.address = address;
     return this;
   }
@@ -73,9 +73,9 @@ public class OfficeCreate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OfficeCreate officeCreate = (OfficeCreate) o;
-    return Objects.equals(this.name, officeCreate.name) &&
-        Objects.equals(this.address, officeCreate.address);
+    OfficeCreateUpdate officeCreateUpdate = (OfficeCreateUpdate) o;
+    return Objects.equals(this.name, officeCreateUpdate.name) &&
+        Objects.equals(this.address, officeCreateUpdate.address);
   }
 
   @Override
@@ -86,7 +86,7 @@ public class OfficeCreate {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OfficeCreate {\n");
+    sb.append("class OfficeCreateUpdate {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("}");

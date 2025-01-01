@@ -1,4 +1,4 @@
-name: RoomCreate
+name: RoomCreateUpdate
 description: Room
 type: object
 properties:

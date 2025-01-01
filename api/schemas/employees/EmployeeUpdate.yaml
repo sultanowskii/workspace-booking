@@ -1,0 +1,8 @@
+name: EmployeeUpdate
+description: Employee
+type: object
+properties:
+  fullName:
+    description: Full name
+    type: string
+    minLength: 1

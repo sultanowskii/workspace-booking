@@ -14,16 +14,16 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Meeting room
+ * Workplace
  */
 
-@Schema(name = "MeetingRoomCreate", description = "Meeting room")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class MeetingRoomCreate {
+@Schema(name = "WorkplaceCreateUpdate", description = "Workplace")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+public class WorkplaceCreateUpdate {
 
   private Object roomId;
 
-  private String name;
+  private Object numberOfMonitors;
 
   private Object x;
 
@@ -33,7 +33,7 @@ public class MeetingRoomCreate {
 
   private Object height;
 
-  public MeetingRoomCreate roomId(Object roomId) {
+  public WorkplaceCreateUpdate roomId(Object roomId) {
     this.roomId = roomId;
     return this;
   }
@@ -53,27 +53,27 @@ public class MeetingRoomCreate {
     this.roomId = roomId;
   }
 
-  public MeetingRoomCreate name(String name) {
-    this.name = name;
+  public WorkplaceCreateUpdate numberOfMonitors(Object numberOfMonitors) {
+    this.numberOfMonitors = numberOfMonitors;
     return this;
   }
 
   /**
-   * Name
-   * @return name
+   * Number of monitors
+   * @return numberOfMonitors
    */
-  @Size(min = 1) 
-  @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("name")
-  public String getName() {
-    return name;
+  
+  @Schema(name = "numberOfMonitors", description = "Number of monitors", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("numberOfMonitors")
+  public Object getNumberOfMonitors() {
+    return numberOfMonitors;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setNumberOfMonitors(Object numberOfMonitors) {
+    this.numberOfMonitors = numberOfMonitors;
   }
 
-  public MeetingRoomCreate x(Object x) {
+  public WorkplaceCreateUpdate x(Object x) {
     this.x = x;
     return this;
   }
@@ -93,7 +93,7 @@ public class MeetingRoomCreate {
     this.x = x;
   }
 
-  public MeetingRoomCreate y(Object y) {
+  public WorkplaceCreateUpdate y(Object y) {
     this.y = y;
     return this;
   }
@@ -113,7 +113,7 @@ public class MeetingRoomCreate {
     this.y = y;
   }
 
-  public MeetingRoomCreate width(Object width) {
+  public WorkplaceCreateUpdate width(Object width) {
     this.width = width;
     return this;
   }
@@ -133,7 +133,7 @@ public class MeetingRoomCreate {
     this.width = width;
   }
 
-  public MeetingRoomCreate height(Object height) {
+  public WorkplaceCreateUpdate height(Object height) {
     this.height = height;
     return this;
   }
@@ -161,26 +161,26 @@ public class MeetingRoomCreate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MeetingRoomCreate meetingRoomCreate = (MeetingRoomCreate) o;
-    return Objects.equals(this.roomId, meetingRoomCreate.roomId) &&
-        Objects.equals(this.name, meetingRoomCreate.name) &&
-        Objects.equals(this.x, meetingRoomCreate.x) &&
-        Objects.equals(this.y, meetingRoomCreate.y) &&
-        Objects.equals(this.width, meetingRoomCreate.width) &&
-        Objects.equals(this.height, meetingRoomCreate.height);
+    WorkplaceCreateUpdate workplaceCreateUpdate = (WorkplaceCreateUpdate) o;
+    return Objects.equals(this.roomId, workplaceCreateUpdate.roomId) &&
+        Objects.equals(this.numberOfMonitors, workplaceCreateUpdate.numberOfMonitors) &&
+        Objects.equals(this.x, workplaceCreateUpdate.x) &&
+        Objects.equals(this.y, workplaceCreateUpdate.y) &&
+        Objects.equals(this.width, workplaceCreateUpdate.width) &&
+        Objects.equals(this.height, workplaceCreateUpdate.height);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(roomId, name, x, y, width, height);
+    return Objects.hash(roomId, numberOfMonitors, x, y, width, height);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MeetingRoomCreate {\n");
+    sb.append("class WorkplaceCreateUpdate {\n");
     sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    numberOfMonitors: ").append(toIndentedString(numberOfMonitors)).append("\n");
     sb.append("    x: ").append(toIndentedString(x)).append("\n");
     sb.append("    y: ").append(toIndentedString(y)).append("\n");
     sb.append("    width: ").append(toIndentedString(width)).append("\n");

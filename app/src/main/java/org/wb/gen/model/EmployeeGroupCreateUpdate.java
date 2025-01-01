@@ -14,40 +14,16 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Office
+ * Employee group
  */
 
-@Schema(name = "Office", description = "Office")
+@Schema(name = "EmployeeGroupCreateUpdate", description = "Employee group")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class Office {
-
-  private Object id;
+public class EmployeeGroupCreateUpdate {
 
   private String name;
 
-  private String address;
-
-  public Office id(Object id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * ID
-   * @return id
-   */
-  
-  @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("id")
-  public Object getId() {
-    return id;
-  }
-
-  public void setId(Object id) {
-    this.id = id;
-  }
-
-  public Office name(String name) {
+  public EmployeeGroupCreateUpdate name(String name) {
     this.name = name;
     return this;
   }
@@ -56,7 +32,7 @@ public class Office {
    * Name
    * @return name
    */
-  
+  @Size(min = 1) 
   @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("name")
   public String getName() {
@@ -67,26 +43,6 @@ public class Office {
     this.name = name;
   }
 
-  public Office address(String address) {
-    this.address = address;
-    return this;
-  }
-
-  /**
-   * Address
-   * @return address
-   */
-  
-  @Schema(name = "address", description = "Address", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("address")
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -95,24 +51,20 @@ public class Office {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Office office = (Office) o;
-    return Objects.equals(this.id, office.id) &&
-        Objects.equals(this.name, office.name) &&
-        Objects.equals(this.address, office.address);
+    EmployeeGroupCreateUpdate employeeGroupCreateUpdate = (EmployeeGroupCreateUpdate) o;
+    return Objects.equals(this.name, employeeGroupCreateUpdate.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, address);
+    return Objects.hash(name);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Office {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class EmployeeGroupCreateUpdate {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("}");
     return sb.toString();
   }

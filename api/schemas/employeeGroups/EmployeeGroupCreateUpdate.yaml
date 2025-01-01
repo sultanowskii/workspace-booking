@@ -1,4 +1,4 @@
-name: EmployeeGroupCreate
+name: EmployeeGroupCreateUpdate
 description: Employee group
 type: object
 properties:

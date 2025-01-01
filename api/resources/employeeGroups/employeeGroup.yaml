@@ -31,7 +31,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/employeeGroups/EmployeeGroupCreate.yaml
+          $ref: ../../schemas/employeeGroups/EmployeeGroupCreateUpdate.yaml
   responses:
     '200':
       description: Success

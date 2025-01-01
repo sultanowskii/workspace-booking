@@ -7,7 +7,7 @@ package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
 import org.wb.gen.model.Office;
-import org.wb.gen.model.OfficeCreate;
+import org.wb.gen.model.OfficeCreateUpdate;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
 @Validated
 @Controller
 @Tag(name = "offices", description = "the offices API")
@@ -44,7 +44,7 @@ public interface OfficesApi {
     /**
      * POST /offices : Create office
      *
-     * @param officeCreate  (optional)
+     * @param officeCreateUpdate  (optional)
      * @return Success (status code 201)
      */
     @Operation(
@@ -62,7 +62,7 @@ public interface OfficesApi {
     )
     
     ResponseEntity<Void> createOffice(
-        @Parameter(name = "OfficeCreate", description = "") @Valid @RequestBody(required = false) OfficeCreate officeCreate
+        @Parameter(name = "OfficeCreateUpdate", description = "") @Valid @RequestBody(required = false) OfficeCreateUpdate officeCreateUpdate
     );
 
 
@@ -153,7 +153,7 @@ public interface OfficesApi {
      * PUT /offices/{id} : Update office
      *
      * @param id  (required)
-     * @param officeCreate  (optional)
+     * @param officeCreateUpdate  (optional)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -178,7 +178,7 @@ public interface OfficesApi {
     
     ResponseEntity<Office> updateOffice(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "OfficeCreate", description = "") @Valid @RequestBody(required = false) OfficeCreate officeCreate
+        @Parameter(name = "OfficeCreateUpdate", description = "") @Valid @RequestBody(required = false) OfficeCreateUpdate officeCreateUpdate
     );
 
 }

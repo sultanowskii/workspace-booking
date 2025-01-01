@@ -14,7 +14,6 @@ paths:
     $ref: ./resources/rooms/room.yaml
   /employeeGroups:
     $ref: ./resources/employeeGroups/employeeGroups.yaml
-  # TODO: available offices
   # TODO: employees
   /employeeGroups/{id}:
     $ref: ./resources/employeeGroups/employeeGroup.yaml
@@ -32,3 +31,7 @@ paths:
   # TODO: workplace name/local id???
   /meetingRooms/{id}:
     $ref: ./resources/meetingRooms/meetingRoom.yaml
+  /employees:
+    $ref: ./resources/employees/employees.yaml
+  /employees/{id}:
+    $ref: ./resources/employees/employee.yaml

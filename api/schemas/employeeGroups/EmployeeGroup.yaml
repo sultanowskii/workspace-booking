@@ -10,4 +10,3 @@ properties:
   name:
     description: Name
     type: string
-    minLength: 1

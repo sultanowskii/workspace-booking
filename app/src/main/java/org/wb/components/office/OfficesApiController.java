@@ -2,7 +2,7 @@ package org.wb.components.office;
 
 import org.wb.gen.api.OfficesApi;
 import org.wb.gen.model.Office;
-import org.wb.gen.model.OfficeCreate;
+import org.wb.gen.model.OfficeCreateUpdate;
 
 import jakarta.validation.Valid;
 
@@ -31,7 +31,7 @@ public class OfficesApiController implements OfficesApi {
     }
 
     @Override
-    public ResponseEntity<Void> createOffice(@Valid OfficeCreate officeCreate) {
+    public ResponseEntity<Void> createOffice(@Valid OfficeCreateUpdate officeCreateUpdate) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -43,7 +43,7 @@ public class OfficesApiController implements OfficesApi {
     }
 
     @Override
-    public ResponseEntity<Office> updateOffice(Long id, @Valid OfficeCreate officeCreate) {
+    public ResponseEntity<Office> updateOffice(Long id, @Valid OfficeCreateUpdate officeCreateUpdate) {
         // TODO Auto-generated method stub
         return null;
     }

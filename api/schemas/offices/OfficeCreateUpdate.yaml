@@ -1,4 +1,4 @@
-name: Office
+name: OfficeCreateUpdate
 description: Office
 type: object
 properties:

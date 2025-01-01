@@ -15,7 +15,6 @@ properties:
   name:
     description: Name
     type: string
-    minLength: 1
   x:
     description: X
     schema:
@@ -31,10 +30,8 @@ properties:
     schema:
       type: number
       format: double
-      exclusiveMinimum: 0
   height:
     description: Height
     schema:
       type: number
       format: double
-      exclusiveMinimum: 0

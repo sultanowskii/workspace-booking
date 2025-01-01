@@ -1,4 +1,4 @@
-name: WorkplaceCreate
+name: WorkplaceCreateUpdate
 description: Workplace
 type: object
 properties:

@@ -17,15 +17,15 @@ import jakarta.annotation.Generated;
  * Room
  */
 
-@Schema(name = "RoomCreate", description = "Room")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-12-30T16:53:45.589318086+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
-public class RoomCreate {
+@Schema(name = "RoomCreateUpdate", description = "Room")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-01-01T12:50:04.846966322+03:00[Europe/Moscow]", comments = "Generator version: 7.10.0")
+public class RoomCreateUpdate {
 
   private Object officeId;
 
   private String address;
 
-  public RoomCreate officeId(Object officeId) {
+  public RoomCreateUpdate officeId(Object officeId) {
     this.officeId = officeId;
     return this;
   }
@@ -45,7 +45,7 @@ public class RoomCreate {
     this.officeId = officeId;
   }
 
-  public RoomCreate address(String address) {
+  public RoomCreateUpdate address(String address) {
     this.address = address;
     return this;
   }
@@ -73,9 +73,9 @@ public class RoomCreate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RoomCreate roomCreate = (RoomCreate) o;
-    return Objects.equals(this.officeId, roomCreate.officeId) &&
-        Objects.equals(this.address, roomCreate.address);
+    RoomCreateUpdate roomCreateUpdate = (RoomCreateUpdate) o;
+    return Objects.equals(this.officeId, roomCreateUpdate.officeId) &&
+        Objects.equals(this.address, roomCreateUpdate.address);
   }
 
   @Override
@@ -86,7 +86,7 @@ public class RoomCreate {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RoomCreate {\n");
+    sb.append("class RoomCreateUpdate {\n");
     sb.append("    officeId: ").append(toIndentedString(officeId)).append("\n");
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("}");
