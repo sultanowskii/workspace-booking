@@ -1,16 +1,9 @@
 package org.wb.gen.model;
 
-import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.time.OffsetDateTime;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
-import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
@@ -32,9 +25,10 @@ public class EmployeeGroupOffice {
 
   /**
    * Employee group ID
+   * 
    * @return employeeGroupId
    */
-  
+
   @Schema(name = "employeeGroupId", description = "Employee group ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("employeeGroupId")
   public Object getEmployeeGroupId() {
@@ -52,9 +46,10 @@ public class EmployeeGroupOffice {
 
   /**
    * Office ID
+   * 
    * @return officeId
    */
-  
+
   @Schema(name = "officeId", description = "Office ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("officeId")
   public Object getOfficeId() {
@@ -104,4 +99,3 @@ public class EmployeeGroupOffice {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

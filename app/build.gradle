@@ -10,6 +10,8 @@ plugins {
     id 'application'
 
     id 'org.openapi.generator' version '7.10.0'
+
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 repositories {
@@ -103,8 +105,18 @@ openApiValidate {
     inputSpec = "${OPENAPI_SPEC}"
 }
 
+spotless {
+    java {
+        // It works, but openapi-generator uses wildcard (.*) imports.
+        // These imports couldn't be checked by spotless :(
+        removeUnusedImports()
+    }
+}
+
 task openapi {
     dependsOn tasks.openApiValidate
     dependsOn tasks.openApiClean
     dependsOn tasks.openApiGenerate
 }
+
+openapi.finalizedBy spotlessJava, spotlessApply
