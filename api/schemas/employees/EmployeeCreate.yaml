@@ -10,6 +10,7 @@ properties:
   password:
     description: Password
     type: string
+    format: password
     minLength: 8
     maxLength: 64
   fullName:

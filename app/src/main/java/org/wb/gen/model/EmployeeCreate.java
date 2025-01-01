@@ -107,7 +107,7 @@ public class EmployeeCreate {
     StringBuilder sb = new StringBuilder();
     sb.append("class EmployeeCreate {\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    password: ").append("*").append("\n");
     sb.append("    fullName: ").append(toIndentedString(fullName)).append("\n");
     sb.append("}");
     return sb.toString();
