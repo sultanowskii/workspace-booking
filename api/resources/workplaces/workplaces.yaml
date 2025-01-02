@@ -2,7 +2,7 @@ get:
   summary: Get workplaces
   operationId: getWorkplaces
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
@@ -19,7 +19,7 @@ post:
         schema:
           $ref: ../../schemas/workplaces/WorkplaceCreateUpdate.yaml
   responses:
-    '201':
+    "201":
       description: Success
       content:
         application/json:

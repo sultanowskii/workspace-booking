@@ -2,57 +2,57 @@ get:
   summary: Get meeting room booking
   operationId: getMeetingRoomBooking
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBooking.yaml
-    '404':
+    "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml
 put:
   summary: Update meeting room booking
   operationId: updateMeetingRoomBooking
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBookingUpdate.yaml
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBooking.yaml
-    '404':
+    "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml
 delete:
   summary: Delete meeting room booking
   operationId: deleteMeetingRoomBooking
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '204':
+    "204":
       description: Success
-    '404':
+    "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml

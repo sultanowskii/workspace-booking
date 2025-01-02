@@ -2,57 +2,57 @@ get:
   summary: Get office
   operationId: getOffice
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/offices/Office.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
   summary: Update office
   operationId: updateOffice
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../../schemas/offices/OfficeCreateUpdate.yaml
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/offices/Office.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
   summary: Delete office
   operationId: deleteOffice
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '204':
+    "204":
       description: Success
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml

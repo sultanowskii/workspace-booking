@@ -2,57 +2,57 @@ get:
   summary: Get room
   operationId: getRoom
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/rooms/RoomWithWalls.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
   summary: Update room
   operationId: updateRoom
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../../schemas/rooms/RoomCreateUpdate.yaml
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/rooms/RoomWithWalls.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
   summary: Delete room
   operationId: deleteRoom
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '201':
+    "201":
       description: Success
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml

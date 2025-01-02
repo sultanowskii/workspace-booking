@@ -2,7 +2,7 @@ get:
   summary: Get room occupancy
   operationId: getRoomOccupancy
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:

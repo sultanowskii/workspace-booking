@@ -2,7 +2,7 @@ get:
   summary: Get employees
   operationId: getEmployees
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
@@ -20,7 +20,7 @@ post:
         schema:
           $ref: ../../schemas/employees/EmployeeCreate.yaml
   responses:
-    '201':
+    "201":
       description: Success
       content:
         application/json:

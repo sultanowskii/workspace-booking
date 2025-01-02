@@ -2,12 +2,12 @@ get:
   summary: Get employee
   operationId: getEmployee
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
     '200':
       description: Success
@@ -22,12 +22,12 @@ put:
   summary: Update employee
   operationId: updateEmployee
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   requestBody:
     content:
       application/json:
@@ -47,12 +47,12 @@ delete:
   summary: Delete employee
   operationId: deleteEmployee
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
     '204':
       description: Success

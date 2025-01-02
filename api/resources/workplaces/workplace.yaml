@@ -2,57 +2,57 @@ get:
   summary: Get workplace
   operationId: getWorkplace
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/workplaces/Workplace.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
   summary: Update workplace
   operationId: updateWorkplace
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../../schemas/workplaces/WorkplaceCreateUpdate.yaml
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/workplaces/Workplace.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
   summary: Delete workplace
   operationId: deleteWorkplace
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '201':
+    "201":
       description: Success
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml

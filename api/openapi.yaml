@@ -9,7 +9,6 @@ paths:
     $ref: ./resources/offices/office.yaml
   /rooms:
     $ref: ./resources/rooms/rooms.yaml
-  # TODO: room walls
   /rooms/{id}:
     $ref: ./resources/rooms/room.yaml
   /employeeGroups:

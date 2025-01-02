@@ -2,57 +2,57 @@ get:
   summary: Get workplace booking
   operationId: getWorkplaceBooking
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../../schemas/workplaces/bookings/WorkplaceBooking.yaml
-    '404':
+    "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml
 put:
   summary: Update workplace booking
   operationId: updateWorkplaceBooking
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../../../schemas/workplaces/bookings/WorkplaceBookingUpdate.yaml
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../../schemas/workplaces/bookings/WorkplaceBooking.yaml
-    '404':
+    "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml
 delete:
   summary: Delete workplace booking
   operationId: deleteWorkplaceBooking
   parameters:
-  - name: id
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
-    '204':
+    "204":
       description: Success
-    '404':
+    "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml

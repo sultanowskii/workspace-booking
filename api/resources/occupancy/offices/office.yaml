@@ -2,7 +2,7 @@ get:
   summary: Get office occupancy
   operationId: getOfficeOccupancy
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:

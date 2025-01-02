@@ -2,18 +2,18 @@ post:
   summary: Add employee group to the office
   operationId: addEmployeeGroupToOffice
   parameters:
-  - name: employeeGroupId
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
-  - name: officeId
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: employeeGroupId
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
+    - name: officeId
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
     '204':
       description: Success
@@ -23,18 +23,18 @@ delete:
   summary: Remove employee group from the office
   operationId: removeEmployeeGroupFromOffice
   parameters:
-  - name: employeeGroupId
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
-  - name: officeId
-    in: path
-    schema:
-      type: integer
-      format: int64
-    required: true
+    - name: employeeGroupId
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
+    - name: officeId
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
     '204':
       description: Success

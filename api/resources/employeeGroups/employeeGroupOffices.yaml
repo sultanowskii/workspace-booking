@@ -1,8 +1,8 @@
 get:
-  summary: Get offices which employee group could visit 
+  summary: Get offices which employee group could visit
   operationId: getEmployeeGroupOffices
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:

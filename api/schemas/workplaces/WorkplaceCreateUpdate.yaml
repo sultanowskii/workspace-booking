@@ -15,8 +15,8 @@ properties:
     description: X
     type: number
     format: double
-  'y':
-    description: 'Y'
+  "y":
+    description: "Y"
     type: number
     format: double
   width:
