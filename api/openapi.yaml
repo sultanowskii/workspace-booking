@@ -37,9 +37,17 @@ paths:
     $ref: ./resources/employees/employee.yaml
   /workplaceBookings:
     $ref: ./resources/workplaces/bookings/workplaceBookings.yaml
-  /workplaceBooking/{id}:
+  /workplaceBookings/{id}:
     $ref: ./resources/workplaces/bookings/workplaceBooking.yaml
   /meetingRoomBookings:
     $ref: ./resources/meetingRooms/bookings/meetingRoomBookings.yaml
   /meetingRoomBookings/{id}:
     $ref: ./resources/meetingRooms/bookings/meetingRoomBooking.yaml
+  /occupancy/offices:
+    $ref: ./resources/occupancy/offices/offices.yaml
+  /occupancy/offices/{id}:
+    $ref: ./resources/occupancy/offices/office.yaml
+  /occupancy/rooms:
+    $ref: ./resources/occupancy/rooms/rooms.yaml
+  /occupancy/rooms/{id}:
+    $ref: ./resources/occupancy/rooms/room.yaml

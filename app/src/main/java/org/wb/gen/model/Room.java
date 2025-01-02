@@ -21,7 +21,7 @@ public class Room {
 
   private Long officeId;
 
-  private String address;
+  private String name;
 
   public Room id(Long id) {
     this.id = id;
@@ -63,24 +63,24 @@ public class Room {
     this.officeId = officeId;
   }
 
-  public Room address(String address) {
-    this.address = address;
+  public Room name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
    * Name
-   * @return address
+   * @return name
    */
   
-  @Schema(name = "address", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("address")
-  public String getAddress() {
-    return address;
+  @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("name")
+  public String getName() {
+    return name;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override
@@ -94,12 +94,12 @@ public class Room {
     Room room = (Room) o;
     return Objects.equals(this.id, room.id) &&
         Objects.equals(this.officeId, room.officeId) &&
-        Objects.equals(this.address, room.address);
+        Objects.equals(this.name, room.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, officeId, address);
+    return Objects.hash(id, officeId, name);
   }
 
   @Override
@@ -108,7 +108,7 @@ public class Room {
     sb.append("class Room {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    officeId: ").append(toIndentedString(officeId)).append("\n");
-    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();
   }

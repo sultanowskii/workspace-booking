@@ -24,7 +24,7 @@ public class RoomWithWalls {
 
   private Long officeId;
 
-  private String address;
+  private String name;
 
   @Valid
   private List<@Valid RoomWall> walls = new ArrayList<>();
@@ -69,24 +69,24 @@ public class RoomWithWalls {
     this.officeId = officeId;
   }
 
-  public RoomWithWalls address(String address) {
-    this.address = address;
+  public RoomWithWalls name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
    * Name
-   * @return address
+   * @return name
    */
   
-  @Schema(name = "address", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("address")
-  public String getAddress() {
-    return address;
+  @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("name")
+  public String getName() {
+    return name;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public RoomWithWalls walls(List<@Valid RoomWall> walls) {
@@ -128,13 +128,13 @@ public class RoomWithWalls {
     RoomWithWalls roomWithWalls = (RoomWithWalls) o;
     return Objects.equals(this.id, roomWithWalls.id) &&
         Objects.equals(this.officeId, roomWithWalls.officeId) &&
-        Objects.equals(this.address, roomWithWalls.address) &&
+        Objects.equals(this.name, roomWithWalls.name) &&
         Objects.equals(this.walls, roomWithWalls.walls);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, officeId, address, walls);
+    return Objects.hash(id, officeId, name, walls);
   }
 
   @Override
@@ -143,7 +143,7 @@ public class RoomWithWalls {
     sb.append("class RoomWithWalls {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    officeId: ").append(toIndentedString(officeId)).append("\n");
-    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    walls: ").append(toIndentedString(walls)).append("\n");
     sb.append("}");
     return sb.toString();

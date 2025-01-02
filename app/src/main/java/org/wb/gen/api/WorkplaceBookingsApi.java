@@ -5,8 +5,10 @@
  */
 package org.wb.gen.api;
 
+import org.wb.gen.model.Error;
 import org.wb.gen.model.WorkplaceBooking;
 import org.wb.gen.model.WorkplaceBookingCreate;
+import org.wb.gen.model.WorkplaceBookingUpdate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.stereotype.Controller;
@@ -56,6 +59,64 @@ public interface WorkplaceBookingsApi {
 
 
     /**
+     * DELETE /workplaceBookings/{id} : Delete workplace booking
+     *
+     * @param id  (required)
+     * @return Success (status code 204)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "deleteWorkplaceBooking",
+        summary = "Delete workplace booking",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/workplaceBookings/{id}",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<Void> deleteWorkplaceBooking(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+    );
+
+
+    /**
+     * GET /workplaceBookings/{id} : Get workplace booking
+     *
+     * @param id  (required)
+     * @return Success (status code 200)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "getWorkplaceBooking",
+        summary = "Get workplace booking",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = WorkplaceBooking.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/workplaceBookings/{id}",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<WorkplaceBooking> getWorkplaceBooking(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+    );
+
+
+    /**
      * GET /workplaceBookings : Get workplace bookings
      *
      * @return Success (status code 200)
@@ -77,6 +138,39 @@ public interface WorkplaceBookingsApi {
     
     ResponseEntity<List<WorkplaceBooking>> getWorkplaceBookings(
         
+    );
+
+
+    /**
+     * PUT /workplaceBookings/{id} : Update workplace booking
+     *
+     * @param id  (required)
+     * @param workplaceBookingUpdate  (optional)
+     * @return Success (status code 200)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "updateWorkplaceBooking",
+        summary = "Update workplace booking",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = WorkplaceBooking.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/workplaceBookings/{id}",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    ResponseEntity<WorkplaceBooking> updateWorkplaceBooking(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
+        @Parameter(name = "WorkplaceBookingUpdate", description = "") @Valid @RequestBody(required = false) WorkplaceBookingUpdate workplaceBookingUpdate
     );
 
 }

@@ -1,0 +1,15 @@
+name: RoomOccupancy
+description: Room occupancy
+type: object
+properties:
+  id:
+    description: Room ID
+    type: integer
+    format: int64
+  name:
+    description: Name
+    type: string
+  rate:
+    description: Rate
+    type: number
+    format: double

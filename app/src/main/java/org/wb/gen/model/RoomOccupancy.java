@@ -10,38 +10,40 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Room
+ * Room occupancy
  */
 
-@Schema(name = "RoomCreateUpdate", description = "Room")
+@Schema(name = "RoomOccupancy", description = "Room occupancy")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class RoomCreateUpdate {
+public class RoomOccupancy {
 
-  private Long officeId;
+  private Long id;
 
   private String name;
 
-  public RoomCreateUpdate officeId(Long officeId) {
-    this.officeId = officeId;
+  private Double rate;
+
+  public RoomOccupancy id(Long id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Office ID
-   * @return officeId
+   * Room ID
+   * @return id
    */
   
-  @Schema(name = "officeId", description = "Office ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("officeId")
-  public Long getOfficeId() {
-    return officeId;
+  @Schema(name = "id", description = "Room ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
+  public Long getId() {
+    return id;
   }
 
-  public void setOfficeId(Long officeId) {
-    this.officeId = officeId;
+  public void setId(Long id) {
+    this.id = id;
   }
 
-  public RoomCreateUpdate name(String name) {
+  public RoomOccupancy name(String name) {
     this.name = name;
     return this;
   }
@@ -61,6 +63,26 @@ public class RoomCreateUpdate {
     this.name = name;
   }
 
+  public RoomOccupancy rate(Double rate) {
+    this.rate = rate;
+    return this;
+  }
+
+  /**
+   * Rate
+   * @return rate
+   */
+  
+  @Schema(name = "rate", description = "Rate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("rate")
+  public Double getRate() {
+    return rate;
+  }
+
+  public void setRate(Double rate) {
+    this.rate = rate;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -69,22 +91,24 @@ public class RoomCreateUpdate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RoomCreateUpdate roomCreateUpdate = (RoomCreateUpdate) o;
-    return Objects.equals(this.officeId, roomCreateUpdate.officeId) &&
-        Objects.equals(this.name, roomCreateUpdate.name);
+    RoomOccupancy roomOccupancy = (RoomOccupancy) o;
+    return Objects.equals(this.id, roomOccupancy.id) &&
+        Objects.equals(this.name, roomOccupancy.name) &&
+        Objects.equals(this.rate, roomOccupancy.rate);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(officeId, name);
+    return Objects.hash(id, name, rate);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RoomCreateUpdate {\n");
-    sb.append("    officeId: ").append(toIndentedString(officeId)).append("\n");
+    sb.append("class RoomOccupancy {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    rate: ").append(toIndentedString(rate)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,0 +1,10 @@
+get:
+  summary: Get office occupancy
+  operationId: getOfficeOccupancy
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../../../schemas/occupancy/offices/OfficeOccupancy.yaml

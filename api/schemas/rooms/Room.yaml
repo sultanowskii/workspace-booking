@@ -10,6 +10,6 @@ properties:
     description: Office ID
     type: integer
     format: int64
-  address:
+  name:
     description: Name
     type: string
