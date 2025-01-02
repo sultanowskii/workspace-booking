@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import org.wb.components.user.Employee;
+import org.wb.components.employee.Employee;
 import org.wb.components.workplace.Workplace;
 
 @Data

@@ -1,4 +1,4 @@
-package org.wb.components.user;
+package org.wb.components.employee;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.wb.components.employeegroup.EmployeeGroup;
 import org.wb.components.meetingroom.booking.MeetingRoomBooking;
+import org.wb.components.user.User;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+
 import java.util.*;
 import jakarta.annotation.Generated;
 
@@ -33,10 +34,9 @@ public class WorkplaceBookingCreate {
 
   /**
    * Employee ID
-   * 
    * @return employeeId
    */
-
+  
   @Schema(name = "employeeId", description = "Employee ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("employeeId")
   public Long getEmployeeId() {
@@ -54,10 +54,9 @@ public class WorkplaceBookingCreate {
 
   /**
    * Workplace ID
-   * 
    * @return workplaceId
    */
-
+  
   @Schema(name = "workplaceId", description = "Workplace ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("workplaceId")
   public Long getWorkplaceId() {
@@ -75,10 +74,9 @@ public class WorkplaceBookingCreate {
 
   /**
    * Date
-   * 
    * @return date
    */
-  @Valid
+  @Valid 
   @Schema(name = "date", description = "Date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("date")
   public LocalDate getDate() {
@@ -130,3 +128,4 @@ public class WorkplaceBookingCreate {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

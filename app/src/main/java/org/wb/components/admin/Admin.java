@@ -1,10 +1,11 @@
-package org.wb.components.user;
+package org.wb.components.admin;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.wb.components.user.User;
 
 @Data
 @Entity

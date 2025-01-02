@@ -1,6 +1,13 @@
 get:
   summary: Get room occupancy
   operationId: getRoomOccupancy
+  parameters:
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
     "200":
       description: Success

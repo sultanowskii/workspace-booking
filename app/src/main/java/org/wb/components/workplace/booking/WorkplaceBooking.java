@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.wb.components.user.Employee;
+import org.wb.components.employee.Employee;
 import org.wb.components.workplace.Workplace;
 
 import java.time.LocalDate;

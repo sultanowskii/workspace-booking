@@ -8,11 +8,13 @@ package org.wb.gen.api;
 import org.wb.gen.model.OfficeOccupancy;
 import org.wb.gen.model.RoomOccupancy;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.stereotype.Controller;
@@ -56,6 +58,7 @@ public interface OccupancyApi {
     /**
      * GET /occupancy/offices/{id} : Get office occupancy
      *
+     * @param id  (required)
      * @return Success (status code 200)
      */
     @Operation(
@@ -74,7 +77,7 @@ public interface OccupancyApi {
     )
     
     ResponseEntity<OfficeOccupancy> getOfficeOccupancy(
-        
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
@@ -106,6 +109,7 @@ public interface OccupancyApi {
     /**
      * GET /occupancy/rooms/{id} : Get room occupancy
      *
+     * @param id  (required)
      * @return Success (status code 200)
      */
     @Operation(
@@ -124,7 +128,7 @@ public interface OccupancyApi {
     )
     
     ResponseEntity<RoomOccupancy> getRoomOccupancy(
-        
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 }
