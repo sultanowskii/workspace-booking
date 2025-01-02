@@ -28,7 +28,6 @@ paths:
     $ref: ./resources/workplaces/workplace.yaml
   /meetingRooms:
     $ref: ./resources/meetingRooms/meetingRooms.yaml
-  # TODO: workplace name/local id???
   /meetingRooms/{id}:
     $ref: ./resources/meetingRooms/meetingRoom.yaml
   /employees:
