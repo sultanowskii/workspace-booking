@@ -5,7 +5,9 @@
  */
 package org.wb.gen.api;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.wb.gen.model.Error;
+import java.time.LocalDate;
 import org.wb.gen.model.MeetingRoomBooking;
 import org.wb.gen.model.MeetingRoomBookingCreate;
 import org.wb.gen.model.MeetingRoomBookingShort;
@@ -120,6 +122,9 @@ public interface MeetingRoomBookingsApi {
     /**
      * GET /meetingRoomBookings : Get meeting room bookings
      *
+     * @param organizerId Organizer ID (employee) (optional)
+     * @param meetingRoomId Meeting Room ID (optional)
+     * @param date Date (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -138,7 +143,9 @@ public interface MeetingRoomBookingsApi {
     )
     
     ResponseEntity<List<MeetingRoomBookingShort>> getMeetingRoomBookings(
-        
+        @Parameter(name = "organizerId", description = "Organizer ID (employee)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "organizerId", required = false) Long organizerId,
+        @Parameter(name = "meetingRoomId", description = "Meeting Room ID", in = ParameterIn.QUERY) @Valid @RequestParam(value = "meetingRoomId", required = false) Long meetingRoomId,
+        @Parameter(name = "date", description = "Date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     );
 
 

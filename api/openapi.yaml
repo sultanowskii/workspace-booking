@@ -9,6 +9,7 @@ paths:
     $ref: ./resources/offices/office.yaml
   /rooms:
     $ref: ./resources/rooms/rooms.yaml
+  # TODO: get full layout? (room, roomWalls, workplaces+visual+booking, meetingRoom+visual+booking)
   /rooms/{id}:
     $ref: ./resources/rooms/room.yaml
   /employeeGroups:

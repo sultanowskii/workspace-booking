@@ -1,6 +1,29 @@
 get:
   summary: Get meeting room bookings
   operationId: getMeetingRoomBookings
+  parameters:
+    - name: organizerId
+      description: Organizer ID (employee)
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: false
+    - name: meetingRoomId
+      description: Meeting Room ID
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: false
+    # TODO: date vs datetime?
+    - name: date
+      description: Date
+      in: query
+      schema:
+        type: string
+        format: date
+      required: false
   responses:
     "200":
       description: Success

@@ -1,6 +1,28 @@
 get:
   summary: Get workplace bookings
   operationId: getWorkplaceBookings
+  parameters:
+    - name: employeeId
+      description: Employee ID
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: false
+    - name: workplaceId
+      description: Workplace ID
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: false
+    - name: date
+      description: Date
+      in: query
+      schema:
+        type: string
+        format: date
+      required: false
   responses:
     "200":
       description: Success

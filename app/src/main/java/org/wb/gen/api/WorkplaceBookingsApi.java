@@ -5,7 +5,9 @@
  */
 package org.wb.gen.api;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.wb.gen.model.Error;
+import java.time.LocalDate;
 import org.wb.gen.model.WorkplaceBooking;
 import org.wb.gen.model.WorkplaceBookingCreate;
 import org.wb.gen.model.WorkplaceBookingUpdate;
@@ -119,6 +121,9 @@ public interface WorkplaceBookingsApi {
     /**
      * GET /workplaceBookings : Get workplace bookings
      *
+     * @param employeeId Employee ID (optional)
+     * @param workplaceId Workplace ID (optional)
+     * @param date Date (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -137,7 +142,9 @@ public interface WorkplaceBookingsApi {
     )
     
     ResponseEntity<List<WorkplaceBooking>> getWorkplaceBookings(
-        
+        @Parameter(name = "employeeId", description = "Employee ID", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeId", required = false) Long employeeId,
+        @Parameter(name = "workplaceId", description = "Workplace ID", in = ParameterIn.QUERY) @Valid @RequestParam(value = "workplaceId", required = false) Long workplaceId,
+        @Parameter(name = "date", description = "Date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     );
 
 

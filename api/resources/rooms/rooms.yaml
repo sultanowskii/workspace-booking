@@ -1,6 +1,14 @@
 get:
   summary: Get rooms
   operationId: getRooms
+  parameters:
+    - name: officeId
+      description: Office ID
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
     "200":
       description: Success

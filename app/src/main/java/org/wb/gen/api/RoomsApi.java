@@ -119,6 +119,7 @@ public interface RoomsApi {
     /**
      * GET /rooms : Get rooms
      *
+     * @param officeId Office ID (required)
      * @return Success (status code 200)
      */
     @Operation(
@@ -137,7 +138,7 @@ public interface RoomsApi {
     )
     
     ResponseEntity<List<Room>> getRooms(
-        
+        @NotNull @Parameter(name = "officeId", description = "Office ID", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "officeId", required = true) Long officeId
     );
 
 

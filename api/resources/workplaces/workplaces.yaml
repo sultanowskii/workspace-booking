@@ -1,6 +1,14 @@
 get:
   summary: Get workplaces
   operationId: getWorkplaces
+  parameters:
+    - name: roomId
+      description: Room ID
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: true
   responses:
     "200":
       description: Success
