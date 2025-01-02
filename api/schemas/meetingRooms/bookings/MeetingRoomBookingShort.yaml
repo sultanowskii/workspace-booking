@@ -1,0 +1,23 @@
+name: MeetingRoomBookingShort
+description: Meeting room booking (without participants)
+type: object
+properties:
+  id:
+    description: ID
+    type: integer
+    format: int64
+  description:
+    description: Description
+    type: string
+  startDate:
+    description: Start date
+    type: string
+    format: date-time
+  endDate:
+    description: End date
+    type: string
+    format: date-time
+  organizer:
+    description: Organizer
+    schema:
+      $ref: ../../employees/Employee.yaml

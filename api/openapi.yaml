@@ -39,3 +39,7 @@ paths:
     $ref: ./resources/workplaces/bookings/workplaceBookings.yaml
   /workplaceBooking/{id}:
     $ref: ./resources/workplaces/bookings/workplaceBooking.yaml
+  /meetingRoomBookings:
+    $ref: ./resources/meetingRooms/bookings/meetingRoomBookings.yaml
+  /meetingRoomBookings/{id}:
+    $ref: ./resources/meetingRooms/bookings/meetingRoomBooking.yaml

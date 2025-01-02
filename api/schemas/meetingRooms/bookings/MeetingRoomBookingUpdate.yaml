@@ -1,0 +1,23 @@
+name: MeetingRoomBookingUpdate
+description: Meeting room booking
+type: object
+properties:
+  description:
+    description: Description
+    type: string
+    minLength: 1
+  # timezone?
+  startDate:
+    description: Start date
+    type: string
+    format: date-time
+  endDate:
+    description: End date
+    type: string
+    format: date-time
+  participants:
+    description: Other participants
+    type: array
+    items:
+      schema:
+        $ref: ../../employees/Employee.yaml
