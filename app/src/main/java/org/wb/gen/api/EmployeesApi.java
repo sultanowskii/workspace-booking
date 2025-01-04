@@ -9,6 +9,8 @@ import org.wb.gen.model.Employee;
 import org.wb.gen.model.EmployeeCreate;
 import org.wb.gen.model.EmployeeUpdate;
 import org.wb.gen.model.Error;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -43,7 +45,9 @@ public interface EmployeesApi {
         operationId = "createEmployee",
         summary = "Create employee",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Success")
+            @ApiResponse(responseCode = "201", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
+            })
         }
     )
     @RequestMapping(
@@ -53,7 +57,7 @@ public interface EmployeesApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createEmployee(
+    ResponseEntity<Employee> createEmployee(
         @Parameter(name = "EmployeeCreate", description = "") @Valid @RequestBody(required = false) EmployeeCreate employeeCreate
     );
 
@@ -118,12 +122,16 @@ public interface EmployeesApi {
 
     /**
      * GET /employees : Get employees
+     * Get list of employees. Supported sort/search fields: &#x60;id&#x60;, &#x60;user.username&#x60;, &#x60;fullName&#x60; 
      *
+     * @param searchFieldName  (optional)
+     * @param searchString  (optional)
      * @return Success (status code 200)
      */
     @Operation(
         operationId = "getEmployees",
         summary = "Get employees",
+        description = "Get list of employees. Supported sort/search fields: `id`, `user.username`, `fullName` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class)))
@@ -137,7 +145,9 @@ public interface EmployeesApi {
     )
     
     ResponseEntity<List<Employee>> getEmployees(
-        
+        @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+        @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @ParameterObject final Pageable pageable
     );
 
 

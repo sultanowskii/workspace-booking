@@ -22,7 +22,7 @@ public class WorkplaceApiController implements WorkplacesApi {
     }
 
     @Override
-    public ResponseEntity<Void> createWorkplace(@Valid WorkplaceCreateUpdate workplaceCreateUpdate) {
+    public ResponseEntity<Workplace> createWorkplace(@Valid WorkplaceCreateUpdate workplaceCreateUpdate) {
         // TODO Auto-generated method stub
         return null;
     }

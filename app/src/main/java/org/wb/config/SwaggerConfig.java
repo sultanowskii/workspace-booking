@@ -7,17 +7,8 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(
-    info = @Info(
-        title = "Workspace Booking"
-    )
-)
-@SecurityScheme(
-    name = "bearerTokenAuth",
-    type = SecuritySchemeType.HTTP,
-    bearerFormat = "JWT",
-    scheme = "bearer"
-)
+@OpenAPIDefinition(info = @Info(title = "Workspace Booking"))
+@SecurityScheme(name = "bearerTokenAuth", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class SwaggerConfig {
 
 }

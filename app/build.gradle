@@ -53,6 +53,10 @@ dependencies {
     implementation 'org.openapitools:openapi-generator:7.10.0'
     implementation 'org.openapitools:openapi-generator-gradle-plugin:7.10.0'
 
+    // JSON
+    implementation 'org.mapstruct:mapstruct:1.6.1'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.1'
+
     // This dependency is used by the application.
     implementation libs.guava
 }

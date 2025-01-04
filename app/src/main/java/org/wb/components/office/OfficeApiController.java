@@ -31,7 +31,7 @@ public class OfficeApiController implements OfficesApi {
     }
 
     @Override
-    public ResponseEntity<Void> createOffice(@Valid OfficeCreateUpdate officeCreateUpdate) {
+    public ResponseEntity<Office> createOffice(@Valid OfficeCreateUpdate officeCreateUpdate) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -45,7 +45,9 @@ public interface WorkplaceBookingsApi {
         operationId = "createWorkplaceBooking",
         summary = "Create workplace booking",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Success")
+            @ApiResponse(responseCode = "201", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = WorkplaceBooking.class))
+            })
         }
     )
     @RequestMapping(
@@ -55,7 +57,7 @@ public interface WorkplaceBookingsApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createWorkplaceBooking(
+    ResponseEntity<WorkplaceBooking> createWorkplaceBooking(
         @Parameter(name = "WorkplaceBookingCreate", description = "") @Valid @RequestBody(required = false) WorkplaceBookingCreate workplaceBookingCreate
     );
 

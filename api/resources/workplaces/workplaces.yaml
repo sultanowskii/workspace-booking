@@ -31,4 +31,5 @@ post:
       description: Success
       content:
         application/json:
-          $ref: ../../schemas/workplaces/Workplace.yaml
+          schema:
+            $ref: ../../schemas/workplaces/Workplace.yaml

@@ -42,7 +42,9 @@ public interface OfficesApi {
         operationId = "createOffice",
         summary = "Create office",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Success")
+            @ApiResponse(responseCode = "201", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Office.class))
+            })
         }
     )
     @RequestMapping(
@@ -52,7 +54,7 @@ public interface OfficesApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createOffice(
+    ResponseEntity<Office> createOffice(
         @Parameter(name = "OfficeCreateUpdate", description = "") @Valid @RequestBody(required = false) OfficeCreateUpdate officeCreateUpdate
     );
 

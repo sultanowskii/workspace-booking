@@ -45,4 +45,5 @@ post:
       description: Success
       content:
         application/json:
-          $ref: ../../../schemas/workplaces/bookings/WorkplaceBooking.yaml
+          schema:
+            $ref: ../../../schemas/workplaces/bookings/WorkplaceBooking.yaml

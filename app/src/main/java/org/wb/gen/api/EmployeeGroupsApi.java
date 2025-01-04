@@ -73,7 +73,9 @@ public interface EmployeeGroupsApi {
         operationId = "createEmployeeGroup",
         summary = "Create employee group",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Success")
+            @ApiResponse(responseCode = "201", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
+            })
         }
     )
     @RequestMapping(
@@ -83,7 +85,7 @@ public interface EmployeeGroupsApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createEmployeeGroup(
+    ResponseEntity<EmployeeGroup> createEmployeeGroup(
         @Parameter(name = "EmployeeGroup", description = "") @Valid @RequestBody(required = false) EmployeeGroup employeeGroup
     );
 

@@ -25,7 +25,8 @@ public class MeetingRoomBookingApiController implements MeetingRoomBookingsApi {
     }
 
     @Override
-    public ResponseEntity<Void> createMeetingRoomBooking(@Valid MeetingRoomBookingCreate meetingRoomBookingCreate) {
+    public ResponseEntity<MeetingRoomBooking> createMeetingRoomBooking(
+            @Valid MeetingRoomBookingCreate meetingRoomBookingCreate) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -22,7 +22,7 @@ public class MeetingRoomApiController implements MeetingRoomsApi {
     }
 
     @Override
-    public ResponseEntity<Void> createMeetingRoom(@Valid MeetingRoomCreateUpdate meetingRoomCreateUpdate) {
+    public ResponseEntity<MeetingRoom> createMeetingRoom(@Valid MeetingRoomCreateUpdate meetingRoomCreateUpdate) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -22,12 +22,12 @@ public class Employee implements org.wb.components.common.Entity {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_group_id", nullable = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private EmployeeGroup employeeGroup;

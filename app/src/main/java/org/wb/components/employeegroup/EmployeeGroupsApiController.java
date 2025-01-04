@@ -22,7 +22,7 @@ public class EmployeeGroupsApiController implements EmployeeGroupsApi {
     }
 
     @Override
-    public ResponseEntity<Void> createEmployeeGroup(@Valid EmployeeGroup employeeGroup) {
+    public ResponseEntity<EmployeeGroup> createEmployeeGroup(@Valid EmployeeGroup employeeGroup) {
         // TODO Auto-generated method stub
         return null;
     }

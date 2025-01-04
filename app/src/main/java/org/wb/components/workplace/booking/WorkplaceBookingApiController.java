@@ -24,7 +24,8 @@ public class WorkplaceBookingApiController implements WorkplaceBookingsApi {
     }
 
     @Override
-    public ResponseEntity<Void> createWorkplaceBooking(@Valid WorkplaceBookingCreate workplaceBookingCreate) {
+    public ResponseEntity<WorkplaceBooking> createWorkplaceBooking(
+            @Valid WorkplaceBookingCreate workplaceBookingCreate) {
         // TODO Auto-generated method stub
         return null;
     }

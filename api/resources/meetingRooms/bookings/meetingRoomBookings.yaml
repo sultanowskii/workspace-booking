@@ -46,4 +46,5 @@ post:
       description: Success
       content:
         application/json:
-          $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBooking.yaml
+          schema:
+            $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBooking.yaml

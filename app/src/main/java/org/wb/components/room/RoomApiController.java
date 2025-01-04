@@ -23,7 +23,7 @@ public class RoomApiController implements RoomsApi {
     }
 
     @Override
-    public ResponseEntity<Void> createRoom(@Valid RoomCreateUpdate roomCreateUpdate) {
+    public ResponseEntity<Room> createRoom(@Valid RoomCreateUpdate roomCreateUpdate) {
         // TODO Auto-generated method stub
         return null;
     }

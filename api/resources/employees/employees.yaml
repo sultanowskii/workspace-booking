@@ -1,6 +1,26 @@
 get:
   summary: Get employees
   operationId: getEmployees
+  description: |
+    Get list of employees. Supported sort/search fields: `id`, `user.username`, `fullName`
+  x-spring-paginated: true
+  parameters:
+    - name: searchFieldName
+      in: query
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: string
+        enum:
+          - id
+          - user.username
+          - fullName
+    - name: searchString
+      in: query
+      schema:
+        type: string
+        minLength: 1
+      required: false
   responses:
     "200":
       description: Success
@@ -24,4 +44,5 @@ post:
       description: Success
       content:
         application/json:
-          $ref: ../../schemas/employees/Employee.yaml
+          schema:
+            $ref: ../../schemas/employees/Employee.yaml

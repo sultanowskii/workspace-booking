@@ -23,4 +23,5 @@ post:
       description: Success
       content:
         application/json:
-          $ref: ../../schemas/offices/Office.yaml
+          schema:
+            $ref: ../../schemas/offices/Office.yaml

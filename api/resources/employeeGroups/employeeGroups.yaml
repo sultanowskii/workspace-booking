@@ -23,4 +23,5 @@ post:
       description: Success
       content:
         application/json:
-          $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+          schema:
+            $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml

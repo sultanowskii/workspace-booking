@@ -42,7 +42,9 @@ public interface WorkplacesApi {
         operationId = "createWorkplace",
         summary = "Create workplace",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Success")
+            @ApiResponse(responseCode = "201", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Workplace.class))
+            })
         }
     )
     @RequestMapping(
@@ -52,7 +54,7 @@ public interface WorkplacesApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createWorkplace(
+    ResponseEntity<Workplace> createWorkplace(
         @Parameter(name = "WorkplaceCreateUpdate", description = "") @Valid @RequestBody(required = false) WorkplaceCreateUpdate workplaceCreateUpdate
     );
 

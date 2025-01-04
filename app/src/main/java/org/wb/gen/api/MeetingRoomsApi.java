@@ -42,7 +42,9 @@ public interface MeetingRoomsApi {
         operationId = "createMeetingRoom",
         summary = "Create meeting room",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Success")
+            @ApiResponse(responseCode = "201", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MeetingRoom.class))
+            })
         }
     )
     @RequestMapping(
@@ -52,7 +54,7 @@ public interface MeetingRoomsApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Void> createMeetingRoom(
+    ResponseEntity<MeetingRoom> createMeetingRoom(
         @Parameter(name = "MeetingRoomCreateUpdate", description = "") @Valid @RequestBody(required = false) MeetingRoomCreateUpdate meetingRoomCreateUpdate
     );
 
