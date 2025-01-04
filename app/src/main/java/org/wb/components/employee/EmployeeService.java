@@ -5,7 +5,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.wb.components.common.EntityService;
 import org.wb.components.user.User;
-import org.wb.components.user.UserService;
 import org.wb.gen.model.EmployeeCreate;
 import org.wb.gen.model.EmployeeUpdate;
 
@@ -18,12 +17,11 @@ public class EmployeeService
     private EmployeeRepository repo;
     @Autowired
     private EmployeeMapper mapper;
-    @Autowired
-    private UserService userService;
 
     @Override
-    protected boolean isOwnershipValid(Employee entity) {
-        return isOwnershipValid(entity);
+    protected boolean isOwnershipValid(Employee employee) {
+        var currentUser = userService.getCurrentUser();
+        return employee.getUser().equals(currentUser) && !currentUser.isAdmin();
     }
 
     @Override
