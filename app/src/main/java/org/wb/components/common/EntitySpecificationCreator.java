@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 
-public abstract class SpecificationCreator<T extends Entity> {
+public abstract class EntitySpecificationCreator<T extends Entity> {
     public abstract boolean isFieldValid(String fieldName);
 
     private Path<Object> fieldFromAlias(Root<T> root, String searchFieldName) {

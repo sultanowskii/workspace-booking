@@ -3,10 +3,10 @@ package org.wb.components.employee;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
-import org.wb.components.common.SpecificationCreator;
+import org.wb.components.common.EntitySpecificationCreator;
 
 @Service
-public class EmployeeSpecificationCreator extends SpecificationCreator<Employee> {
+public class EmployeeSpecificationCreator extends EntitySpecificationCreator<Employee> {
     private static final Set<String> VALID_SEARCH_FIELDS = Set.of("id", "user.username", "fullName");
 
     @Override
