@@ -7,7 +7,7 @@ import org.wb.components.common.EntitySpecificationCreator;
 
 @Service
 public class EmployeeSpecificationCreator extends EntitySpecificationCreator<Employee> {
-    private static final Set<String> VALID_SEARCH_FIELDS = Set.of("id", "user.username", "fullName");
+    private static final Set<String> VALID_SEARCH_FIELDS = Set.of("user.username", "fullName");
 
     @Override
     public boolean isFieldValid(String fieldName) {

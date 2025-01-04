@@ -1,6 +1,9 @@
 get:
   operationId: getMeetingRoomBookings
   summary: Get meeting room bookings
+  description: |
+    Get list of meeting room bookings. Supported sort/search fields: `description`
+  x-spring-paginated: true
   parameters:
     - name: organizerId
       description: Organizer ID (employee)
@@ -23,6 +26,20 @@ get:
       schema:
         type: string
         format: date
+      required: false
+    - name: searchFieldName
+      in: query
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: string
+        enum:
+          - description
+    - name: searchString
+      in: query
+      schema:
+        type: string
+        minLength: 1
       required: false
   responses:
     "200":

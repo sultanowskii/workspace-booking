@@ -8,6 +8,8 @@ package org.wb.gen.api;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.wb.gen.model.Error;
 import java.time.LocalDate;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import org.wb.gen.model.WorkplaceBooking;
 import org.wb.gen.model.WorkplaceBookingCreate;
 import org.wb.gen.model.WorkplaceBookingUpdate;
@@ -122,6 +124,7 @@ public interface WorkplaceBookingsApi {
 
     /**
      * GET /workplaceBookings : Get workplace bookings
+     * Get list of meeting room bookings. 
      *
      * @param employeeId Employee ID (optional)
      * @param workplaceId Workplace ID (optional)
@@ -131,6 +134,7 @@ public interface WorkplaceBookingsApi {
     @Operation(
         operationId = "getWorkplaceBookings",
         summary = "Get workplace bookings",
+        description = "Get list of meeting room bookings. ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = WorkplaceBooking.class)))
@@ -146,7 +150,8 @@ public interface WorkplaceBookingsApi {
     ResponseEntity<List<WorkplaceBooking>> getWorkplaceBookings(
         @Parameter(name = "employeeId", description = "Employee ID", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeId", required = false) Long employeeId,
         @Parameter(name = "workplaceId", description = "Workplace ID", in = ParameterIn.QUERY) @Valid @RequestParam(value = "workplaceId", required = false) Long workplaceId,
-        @Parameter(name = "date", description = "Date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+        @Parameter(name = "date", description = "Date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+        @ParameterObject final Pageable pageable
     );
 
 

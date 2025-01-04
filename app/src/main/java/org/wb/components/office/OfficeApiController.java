@@ -4,12 +4,18 @@ import org.wb.gen.api.OfficesApi;
 import org.wb.gen.model.Office;
 import org.wb.gen.model.OfficeCreateUpdate;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,7 +26,10 @@ public class OfficeApiController implements OfficesApi {
     OfficeRepository repo;
 
     @Override
-    public ResponseEntity<List<Office>> getOffices() {
+    public ResponseEntity<List<Office>> getOffices(
+            @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+            @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+            @ParameterObject final Pageable pageable) {
         var result = repo
                 .findAll()
                 .stream()

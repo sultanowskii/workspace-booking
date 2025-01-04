@@ -6,6 +6,8 @@
 package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import org.wb.gen.model.Workplace;
 import org.wb.gen.model.WorkplaceCreateUpdate;
 import io.swagger.v3.oas.annotations.Operation;
@@ -119,13 +121,17 @@ public interface WorkplacesApi {
 
     /**
      * GET /workplaces : Get workplaces
+     * Get list of workplaces. Supported sort/search fields: &#x60;numberOfMonitors&#x60;, &#x60;x&#x60;, &#x60;y&#x60;, &#x60;width&#x60;, &#x60;height&#x60; 
      *
      * @param roomId Room ID (required)
+     * @param searchFieldName  (optional)
+     * @param searchString  (optional)
      * @return Success (status code 200)
      */
     @Operation(
         operationId = "getWorkplaces",
         summary = "Get workplaces",
+        description = "Get list of workplaces. Supported sort/search fields: `numberOfMonitors`, `x`, `y`, `width`, `height` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Workplace.class)))
@@ -139,7 +145,10 @@ public interface WorkplacesApi {
     )
     
     ResponseEntity<List<Workplace>> getWorkplaces(
-        @NotNull @Parameter(name = "roomId", description = "Room ID", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = true) Long roomId
+        @NotNull @Parameter(name = "roomId", description = "Room ID", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = true) Long roomId,
+        @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+        @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @ParameterObject final Pageable pageable
     );
 
 

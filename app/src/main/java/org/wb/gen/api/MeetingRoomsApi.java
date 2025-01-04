@@ -8,6 +8,8 @@ package org.wb.gen.api;
 import org.wb.gen.model.Error;
 import org.wb.gen.model.MeetingRoom;
 import org.wb.gen.model.MeetingRoomCreateUpdate;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -119,13 +121,17 @@ public interface MeetingRoomsApi {
 
     /**
      * GET /meetingRooms : Get meeting rooms
+     * Get list of meeting rooms. Supported sort/search fields: &#x60;name&#x60;, &#x60;x&#x60;, &#x60;y&#x60;, &#x60;width&#x60;, &#x60;height&#x60; 
      *
      * @param roomId Room ID (required)
+     * @param searchFieldName  (optional)
+     * @param searchString  (optional)
      * @return Success (status code 200)
      */
     @Operation(
         operationId = "getMeetingRooms",
         summary = "Get meeting rooms",
+        description = "Get list of meeting rooms. Supported sort/search fields: `name`, `x`, `y`, `width`, `height` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeetingRoom.class)))
@@ -139,7 +145,10 @@ public interface MeetingRoomsApi {
     )
     
     ResponseEntity<List<MeetingRoom>> getMeetingRooms(
-        @NotNull @Parameter(name = "roomId", description = "Room ID", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = true) Long roomId
+        @NotNull @Parameter(name = "roomId", description = "Room ID", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = true) Long roomId,
+        @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+        @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @ParameterObject final Pageable pageable
     );
 
 

@@ -1,6 +1,25 @@
 get:
   operationId: getOffices
   summary: Get offices
+  description: |
+    Get list of offices. Supported sort/search fields: `name`, `address`
+  x-spring-paginated: true
+  parameters:
+    - name: searchFieldName
+      in: query
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: string
+        enum:
+          - name
+          - address
+    - name: searchString
+      in: query
+      schema:
+        type: string
+        minLength: 1
+      required: false
   responses:
     "200":
       description: Success

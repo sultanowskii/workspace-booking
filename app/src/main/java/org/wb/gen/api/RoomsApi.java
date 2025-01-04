@@ -6,6 +6,8 @@
 package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import org.wb.gen.model.Room;
 import org.wb.gen.model.RoomCreateUpdate;
 import org.wb.gen.model.RoomWithWalls;
@@ -120,13 +122,17 @@ public interface RoomsApi {
 
     /**
      * GET /rooms : Get rooms
+     * Get list of rooms. Supported sort/search fields: &#x60;name&#x60; 
      *
      * @param officeId Office ID (required)
+     * @param searchFieldName  (optional)
+     * @param searchString  (optional)
      * @return Success (status code 200)
      */
     @Operation(
         operationId = "getRooms",
         summary = "Get rooms",
+        description = "Get list of rooms. Supported sort/search fields: `name` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Room.class)))
@@ -140,7 +146,10 @@ public interface RoomsApi {
     )
     
     ResponseEntity<List<Room>> getRooms(
-        @NotNull @Parameter(name = "officeId", description = "Office ID", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "officeId", required = true) Long officeId
+        @NotNull @Parameter(name = "officeId", description = "Office ID", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "officeId", required = true) Long officeId,
+        @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+        @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @ParameterObject final Pageable pageable
     );
 
 

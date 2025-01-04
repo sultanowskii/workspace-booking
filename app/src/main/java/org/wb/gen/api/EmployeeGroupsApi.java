@@ -9,6 +9,8 @@ import org.wb.gen.model.EmployeeGroup;
 import org.wb.gen.model.EmployeeGroupCreateUpdate;
 import org.wb.gen.model.EmployeeGroupOffice;
 import org.wb.gen.model.Error;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -175,12 +177,16 @@ public interface EmployeeGroupsApi {
 
     /**
      * GET /employeeGroups : Get employee groups
+     * Get list of employee groups. Supported sort/search fields: &#x60;name&#x60; 
      *
+     * @param searchFieldName  (optional)
+     * @param searchString  (optional)
      * @return Success (status code 200)
      */
     @Operation(
         operationId = "getEmployeeGroups",
         summary = "Get employee groups",
+        description = "Get list of employee groups. Supported sort/search fields: `name` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EmployeeGroup.class)))
@@ -194,7 +200,9 @@ public interface EmployeeGroupsApi {
     )
     
     ResponseEntity<List<EmployeeGroup>> getEmployeeGroups(
-        
+        @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+        @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @ParameterObject final Pageable pageable
     );
 
 

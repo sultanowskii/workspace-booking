@@ -2,7 +2,7 @@ get:
   operationId: getEmployees
   summary: Get employees
   description: |
-    Get list of employees. Supported sort/search fields: `id`, `user.username`, `fullName`
+    Get list of employees. Supported sort/search fields: `user.username`, `fullName`
   x-spring-paginated: true
   parameters:
     - name: searchFieldName
@@ -12,7 +12,6 @@ get:
       schema:
         type: string
         enum:
-          - id
           - user.username
           - fullName
     - name: searchString

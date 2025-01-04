@@ -122,7 +122,7 @@ public interface EmployeesApi {
 
     /**
      * GET /employees : Get employees
-     * Get list of employees. Supported sort/search fields: &#x60;id&#x60;, &#x60;user.username&#x60;, &#x60;fullName&#x60; 
+     * Get list of employees. Supported sort/search fields: &#x60;user.username&#x60;, &#x60;fullName&#x60; 
      *
      * @param searchFieldName  (optional)
      * @param searchString  (optional)
@@ -131,7 +131,7 @@ public interface EmployeesApi {
     @Operation(
         operationId = "getEmployees",
         summary = "Get employees",
-        description = "Get list of employees. Supported sort/search fields: `id`, `user.username`, `fullName` ",
+        description = "Get list of employees. Supported sort/search fields: `user.username`, `fullName` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class)))

@@ -12,6 +12,8 @@ import org.wb.gen.model.MeetingRoomBooking;
 import org.wb.gen.model.MeetingRoomBookingCreate;
 import org.wb.gen.model.MeetingRoomBookingShort;
 import org.wb.gen.model.MeetingRoomBookingUpdate;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -123,15 +125,19 @@ public interface MeetingRoomBookingsApi {
 
     /**
      * GET /meetingRoomBookings : Get meeting room bookings
+     * Get list of meeting room bookings. Supported sort/search fields: &#x60;description&#x60; 
      *
      * @param organizerId Organizer ID (employee) (optional)
      * @param meetingRoomId Meeting Room ID (optional)
      * @param date Date (optional)
+     * @param searchFieldName  (optional)
+     * @param searchString  (optional)
      * @return Success (status code 200)
      */
     @Operation(
         operationId = "getMeetingRoomBookings",
         summary = "Get meeting room bookings",
+        description = "Get list of meeting room bookings. Supported sort/search fields: `description` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeetingRoomBookingShort.class)))
@@ -147,7 +153,10 @@ public interface MeetingRoomBookingsApi {
     ResponseEntity<List<MeetingRoomBookingShort>> getMeetingRoomBookings(
         @Parameter(name = "organizerId", description = "Organizer ID (employee)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "organizerId", required = false) Long organizerId,
         @Parameter(name = "meetingRoomId", description = "Meeting Room ID", in = ParameterIn.QUERY) @Valid @RequestParam(value = "meetingRoomId", required = false) Long meetingRoomId,
-        @Parameter(name = "date", description = "Date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+        @Parameter(name = "date", description = "Date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+        @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+        @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @ParameterObject final Pageable pageable
     );
 
 

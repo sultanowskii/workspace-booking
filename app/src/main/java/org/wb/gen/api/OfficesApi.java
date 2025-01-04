@@ -8,6 +8,8 @@ package org.wb.gen.api;
 import org.wb.gen.model.Error;
 import org.wb.gen.model.Office;
 import org.wb.gen.model.OfficeCreateUpdate;
+import org.springframework.data.domain.Pageable;
+import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -119,12 +121,16 @@ public interface OfficesApi {
 
     /**
      * GET /offices : Get offices
+     * Get list of offices. Supported sort/search fields: &#x60;name&#x60;, &#x60;address&#x60; 
      *
+     * @param searchFieldName  (optional)
+     * @param searchString  (optional)
      * @return Success (status code 200)
      */
     @Operation(
         operationId = "getOffices",
         summary = "Get offices",
+        description = "Get list of offices. Supported sort/search fields: `name`, `address` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Office.class)))
@@ -138,7 +144,9 @@ public interface OfficesApi {
     )
     
     ResponseEntity<List<Office>> getOffices(
-        
+        @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
+        @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @ParameterObject final Pageable pageable
     );
 
 

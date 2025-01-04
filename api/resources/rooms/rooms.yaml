@@ -1,6 +1,9 @@
 get:
   operationId: getRooms
   summary: Get rooms
+  description: |
+    Get list of rooms. Supported sort/search fields: `name`
+  x-spring-paginated: true
   parameters:
     - name: officeId
       description: Office ID
@@ -9,6 +12,20 @@ get:
         type: integer
         format: int64
       required: true
+    - name: searchFieldName
+      in: query
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: string
+        enum:
+          - name
+    - name: searchString
+      in: query
+      schema:
+        type: string
+        minLength: 1
+      required: false
   responses:
     "200":
       description: Success
