@@ -1,6 +1,6 @@
 get:
-  summary: Get workplace booking
   operationId: getWorkplaceBooking
+  summary: Get workplace booking
   parameters:
     - name: id
       in: path
@@ -18,8 +18,8 @@ get:
     "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml
 put:
-  summary: Update workplace booking
   operationId: updateWorkplaceBooking
+  summary: Update workplace booking
   parameters:
     - name: id
       in: path
@@ -42,8 +42,8 @@ put:
     "404":
       $ref: ../../../schemas/common/ResourceNotFound.yaml
 delete:
-  summary: Delete workplace booking
   operationId: deleteWorkplaceBooking
+  summary: Delete workplace booking
   parameters:
     - name: id
       in: path

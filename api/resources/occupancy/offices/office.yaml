@@ -1,6 +1,6 @@
 get:
-  summary: Get office occupancy
   operationId: getOfficeOccupancy
+  summary: Get office occupancy
   parameters:
     - name: id
       in: path

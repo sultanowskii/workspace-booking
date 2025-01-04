@@ -1,6 +1,6 @@
 get:
-  summary: Get room
   operationId: getRoom
+  summary: Get room
   parameters:
     - name: id
       in: path
@@ -18,8 +18,8 @@ get:
     "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
-  summary: Update room
   operationId: updateRoom
+  summary: Update room
   parameters:
     - name: id
       in: path
@@ -42,8 +42,8 @@ put:
     "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
-  summary: Delete room
   operationId: deleteRoom
+  summary: Delete room
   parameters:
     - name: id
       in: path

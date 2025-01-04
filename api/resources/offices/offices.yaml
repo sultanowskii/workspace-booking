@@ -1,6 +1,6 @@
 get:
-  summary: Get offices
   operationId: getOffices
+  summary: Get offices
   responses:
     "200":
       description: Success

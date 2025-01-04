@@ -1,6 +1,6 @@
 get:
-  summary: Get room occupancies
   operationId: getRoomOccupancies
+  summary: Get room occupancies
   responses:
     "200":
       description: Success

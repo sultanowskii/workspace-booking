@@ -1,6 +1,6 @@
 get:
-  summary: Get meeting rooms
   operationId: getMeetingRooms
+  summary: Get meeting rooms
   parameters:
     - name: roomId
       description: Room ID
@@ -19,8 +19,8 @@ get:
             items:
               $ref: ../../schemas/meetingRooms/MeetingRoom.yaml
 post:
-  summary: Create meeting room
   operationId: createMeetingRoom
+  summary: Create meeting room
   requestBody:
     content:
       application/json:

@@ -1,6 +1,6 @@
 get:
-  summary: Get employee group
   operationId: getEmployeeGroup
+  summary: Get employee group
   parameters:
     - name: id
       in: path
@@ -9,17 +9,17 @@ get:
         format: int64
       required: true
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
+  operationId: updateEmployeeGroup
   summary: Update employee group
-  operationId: updateEmployeeGroups
   parameters:
     - name: id
       in: path
@@ -33,17 +33,17 @@ put:
         schema:
           $ref: ../../schemas/employeeGroups/EmployeeGroupCreateUpdate.yaml
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
-  summary: Delete employee group
   operationId: deleteEmployeeGroup
+  summary: Delete employee group
   parameters:
     - name: id
       in: path
@@ -52,7 +52,7 @@ delete:
         format: int64
       required: true
   responses:
-    '204':
+    "204":
       description: Success
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml

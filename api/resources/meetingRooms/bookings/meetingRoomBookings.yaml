@@ -1,6 +1,6 @@
 get:
-  summary: Get meeting room bookings
   operationId: getMeetingRoomBookings
+  summary: Get meeting room bookings
   parameters:
     - name: organizerId
       description: Organizer ID (employee)
@@ -34,8 +34,8 @@ get:
             items:
               $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBookingShort.yaml
 post:
-  summary: Create meeting room booking
   operationId: createMeetingRoomBooking
+  summary: Create meeting room booking
   requestBody:
     content:
       application/json:

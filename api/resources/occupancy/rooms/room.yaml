@@ -1,6 +1,6 @@
 get:
-  summary: Get room occupancy
   operationId: getRoomOccupancy
+  summary: Get room occupancy
   parameters:
     - name: id
       in: path

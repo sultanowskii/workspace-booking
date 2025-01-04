@@ -1,6 +1,6 @@
 get:
-  summary: Get workplace bookings
   operationId: getWorkplaceBookings
+  summary: Get workplace bookings
   parameters:
     - name: employeeId
       description: Employee ID
@@ -33,8 +33,8 @@ get:
             items:
               $ref: ../../../schemas/workplaces/bookings/WorkplaceBooking.yaml
 post:
-  summary: Create workplace booking
   operationId: createWorkplaceBooking
+  summary: Create workplace booking
   requestBody:
     content:
       application/json:

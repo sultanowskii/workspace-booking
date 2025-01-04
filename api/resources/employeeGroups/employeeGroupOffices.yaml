@@ -1,6 +1,6 @@
 get:
-  summary: Get offices which employee group could visit
   operationId: getEmployeeGroupOffices
+  summary: Get offices which employee group could visit
   responses:
     "200":
       description: Success

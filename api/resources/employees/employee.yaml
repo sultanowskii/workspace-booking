@@ -1,6 +1,6 @@
 get:
-  summary: Get employee
   operationId: getEmployee
+  summary: Get employee
   parameters:
     - name: id
       in: path
@@ -9,18 +9,18 @@ get:
         format: int64
       required: true
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/employees/Employee.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
   # admin-only
-  summary: Update employee
   operationId: updateEmployee
+  summary: Update employee
   parameters:
     - name: id
       in: path
@@ -34,18 +34,18 @@ put:
         schema:
           $ref: ../../schemas/employees/EmployeeUpdate.yaml
   responses:
-    '200':
+    "200":
       description: Success
       content:
         application/json:
           schema:
             $ref: ../../schemas/employees/Employee.yaml
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
   # admin-only
-  summary: Delete employee
   operationId: deleteEmployee
+  summary: Delete employee
   parameters:
     - name: id
       in: path
@@ -54,7 +54,7 @@ delete:
         format: int64
       required: true
   responses:
-    '204':
+    "204":
       description: Success
-    '404':
+    "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml

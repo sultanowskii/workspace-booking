@@ -34,7 +34,7 @@ public class EmployeeGroupsApiController implements EmployeeGroupsApi {
     }
 
     @Override
-    public ResponseEntity<EmployeeGroup> updateEmployeeGroups(Long id,
+    public ResponseEntity<EmployeeGroup> updateEmployeeGroup(Long id,
             @Valid EmployeeGroupCreateUpdate employeeGroupCreateUpdate) {
         // TODO Auto-generated method stub
         return null;

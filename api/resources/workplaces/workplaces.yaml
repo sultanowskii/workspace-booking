@@ -1,6 +1,6 @@
 get:
-  summary: Get workplaces
   operationId: getWorkplaces
+  summary: Get workplaces
   parameters:
     - name: roomId
       description: Room ID
@@ -19,8 +19,8 @@ get:
             items:
               $ref: ../../schemas/workplaces/Workplace.yaml
 post:
-  summary: Create workplace
   operationId: createWorkplace
+  summary: Create workplace
   requestBody:
     content:
       application/json:

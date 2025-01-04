@@ -1,6 +1,6 @@
 get:
-  summary: Get employee groups
   operationId: getEmployeeGroups
+  summary: Get employee groups
   responses:
     "200":
       description: Success
@@ -11,8 +11,8 @@ get:
             items:
               $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
 post:
-  summary: Create employee group
   operationId: createEmployeeGroup
+  summary: Create employee group
   requestBody:
     content:
       application/json:

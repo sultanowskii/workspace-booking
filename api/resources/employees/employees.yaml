@@ -1,6 +1,6 @@
 get:
-  summary: Get employees
   operationId: getEmployees
+  summary: Get employees
   description: |
     Get list of employees. Supported sort/search fields: `id`, `user.username`, `fullName`
   x-spring-paginated: true
@@ -32,8 +32,8 @@ get:
               $ref: ../../schemas/employees/Employee.yaml
 post:
   # admin-only
-  summary: Create employee
   operationId: createEmployee
+  summary: Create employee
   requestBody:
     content:
       application/json:

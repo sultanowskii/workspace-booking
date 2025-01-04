@@ -1,6 +1,6 @@
 get:
-  summary: Get office occupancies
   operationId: getOfficeOccupancies
+  summary: Get office occupancies
   responses:
     "200":
       description: Success

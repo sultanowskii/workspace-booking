@@ -237,7 +237,7 @@ public interface EmployeeGroupsApi {
      *         or Resource Not Found (status code 404)
      */
     @Operation(
-        operationId = "updateEmployeeGroups",
+        operationId = "updateEmployeeGroup",
         summary = "Update employee group",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
@@ -255,7 +255,7 @@ public interface EmployeeGroupsApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<EmployeeGroup> updateEmployeeGroups(
+    ResponseEntity<EmployeeGroup> updateEmployeeGroup(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
         @Parameter(name = "EmployeeGroupCreateUpdate", description = "") @Valid @RequestBody(required = false) EmployeeGroupCreateUpdate employeeGroupCreateUpdate
     );

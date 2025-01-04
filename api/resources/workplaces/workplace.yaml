@@ -1,6 +1,6 @@
 get:
-  summary: Get workplace
   operationId: getWorkplace
+  summary: Get workplace
   parameters:
     - name: id
       in: path
@@ -18,8 +18,8 @@ get:
     "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 put:
-  summary: Update workplace
   operationId: updateWorkplace
+  summary: Update workplace
   parameters:
     - name: id
       in: path
@@ -42,8 +42,8 @@ put:
     "404":
       $ref: ../../schemas/common/ResourceNotFound.yaml
 delete:
-  summary: Delete workplace
   operationId: deleteWorkplace
+  summary: Delete workplace
   parameters:
     - name: id
       in: path
