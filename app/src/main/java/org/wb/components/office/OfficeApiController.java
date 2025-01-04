@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("${openapi.workplaceBooking.base-path:}")
-public class OfficesApiController implements OfficesApi {
+public class OfficeApiController implements OfficesApi {
     @Autowired
     OfficeRepository repo;
 
