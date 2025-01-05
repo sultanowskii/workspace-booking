@@ -37,7 +37,7 @@ public interface WorkplacesApi {
     /**
      * POST /workplaces : Create workplace
      *
-     * @param workplaceCreateUpdate  (optional)
+     * @param workplaceCreateUpdate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -57,7 +57,7 @@ public interface WorkplacesApi {
     )
     
     ResponseEntity<Workplace> createWorkplace(
-        @Parameter(name = "WorkplaceCreateUpdate", description = "") @Valid @RequestBody(required = false) WorkplaceCreateUpdate workplaceCreateUpdate
+        @Parameter(name = "WorkplaceCreateUpdate", description = "", required = true) @Valid @RequestBody WorkplaceCreateUpdate workplaceCreateUpdate
     );
 
 
@@ -156,7 +156,7 @@ public interface WorkplacesApi {
      * PUT /workplaces/{id} : Update workplace
      *
      * @param id  (required)
-     * @param workplaceCreateUpdate  (optional)
+     * @param workplaceCreateUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -181,7 +181,7 @@ public interface WorkplacesApi {
     
     ResponseEntity<Workplace> updateWorkplace(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "WorkplaceCreateUpdate", description = "") @Valid @RequestBody(required = false) WorkplaceCreateUpdate workplaceCreateUpdate
+        @Parameter(name = "WorkplaceCreateUpdate", description = "", required = true) @Valid @RequestBody WorkplaceCreateUpdate workplaceCreateUpdate
     );
 
 }

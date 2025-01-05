@@ -29,6 +29,7 @@ public class OfficeApiController implements OfficesApi {
     public ResponseEntity<List<Office>> getOffices(
             @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
             @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+            @Parameter(name = "employeeGroupId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeGroupId", required = false) Long employeeGroupId,
             @ParameterObject final Pageable pageable) {
         var result = repo
                 .findAll()
@@ -59,6 +60,18 @@ public class OfficeApiController implements OfficesApi {
 
     @Override
     public ResponseEntity<Void> deleteOffice(Long id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> addEmployeeGroupToOffice(Long employeeGroupId, Long officeId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> removeEmployeeGroupFromOffice(Long employeeGroupId, Long officeId) {
         // TODO Auto-generated method stub
         return null;
     }

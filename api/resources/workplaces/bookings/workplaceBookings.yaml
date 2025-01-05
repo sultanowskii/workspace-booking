@@ -39,6 +39,7 @@ post:
   operationId: createWorkplaceBooking
   summary: Create workplace booking
   requestBody:
+    required: true
     content:
       application/json:
         schema:

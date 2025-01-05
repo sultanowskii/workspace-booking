@@ -16,7 +16,7 @@ get:
           schema:
             $ref: ../../schemas/workplaces/Workplace.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 put:
   operationId: updateWorkplace
   summary: Update workplace
@@ -28,6 +28,7 @@ put:
         format: int64
       required: true
   requestBody:
+    required: true
     content:
       application/json:
         schema:
@@ -40,7 +41,7 @@ put:
           schema:
             $ref: ../../schemas/workplaces/Workplace.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 delete:
   operationId: deleteWorkplace
   summary: Delete workplace
@@ -55,4 +56,4 @@ delete:
     "201":
       description: Success
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml

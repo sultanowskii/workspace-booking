@@ -40,7 +40,7 @@ public interface WorkplaceBookingsApi {
     /**
      * POST /workplaceBookings : Create workplace booking
      *
-     * @param workplaceBookingCreate  (optional)
+     * @param workplaceBookingCreate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -60,7 +60,7 @@ public interface WorkplaceBookingsApi {
     )
     
     ResponseEntity<WorkplaceBooking> createWorkplaceBooking(
-        @Parameter(name = "WorkplaceBookingCreate", description = "") @Valid @RequestBody(required = false) WorkplaceBookingCreate workplaceBookingCreate
+        @Parameter(name = "WorkplaceBookingCreate", description = "", required = true) @Valid @RequestBody WorkplaceBookingCreate workplaceBookingCreate
     );
 
 
@@ -159,7 +159,7 @@ public interface WorkplaceBookingsApi {
      * PUT /workplaceBookings/{id} : Update workplace booking
      *
      * @param id  (required)
-     * @param workplaceBookingUpdate  (optional)
+     * @param workplaceBookingUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -184,7 +184,7 @@ public interface WorkplaceBookingsApi {
     
     ResponseEntity<WorkplaceBooking> updateWorkplaceBooking(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "WorkplaceBookingUpdate", description = "") @Valid @RequestBody(required = false) WorkplaceBookingUpdate workplaceBookingUpdate
+        @Parameter(name = "WorkplaceBookingUpdate", description = "", required = true) @Valid @RequestBody WorkplaceBookingUpdate workplaceBookingUpdate
     );
 
 }

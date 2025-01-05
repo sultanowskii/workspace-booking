@@ -16,7 +16,7 @@ get:
           schema:
             $ref: ../../schemas/employees/Employee.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 put:
   # admin-only
   operationId: updateEmployee
@@ -29,6 +29,7 @@ put:
         format: int64
       required: true
   requestBody:
+    required: true
     content:
       application/json:
         schema:
@@ -41,7 +42,7 @@ put:
           schema:
             $ref: ../../schemas/employees/Employee.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 delete:
   # admin-only
   operationId: deleteEmployee
@@ -57,4 +58,4 @@ delete:
     "204":
       description: Success
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml

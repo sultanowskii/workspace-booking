@@ -19,6 +19,12 @@ get:
         type: string
         minLength: 1
       required: false
+    - name: officeId
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: false
   responses:
     "200":
       description: Success
@@ -32,10 +38,11 @@ post:
   operationId: createEmployeeGroup
   summary: Create employee group
   requestBody:
+    required: true
     content:
       application/json:
         schema:
-          $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+          $ref: ../../schemas/employeeGroups/EmployeeGroupCreateUpdate.yaml
   responses:
     "201":
       description: Success
@@ -43,3 +50,5 @@ post:
         application/json:
           schema:
             $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+    "403":
+      $ref: ../../schemas/common/errors/PermissionDenied.yaml

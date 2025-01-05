@@ -20,6 +20,12 @@ get:
         type: string
         minLength: 1
       required: false
+    - name: employeeGroupId
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: false
   responses:
     "200":
       description: Success
@@ -33,6 +39,7 @@ post:
   summary: Create office
   operationId: createOffice
   requestBody:
+    required: true
     content:
       application/json:
         schema:

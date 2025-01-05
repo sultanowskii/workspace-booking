@@ -16,7 +16,7 @@ get:
           schema:
             $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 put:
   operationId: updateEmployeeGroup
   summary: Update employee group
@@ -28,6 +28,7 @@ put:
         format: int64
       required: true
   requestBody:
+    required: true
     content:
       application/json:
         schema:
@@ -39,8 +40,10 @@ put:
         application/json:
           schema:
             $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+    "403":
+      $ref: ../../schemas/common/errors/PermissionDenied.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 delete:
   operationId: deleteEmployeeGroup
   summary: Delete employee group
@@ -54,5 +57,7 @@ delete:
   responses:
     "204":
       description: Success
+    "403":
+      $ref: ../../schemas/common/errors/PermissionDenied.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml

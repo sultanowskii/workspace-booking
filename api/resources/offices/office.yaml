@@ -16,7 +16,7 @@ get:
           schema:
             $ref: ../../schemas/offices/Office.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 put:
   operationId: updateOffice
   summary: Update office
@@ -28,6 +28,7 @@ put:
         format: int64
       required: true
   requestBody:
+    required: true
     content:
       application/json:
         schema:
@@ -40,7 +41,7 @@ put:
           schema:
             $ref: ../../schemas/offices/Office.yaml
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 delete:
   operationId: deleteOffice
   summary: Delete office
@@ -55,4 +56,4 @@ delete:
     "204":
       description: Success
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml

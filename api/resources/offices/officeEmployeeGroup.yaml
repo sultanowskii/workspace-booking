@@ -18,7 +18,7 @@ post:
     "204":
       description: Success
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 delete:
   operationId: removeEmployeeGroupFromOffice
   summary: Remove employee group from the office
@@ -39,4 +39,4 @@ delete:
     "204":
       description: Success
     "404":
-      $ref: ../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml

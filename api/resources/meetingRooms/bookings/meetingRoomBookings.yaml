@@ -54,6 +54,7 @@ post:
   operationId: createMeetingRoomBooking
   summary: Create meeting room booking
   requestBody:
+    required: true
     content:
       application/json:
         schema:

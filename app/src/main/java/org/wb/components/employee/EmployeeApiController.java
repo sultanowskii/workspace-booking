@@ -26,16 +26,16 @@ import jakarta.validation.constraints.Size;
 public class EmployeeApiController implements EmployeesApi {
     @Autowired
     private EmployeeService service;
-    @Autowired
-    private EmployeeSpecificationCreator specCreator;
 
     @Override
     public ResponseEntity<List<Employee>> getEmployees(
             @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
             @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
             @ParameterObject final Pageable pageable) {
-        var searchSpec = specCreator.withFieldContaining(searchFieldName, searchString);
-        var paginator = new Paginator(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
+        var searchSpec = new EmployeeSpecificationBuilder()
+                .withFieldContaining(searchFieldName, searchString)
+                .build();
+        var paginator = Paginator.from(pageable);
 
         var result = service.getAll(searchSpec, paginator);
         return ResponseEntity.ok(result);

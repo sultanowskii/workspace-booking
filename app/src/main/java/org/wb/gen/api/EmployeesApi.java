@@ -38,7 +38,7 @@ public interface EmployeesApi {
     /**
      * POST /employees : Create employee
      *
-     * @param employeeCreate  (optional)
+     * @param employeeCreate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -58,7 +58,7 @@ public interface EmployeesApi {
     )
     
     ResponseEntity<Employee> createEmployee(
-        @Parameter(name = "EmployeeCreate", description = "") @Valid @RequestBody(required = false) EmployeeCreate employeeCreate
+        @Parameter(name = "EmployeeCreate", description = "", required = true) @Valid @RequestBody EmployeeCreate employeeCreate
     );
 
 
@@ -155,7 +155,7 @@ public interface EmployeesApi {
      * PUT /employees/{id} : Update employee
      *
      * @param id  (required)
-     * @param employeeUpdate  (optional)
+     * @param employeeUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -180,7 +180,7 @@ public interface EmployeesApi {
     
     ResponseEntity<Employee> updateEmployee(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "EmployeeUpdate", description = "") @Valid @RequestBody(required = false) EmployeeUpdate employeeUpdate
+        @Parameter(name = "EmployeeUpdate", description = "", required = true) @Valid @RequestBody EmployeeUpdate employeeUpdate
     );
 
 }

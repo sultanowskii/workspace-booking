@@ -35,9 +35,39 @@ import jakarta.annotation.Generated;
 public interface OfficesApi {
 
     /**
+     * POST /offices/{officeId}/employeeGroups/{employeeGroupId} : Add employee group to the office
+     *
+     * @param employeeGroupId  (required)
+     * @param officeId  (required)
+     * @return Success (status code 204)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "addEmployeeGroupToOffice",
+        summary = "Add employee group to the office",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/offices/{officeId}/employeeGroups/{employeeGroupId}",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<Void> addEmployeeGroupToOffice(
+        @Parameter(name = "employeeGroupId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("employeeGroupId") Long employeeGroupId,
+        @Parameter(name = "officeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("officeId") Long officeId
+    );
+
+
+    /**
      * POST /offices : Create office
      *
-     * @param officeCreateUpdate  (optional)
+     * @param officeCreateUpdate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -57,7 +87,7 @@ public interface OfficesApi {
     )
     
     ResponseEntity<Office> createOffice(
-        @Parameter(name = "OfficeCreateUpdate", description = "") @Valid @RequestBody(required = false) OfficeCreateUpdate officeCreateUpdate
+        @Parameter(name = "OfficeCreateUpdate", description = "", required = true) @Valid @RequestBody OfficeCreateUpdate officeCreateUpdate
     );
 
 
@@ -125,6 +155,7 @@ public interface OfficesApi {
      *
      * @param searchFieldName  (optional)
      * @param searchString  (optional)
+     * @param employeeGroupId  (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -146,7 +177,38 @@ public interface OfficesApi {
     ResponseEntity<List<Office>> getOffices(
         @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
         @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @Parameter(name = "employeeGroupId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeGroupId", required = false) Long employeeGroupId,
         @ParameterObject final Pageable pageable
+    );
+
+
+    /**
+     * DELETE /offices/{officeId}/employeeGroups/{employeeGroupId} : Remove employee group from the office
+     *
+     * @param employeeGroupId  (required)
+     * @param officeId  (required)
+     * @return Success (status code 204)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "removeEmployeeGroupFromOffice",
+        summary = "Remove employee group from the office",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/offices/{officeId}/employeeGroups/{employeeGroupId}",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<Void> removeEmployeeGroupFromOffice(
+        @Parameter(name = "employeeGroupId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("employeeGroupId") Long employeeGroupId,
+        @Parameter(name = "officeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("officeId") Long officeId
     );
 
 
@@ -154,7 +216,7 @@ public interface OfficesApi {
      * PUT /offices/{id} : Update office
      *
      * @param id  (required)
-     * @param officeCreateUpdate  (optional)
+     * @param officeCreateUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -179,7 +241,7 @@ public interface OfficesApi {
     
     ResponseEntity<Office> updateOffice(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "OfficeCreateUpdate", description = "") @Valid @RequestBody(required = false) OfficeCreateUpdate officeCreateUpdate
+        @Parameter(name = "OfficeCreateUpdate", description = "", required = true) @Valid @RequestBody OfficeCreateUpdate officeCreateUpdate
     );
 
 }

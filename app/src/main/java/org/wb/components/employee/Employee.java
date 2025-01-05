@@ -37,6 +37,6 @@ public class Employee implements org.wb.components.common.Entity {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @ManyToMany(mappedBy = "meetingParticipants")
+    @ManyToMany(mappedBy = "meetingParticipants", fetch = FetchType.LAZY)
     private List<MeetingRoomBooking> meetings;
 }

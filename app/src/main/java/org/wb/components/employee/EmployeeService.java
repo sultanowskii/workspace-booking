@@ -19,9 +19,35 @@ public class EmployeeService
     private EmployeeMapper mapper;
 
     @Override
-    protected boolean isOwnershipValid(Employee employee) {
+    protected boolean isListAllowed() {
+        return true;
+    }
+
+    @Override
+    protected boolean isCreateAllowed() {
+        return true;
+    }
+
+    @Override
+    protected boolean isReadAllowed(Employee entity) {
+        return true;
+    }
+
+    @Override
+    protected boolean isUpdateAllowed(Employee employee) {
         var currentUser = userService.getCurrentUser();
-        return employee.getUser().equals(currentUser) && !currentUser.isAdmin();
+        return employee.getUser().equals(currentUser) || currentUser.isAdmin();
+    }
+
+    @Override
+    protected boolean isDeleteAllowed(Employee employee) {
+        var currentUser = userService.getCurrentUser();
+        return currentUser.isAdmin();
+    }
+
+    @Override
+    protected String entityName() {
+        return "employee";
     }
 
     @Override
@@ -39,7 +65,7 @@ public class EmployeeService
             } else {
                 root.fetch("user");
             }
-            return builder.ge(root.get("id"), 0);
+            return builder.conjunction();
         };
     }
 

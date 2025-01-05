@@ -38,7 +38,7 @@ public interface RoomsApi {
     /**
      * POST /rooms : Create room
      *
-     * @param roomCreateUpdate  (optional)
+     * @param roomCreateUpdate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -58,7 +58,7 @@ public interface RoomsApi {
     )
     
     ResponseEntity<Room> createRoom(
-        @Parameter(name = "RoomCreateUpdate", description = "") @Valid @RequestBody(required = false) RoomCreateUpdate roomCreateUpdate
+        @Parameter(name = "RoomCreateUpdate", description = "", required = true) @Valid @RequestBody RoomCreateUpdate roomCreateUpdate
     );
 
 
@@ -157,7 +157,7 @@ public interface RoomsApi {
      * PUT /rooms/{id} : Update room
      *
      * @param id  (required)
-     * @param roomCreateUpdate  (optional)
+     * @param roomCreateUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -182,7 +182,7 @@ public interface RoomsApi {
     
     ResponseEntity<RoomWithWalls> updateRoom(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "RoomCreateUpdate", description = "") @Valid @RequestBody(required = false) RoomCreateUpdate roomCreateUpdate
+        @Parameter(name = "RoomCreateUpdate", description = "", required = true) @Valid @RequestBody RoomCreateUpdate roomCreateUpdate
     );
 
 }

@@ -43,6 +43,7 @@ post:
   operationId: createMeetingRoom
   summary: Create meeting room
   requestBody:
+    required: true
     content:
       application/json:
         schema:

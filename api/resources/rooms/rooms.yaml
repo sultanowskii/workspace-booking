@@ -39,6 +39,7 @@ post:
   operationId: createRoom
   summary: Create room
   requestBody:
+    required: true
     content:
       application/json:
         schema:

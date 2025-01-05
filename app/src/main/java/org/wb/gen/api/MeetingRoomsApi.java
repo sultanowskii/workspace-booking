@@ -37,7 +37,7 @@ public interface MeetingRoomsApi {
     /**
      * POST /meetingRooms : Create meeting room
      *
-     * @param meetingRoomCreateUpdate  (optional)
+     * @param meetingRoomCreateUpdate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -57,7 +57,7 @@ public interface MeetingRoomsApi {
     )
     
     ResponseEntity<MeetingRoom> createMeetingRoom(
-        @Parameter(name = "MeetingRoomCreateUpdate", description = "") @Valid @RequestBody(required = false) MeetingRoomCreateUpdate meetingRoomCreateUpdate
+        @Parameter(name = "MeetingRoomCreateUpdate", description = "", required = true) @Valid @RequestBody MeetingRoomCreateUpdate meetingRoomCreateUpdate
     );
 
 
@@ -156,7 +156,7 @@ public interface MeetingRoomsApi {
      * PUT /meetingRooms/{id} : Update meeting room
      *
      * @param id  (required)
-     * @param meetingRoomCreateUpdate  (optional)
+     * @param meetingRoomCreateUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -181,7 +181,7 @@ public interface MeetingRoomsApi {
     
     ResponseEntity<MeetingRoom> updateMeetingRoom(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "MeetingRoomCreateUpdate", description = "") @Valid @RequestBody(required = false) MeetingRoomCreateUpdate meetingRoomCreateUpdate
+        @Parameter(name = "MeetingRoomCreateUpdate", description = "", required = true) @Valid @RequestBody MeetingRoomCreateUpdate meetingRoomCreateUpdate
     );
 
 }

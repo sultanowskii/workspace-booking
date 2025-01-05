@@ -1,5 +1,6 @@
 package org.wb.components.office;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.wb.components.employeegroup.EmployeeGroup;
@@ -11,6 +12,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "office", uniqueConstraints = { @UniqueConstraint(columnNames = "name") })
 public class Office implements org.wb.components.common.Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "office_seq")
@@ -28,5 +30,5 @@ public class Office implements org.wb.components.common.Entity {
     private String address;
 
     @ManyToMany(mappedBy = "allowedOffices")
-    private List<EmployeeGroup> employeeGroups;
+    private List<EmployeeGroup> employeeGroups = new ArrayList<>();
 }

@@ -16,7 +16,7 @@ get:
           schema:
             $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBooking.yaml
     "404":
-      $ref: ../../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../../schemas/common/errors/ResourceNotFound.yaml
 put:
   operationId: updateMeetingRoomBooking
   summary: Update meeting room booking
@@ -28,6 +28,7 @@ put:
         format: int64
       required: true
   requestBody:
+    required: true
     content:
       application/json:
         schema:
@@ -40,7 +41,7 @@ put:
           schema:
             $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBooking.yaml
     "404":
-      $ref: ../../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../../schemas/common/errors/ResourceNotFound.yaml
 delete:
   operationId: deleteMeetingRoomBooking
   summary: Delete meeting room booking
@@ -55,4 +56,4 @@ delete:
     "204":
       description: Success
     "404":
-      $ref: ../../../schemas/common/ResourceNotFound.yaml
+      $ref: ../../../schemas/common/errors/ResourceNotFound.yaml

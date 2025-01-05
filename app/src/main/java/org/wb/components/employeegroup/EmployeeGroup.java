@@ -1,5 +1,6 @@
 package org.wb.components.employeegroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.wb.components.office.Office;
@@ -21,7 +22,7 @@ public class EmployeeGroup implements org.wb.components.common.Entity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "office_employee_group", joinColumns = @JoinColumn(name = "employee_group_id"), inverseJoinColumns = @JoinColumn(name = "office_id"))
-    private List<Office> allowedOffices;
+    private List<Office> allowedOffices = new ArrayList<>();
 }

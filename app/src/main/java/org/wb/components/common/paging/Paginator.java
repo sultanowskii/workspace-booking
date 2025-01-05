@@ -3,13 +3,19 @@ package org.wb.components.common.paging;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Paginator implements Pageable {
     private final int pageNumber;
     private final int pageSize;
     private final Sort sortParameters;
+
+    public static Paginator from(Pageable pageable) {
+        return new Paginator(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
+    }
 
     @Override
     public int getPageNumber() {

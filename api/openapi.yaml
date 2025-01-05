@@ -7,6 +7,8 @@ paths:
     $ref: ./resources/offices/offices.yaml
   /offices/{id}:
     $ref: ./resources/offices/office.yaml
+  /offices/{officeId}/employeeGroups/{employeeGroupId}:
+    $ref: ./resources/offices/officeEmployeeGroup.yaml
   /rooms:
     $ref: ./resources/rooms/rooms.yaml
   # TODO: get full layout? (room, roomWalls, workplaces+visual+booking, meetingRoom+visual+booking)
@@ -17,10 +19,6 @@ paths:
   # TODO: employees
   /employeeGroups/{id}:
     $ref: ./resources/employeeGroups/employeeGroup.yaml
-  /employeeGroups/{employeeGroupId}/offices:
-    $ref: ./resources/employeeGroups/employeeGroupOffices.yaml
-  /employeeGroups/{employeeGroupId}/office/{officeId}:
-    $ref: ./resources/employeeGroups/employeeGroupOffice.yaml
   /workplaces:
     $ref: ./resources/workplaces/workplaces.yaml
   # TODO: workplace name/local id???
