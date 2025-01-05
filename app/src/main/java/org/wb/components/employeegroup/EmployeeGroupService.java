@@ -7,9 +7,6 @@ import org.wb.gen.model.EmployeeGroupCreateUpdate;
 @Service
 public class EmployeeGroupService extends
         EntityService<EmployeeGroup, org.wb.gen.model.EmployeeGroup, EmployeeGroupCreateUpdate, EmployeeGroupCreateUpdate> {
-    private boolean isCurrentUserAdmin() {
-        return userService.getCurrentUser().isAdmin();
-    }
 
     @Override
     protected boolean isListAllowed() {

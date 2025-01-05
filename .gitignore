@@ -19,5 +19,6 @@ build/
 .env
 .venv/
 .vscode/
+.VSCodeCounter/
 
 bin/

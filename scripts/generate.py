@@ -259,8 +259,8 @@ def main():
 
     meeting_room_bookings = []
     meeting_participants = []
+    mrb_id = 1
     for mr_id in range(1, meeting_room_id):
-        mrb_id = 1
         for day in range(1, 31):
             for hour in range(9, 17):
                 meeting_room_bookings.append(
@@ -273,13 +273,15 @@ def main():
                         description=faker.text(),
                     ),
                 )
+                PARTICIPANTS = 6
+                employee_id_base = day * hour * PARTICIPANTS
                 meeting_participants.append(
                     [
                         dict(
                             meeting_room_booking_id=mrb_id,
-                            employee_id=faker.random_int(1, len(employees)),
+                            employee_id=employee_id_base+i,
                         )
-                        for _ in range(6)
+                        for i in range(PARTICIPANTS)
                     ]
                 )
                 mrb_id += 1

@@ -20,13 +20,11 @@ public class EmployeeGroupSpecificationBuilder extends EntitySpecificationBuilde
         if (officeId == null) {
             return this;
         }
-
         andOtherSpec(
                 (root, query, builder) -> {
                     var join = root.join("allowedOffices", JoinType.INNER);
                     return builder.equal(join.get("id"), officeId);
                 });
-
         return this;
     }
 }

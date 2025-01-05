@@ -37,7 +37,6 @@ public class EmployeeGroupsApiController implements EmployeeGroupsApi {
                 .withFieldContaining(searchFieldName, searchString)
                 .build();
         var paginator = Paginator.from(pageable);
-
         var result = service.getAll(spec, paginator);
         return ResponseEntity.ok(result);
     }

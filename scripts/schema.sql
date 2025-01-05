@@ -54,7 +54,9 @@ CREATE TABLE employee_group (
 CREATE TABLE office_employee_group (
     id SERIAL PRIMARY KEY,
     office_id INTEGER NOT NULL REFERENCES office(id) ON DELETE CASCADE,
-    employee_group_id INTEGER NOT NULL REFERENCES employee_group(id) ON DELETE CASCADE
+    employee_group_id INTEGER NOT NULL REFERENCES employee_group(id) ON DELETE CASCADE,
+
+    UNIQUE (office_id, employee_group_id)
 );
 
 CREATE TABLE users (
@@ -102,5 +104,7 @@ CREATE TABLE meeting_room_booking (
 CREATE TABLE meeting_participant (
     id SERIAL PRIMARY KEY,
     meeting_room_booking_id INTEGER NOT NULL REFERENCES meeting_room_booking(id) ON DELETE CASCADE,
-    employee_id INTEGER NOT NULL REFERENCES employee(id) ON DELETE CASCADE
+    employee_id INTEGER NOT NULL REFERENCES employee(id) ON DELETE CASCADE,
+
+    UNIQUE (meeting_room_booking_id, employee_id)
 );

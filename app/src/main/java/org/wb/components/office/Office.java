@@ -29,6 +29,6 @@ public class Office implements org.wb.components.common.Entity {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @ManyToMany(mappedBy = "allowedOffices")
+    @ManyToMany(mappedBy = "allowedOffices", fetch = FetchType.LAZY)
     private List<EmployeeGroup> employeeGroups = new ArrayList<>();
 }

@@ -32,6 +32,10 @@ public abstract class EntityService<T extends Entity, TDto, TCreateDto, TUpdateD
 
     protected abstract String entityName();
 
+    protected boolean isCurrentUserAdmin() {
+        return userService.getCurrentUser().isAdmin();
+    }
+
     protected Specification<T> additionalSpec() {
         return (root, query, builder) -> {
             // always true
@@ -64,9 +68,7 @@ public abstract class EntityService<T extends Entity, TDto, TCreateDto, TUpdateD
     }
 
     public TDto get(long id) {
-        var entity = repo
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(entityName() + " with id=" + id + " not found"));
+        var entity = getRaw(id);
         if (!isReadAllowed(entity)) {
             throw new PermissionDeniedException("You can't access this " + entityName());
         }
@@ -75,9 +77,7 @@ public abstract class EntityService<T extends Entity, TDto, TCreateDto, TUpdateD
 
     @Transactional
     public TDto update(long id, TUpdateDto updateDto) {
-        var entity = repo
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(entityName() + " with id=" + id + " not found"));
+        var entity = getRaw(id);
 
         if (!isUpdateAllowed(entity)) {
             throw new PermissionDeniedException("You can't change this " + entityName());
@@ -88,11 +88,15 @@ public abstract class EntityService<T extends Entity, TDto, TCreateDto, TUpdateD
         return mapper.toDto(entity);
     }
 
-    @Transactional
-    public void delete(long id) {
-        var entity = repo
+    public T getRaw(long id) {
+        return repo
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(entityName() + " with id=" + id + " not found"));
+    }
+
+    @Transactional
+    public void delete(long id) {
+        var entity = getRaw(id);
 
         if (!isDeleteAllowed(entity)) {
             throw new PermissionDeniedException("You can't delete this " + entityName());
