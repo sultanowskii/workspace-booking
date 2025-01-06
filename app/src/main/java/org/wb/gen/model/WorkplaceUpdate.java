@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
 import java.util.*;
 import jakarta.annotation.Generated;
 
@@ -35,9 +34,10 @@ public class WorkplaceUpdate {
   /**
    * Number of monitors
    * minimum: 0
+   * 
    * @return numberOfMonitors
    */
-  @Min(0L) 
+  @Min(0L)
   @Schema(name = "numberOfMonitors", description = "Number of monitors", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("numberOfMonitors")
   public Long getNumberOfMonitors() {
@@ -55,9 +55,10 @@ public class WorkplaceUpdate {
 
   /**
    * X
+   * 
    * @return x
    */
-  
+
   @Schema(name = "x", description = "X", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("x")
   public Double getX() {
@@ -75,9 +76,10 @@ public class WorkplaceUpdate {
 
   /**
    * Y
+   * 
    * @return y
    */
-  
+
   @Schema(name = "y", description = "Y", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("y")
   public Double getY() {
@@ -95,9 +97,10 @@ public class WorkplaceUpdate {
 
   /**
    * Width
+   * 
    * @return width
    */
-  
+
   @Schema(name = "width", description = "Width", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("width")
   public Double getWidth() {
@@ -115,9 +118,10 @@ public class WorkplaceUpdate {
 
   /**
    * Height
+   * 
    * @return height
    */
-  
+
   @Schema(name = "height", description = "Height", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("height")
   public Double getHeight() {
@@ -173,4 +177,3 @@ public class WorkplaceUpdate {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

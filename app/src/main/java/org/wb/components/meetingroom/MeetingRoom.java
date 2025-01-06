@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.wb.components.meetingroom.visual.MeetingRoomVisual;
 import org.wb.components.room.Room;
 
 @Entity
@@ -16,7 +17,7 @@ public class MeetingRoom implements org.wb.components.common.Entity {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
@@ -25,4 +26,8 @@ public class MeetingRoom implements org.wb.components.common.Entity {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
+
+    @NotNull
+    @OneToOne(mappedBy = "meetingRoom", fetch = FetchType.LAZY)
+    private MeetingRoomVisual visual;
 }

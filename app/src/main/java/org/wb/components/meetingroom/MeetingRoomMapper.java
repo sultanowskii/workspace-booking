@@ -1,4 +1,4 @@
-package org.wb.components.workplace;
+package org.wb.components.meetingroom;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import org.wb.components.common.EntityMapper;
 import org.wb.components.room.Room;
 import org.wb.components.room.RoomService;
-import org.wb.gen.model.WorkplaceCreate;
-import org.wb.gen.model.WorkplaceUpdate;
+import org.wb.gen.model.MeetingRoomCreate;
+import org.wb.gen.model.MeetingRoomUpdate;
 
 @Service
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public abstract class WorkplaceMapper implements
-        EntityMapper<Workplace, org.wb.gen.model.Workplace, org.wb.gen.model.Workplace, WorkplaceCreate, WorkplaceUpdate> {
+public abstract class MeetingRoomMapper implements
+        EntityMapper<MeetingRoom, org.wb.gen.model.MeetingRoom, org.wb.gen.model.MeetingRoom, MeetingRoomCreate, MeetingRoomUpdate> {
     @Autowired
     private RoomService roomService;
 
@@ -26,7 +26,7 @@ public abstract class WorkplaceMapper implements
     @Mapping(target = "width", source = "visual.width")
     @Mapping(target = "height", source = "visual.height")
     @Mapping(target = "roomId", source = "room.id")
-    public abstract org.wb.gen.model.Workplace toDto(Workplace workplace);
+    public abstract org.wb.gen.model.MeetingRoom toDto(MeetingRoom meetingRoom);
 
     @Override
     @Mapping(target = "x", source = "visual.x")
@@ -34,7 +34,7 @@ public abstract class WorkplaceMapper implements
     @Mapping(target = "width", source = "visual.width")
     @Mapping(target = "height", source = "visual.height")
     @Mapping(target = "roomId", source = "room.id")
-    public abstract org.wb.gen.model.Workplace toListDto(Workplace workplace);
+    public abstract org.wb.gen.model.MeetingRoom toListDto(MeetingRoom meetingRoom);
 
     @Override
     @Mapping(target = "visual.x", source = "x")
@@ -43,7 +43,7 @@ public abstract class WorkplaceMapper implements
     @Mapping(target = "visual.height", source = "height")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "room", qualifiedByName = "mapRoom", source = "createDto.roomId")
-    public abstract Workplace fromCreateDto(WorkplaceCreate createDto);
+    public abstract MeetingRoom fromCreateDto(MeetingRoomCreate createDto);
 
     @Override
     @Mapping(target = "visual.x", source = "x")
@@ -52,7 +52,7 @@ public abstract class WorkplaceMapper implements
     @Mapping(target = "visual.height", source = "height")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "room", ignore = true)
-    public abstract Workplace fromUpdateDto(WorkplaceUpdate updateDto);
+    public abstract MeetingRoom fromUpdateDto(MeetingRoomUpdate updateDto);
 
     @Override
     @Mapping(target = "visual.x", source = "x")
@@ -61,7 +61,7 @@ public abstract class WorkplaceMapper implements
     @Mapping(target = "visual.height", source = "height")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "room", ignore = true)
-    public abstract void update(@MappingTarget Workplace workplace, WorkplaceUpdate updateDto);
+    public abstract void update(@MappingTarget MeetingRoom meetingRoom, MeetingRoomUpdate updateDto);
 
     @Named("mapRoom")
     protected Room mapRoom(long roomId) {

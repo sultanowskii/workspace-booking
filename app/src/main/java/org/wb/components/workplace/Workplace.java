@@ -18,7 +18,7 @@ public class Workplace implements org.wb.components.common.Entity {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
@@ -28,6 +28,6 @@ public class Workplace implements org.wb.components.common.Entity {
     private int numberOfMonitors;
 
     @NotNull
-    @OneToOne(mappedBy = "workplace")
+    @OneToOne(mappedBy = "workplace", fetch = FetchType.LAZY)
     private WorkplaceVisual visual;
 }

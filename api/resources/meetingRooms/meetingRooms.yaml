@@ -2,7 +2,7 @@ get:
   operationId: getMeetingRooms
   summary: Get meeting rooms
   description: |
-    Get list of meeting rooms. Supported sort/search fields: `name`, `x`, `y`, `width`, `height`
+    Get list of meeting rooms. Supported sort/search fields: `name`
   x-spring-paginated: true
   parameters:
     - name: roomId
@@ -20,10 +20,6 @@ get:
         type: string
         enum:
           - name
-          - x
-          - "y"
-          - width
-          - height
     - name: searchString
       in: query
       schema:

@@ -59,6 +59,33 @@ public class RoomService
 
     @Override
     @Transactional
+    public RoomWithWalls create(RoomCreate createDto) {
+        if (!isCreateAllowed()) {
+            throw new PermissionDeniedException("You can't create " + entityName());
+        }
+        var room = mapper.fromCreateDto(createDto);
+        room.getWalls().clear();
+        var createdRoom = repo.save(room);
+
+        for (var w : mapper.fromCreateDto(createDto).getWalls()) {
+            createdRoom
+                    .getWalls()
+                    .add(new RoomWall(
+                            null,
+                            room,
+                            w.getX1(),
+                            w.getY1(),
+                            w.getX2(),
+                            w.getY2()));
+        }
+        wallRepo.saveAll(createdRoom.getWalls());
+        var createdRoomWithWalls = repo.save(createdRoom);
+
+        return mapper.toDto(createdRoomWithWalls);
+    }
+
+    @Override
+    @Transactional
     public RoomWithWalls update(long id, RoomUpdate updateDto) {
         var room = getRaw(id);
 

@@ -15,10 +15,10 @@ public class MeetingRoomVisual {
     @Column(name = "meeting_room_id")
     private long meetingRoomId;
 
-    @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name = "meeting_room_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
     private MeetingRoom meetingRoom;
 
     @NotNull

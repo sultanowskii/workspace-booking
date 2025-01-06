@@ -122,7 +122,7 @@ public interface MeetingRoomsApi {
 
     /**
      * GET /meetingRooms : Get meeting rooms
-     * Get list of meeting rooms. Supported sort/search fields: &#x60;name&#x60;, &#x60;x&#x60;, &#x60;y&#x60;, &#x60;width&#x60;, &#x60;height&#x60; 
+     * Get list of meeting rooms. Supported sort/search fields: &#x60;name&#x60; 
      *
      * @param roomId Room ID (required)
      * @param searchFieldName  (optional)
@@ -132,7 +132,7 @@ public interface MeetingRoomsApi {
     @Operation(
         operationId = "getMeetingRooms",
         summary = "Get meeting rooms",
-        description = "Get list of meeting rooms. Supported sort/search fields: `name`, `x`, `y`, `width`, `height` ",
+        description = "Get list of meeting rooms. Supported sort/search fields: `name` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeetingRoom.class)))

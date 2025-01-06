@@ -15,7 +15,7 @@ public class WorkplaceVisual {
     @Column(name = "workplace_id")
     private long workplaceId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @PrimaryKeyJoinColumn(name = "workplace_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
