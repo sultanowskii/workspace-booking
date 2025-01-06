@@ -14,5 +14,6 @@ public interface EntityMapper<T extends Entity, TDto, TListDto, TCreateDto, TUpd
     @Mapping(target = "id", ignore = true)
     T fromUpdateDto(TUpdateDto updateDto);
 
+    @Mapping(target = "id", ignore = true)
     void update(@MappingTarget T entity, TUpdateDto updateDto);
 }
