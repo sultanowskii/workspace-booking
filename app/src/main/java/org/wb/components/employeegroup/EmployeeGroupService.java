@@ -6,7 +6,7 @@ import org.wb.gen.model.EmployeeGroupCreateUpdate;
 
 @Service
 public class EmployeeGroupService extends
-        EntityService<EmployeeGroup, org.wb.gen.model.EmployeeGroup, EmployeeGroupCreateUpdate, EmployeeGroupCreateUpdate> {
+        EntityService<EmployeeGroup, org.wb.gen.model.EmployeeGroup, org.wb.gen.model.EmployeeGroup, EmployeeGroupCreateUpdate, EmployeeGroupCreateUpdate> {
 
     @Override
     protected boolean isListAllowed() {

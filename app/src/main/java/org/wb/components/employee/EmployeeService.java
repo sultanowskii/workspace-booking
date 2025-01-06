@@ -12,7 +12,8 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class EmployeeService
-        extends EntityService<Employee, org.wb.gen.model.Employee, EmployeeCreate, EmployeeUpdate> {
+        extends
+        EntityService<Employee, org.wb.gen.model.Employee, org.wb.gen.model.Employee, EmployeeCreate, EmployeeUpdate> {
     @Autowired
     private EmployeeRepository repo;
     @Autowired

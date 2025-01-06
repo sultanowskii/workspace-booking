@@ -11,6 +11,7 @@ CREATE TABLE room (
 );
 
 CREATE TABLE room_wall (
+    id SERIAL PRIMARY KEY,
     room_id INTEGER NOT NULL REFERENCES room(id) ON DELETE CASCADE,
     x1 DOUBLE PRECISION NOT NULL,
     y1 DOUBLE PRECISION NOT NULL,
@@ -37,6 +38,7 @@ CREATE TABLE workplace (
     room_id INTEGER NOT NULL REFERENCES room(id) ON DELETE CASCADE,
     number_of_monitors INTEGER NOT NULL CHECK (number_of_monitors >= 0)
 );
+ALTER SEQUENCE room_wall_id_seq INCREMENT BY 16;
 
 CREATE TABLE workplace_visual (
     workplace_id INTEGER NOT NULL UNIQUE REFERENCES workplace(id) ON DELETE CASCADE,

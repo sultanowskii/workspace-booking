@@ -17,10 +17,6 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class RoomWall {
 
-  private Long id;
-
-  private Long roomId;
-
   private Double x1;
 
   private Double y1;
@@ -28,46 +24,6 @@ public class RoomWall {
   private Double x2;
 
   private Double y2;
-
-  public RoomWall id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * ID
-   * @return id
-   */
-  
-  @Schema(name = "id", description = "ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("id")
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public RoomWall roomId(Long roomId) {
-    this.roomId = roomId;
-    return this;
-  }
-
-  /**
-   * Room ID
-   * @return roomId
-   */
-  
-  @Schema(name = "roomId", description = "Room ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("roomId")
-  public Long getRoomId() {
-    return roomId;
-  }
-
-  public void setRoomId(Long roomId) {
-    this.roomId = roomId;
-  }
 
   public RoomWall x1(Double x1) {
     this.x1 = x1;
@@ -158,9 +114,7 @@ public class RoomWall {
       return false;
     }
     RoomWall roomWall = (RoomWall) o;
-    return Objects.equals(this.id, roomWall.id) &&
-        Objects.equals(this.roomId, roomWall.roomId) &&
-        Objects.equals(this.x1, roomWall.x1) &&
+    return Objects.equals(this.x1, roomWall.x1) &&
         Objects.equals(this.y1, roomWall.y1) &&
         Objects.equals(this.x2, roomWall.x2) &&
         Objects.equals(this.y2, roomWall.y2);
@@ -168,15 +122,13 @@ public class RoomWall {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, roomId, x1, y1, x2, y2);
+    return Objects.hash(x1, y1, x2, y2);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class RoomWall {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
     sb.append("    x1: ").append(toIndentedString(x1)).append("\n");
     sb.append("    y1: ").append(toIndentedString(y1)).append("\n");
     sb.append("    x2: ").append(toIndentedString(x2)).append("\n");

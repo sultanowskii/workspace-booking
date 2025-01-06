@@ -12,11 +12,11 @@ import org.wb.components.user.UserService;
 
 import jakarta.transaction.Transactional;
 
-public abstract class EntityService<T extends Entity, TDto, TCreateDto, TUpdateDto> {
+public abstract class EntityService<T extends Entity, TDto, TListDto, TCreateDto, TUpdateDto> {
     @Autowired
     protected Repository<T> repo;
     @Autowired
-    protected EntityMapper<T, TDto, TCreateDto, TUpdateDto> mapper;
+    protected EntityMapper<T, TDto, TListDto, TCreateDto, TUpdateDto> mapper;
     @Autowired
     protected UserService userService;
 
@@ -43,7 +43,7 @@ public abstract class EntityService<T extends Entity, TDto, TCreateDto, TUpdateD
         };
     }
 
-    public List<TDto> getAll(Specification<T> specification,
+    public List<TListDto> getAll(Specification<T> specification,
             Paginator paginator) {
         if (!isListAllowed()) {
             throw new PermissionDeniedException("You can't get " + entityName() + " list");
@@ -53,7 +53,7 @@ public abstract class EntityService<T extends Entity, TDto, TCreateDto, TUpdateD
         var paged = new SmartPage<>(result, paginator);
 
         return paged
-                .map(e -> mapper.toDto(e))
+                .map(e -> mapper.toListDto(e))
                 .toList();
     }
 

@@ -2,14 +2,6 @@ name: RoomWall
 description: Room Wall
 type: object
 properties:
-  id:
-    description: ID
-    type: integer
-    format: int64
-  roomId:
-    description: Room ID
-    type: integer
-    format: int64
   x1:
     description: X1
     type: number

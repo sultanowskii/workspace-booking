@@ -2,7 +2,10 @@ package org.wb.components.room.wall;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,10 +14,12 @@ import org.wb.components.room.Room;
 @Entity
 @Table(name = "room_wall")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoomWall implements org.wb.components.common.Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_wall_seq")
-    @SequenceGenerator(name = "room_wall_seq", sequenceName = "room_wall_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "room_wall_seq", sequenceName = "room_wall_id_seq", allocationSize = 16)
     private Long id;
 
     @NotNull

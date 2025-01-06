@@ -50,4 +50,4 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../../schemas/rooms/Room.yaml
+            $ref: ../../schemas/rooms/RoomWithWalls.yaml

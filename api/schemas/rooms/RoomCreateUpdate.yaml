@@ -9,3 +9,8 @@ properties:
   name:
     description: Name
     type: string
+  walls:
+    description: List of room walls
+    type: array
+    items:
+      $ref: ./RoomWall.yaml

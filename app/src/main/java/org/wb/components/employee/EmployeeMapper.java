@@ -12,7 +12,8 @@ import org.wb.gen.model.EmployeeUpdate;
 @Service
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class EmployeeMapper
-        implements EntityMapper<Employee, org.wb.gen.model.Employee, EmployeeCreate, EmployeeUpdate> {
+        implements
+        EntityMapper<Employee, org.wb.gen.model.Employee, org.wb.gen.model.Employee, EmployeeCreate, EmployeeUpdate> {
     @Mapping(source = "employee.user.username", target = "username")
     public abstract org.wb.gen.model.Employee toDto(Employee employee);
 

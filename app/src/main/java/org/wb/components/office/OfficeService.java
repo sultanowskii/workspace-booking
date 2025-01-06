@@ -10,7 +10,8 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class OfficeService
-        extends EntityService<Office, org.wb.gen.model.Office, OfficeCreateUpdate, OfficeCreateUpdate> {
+        extends
+        EntityService<Office, org.wb.gen.model.Office, org.wb.gen.model.Office, OfficeCreateUpdate, OfficeCreateUpdate> {
     @Autowired
     private EmployeeGroupService employeeGroupService;
 

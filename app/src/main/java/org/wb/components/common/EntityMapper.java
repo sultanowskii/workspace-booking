@@ -2,8 +2,10 @@ package org.wb.components.common;
 
 import org.mapstruct.MappingTarget;
 
-public interface EntityMapper<T extends Entity, TDto, TCreateDto, TUpdateDto> {
+public interface EntityMapper<T extends Entity, TDto, TListDto, TCreateDto, TUpdateDto> {
     TDto toDto(T entity);
+
+    TListDto toListDto(T entity);
 
     T fromCreateDto(TCreateDto createDto);
 
