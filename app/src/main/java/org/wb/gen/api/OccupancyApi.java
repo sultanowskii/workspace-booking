@@ -5,6 +5,8 @@
  */
 package org.wb.gen.api;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 import org.wb.gen.model.OfficeOccupancy;
 import org.wb.gen.model.RoomOccupancy;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import java.util.List;
 import jakarta.annotation.Generated;
@@ -31,34 +34,10 @@ import jakarta.annotation.Generated;
 public interface OccupancyApi {
 
     /**
-     * GET /occupancy/offices : Get office occupancies
-     *
-     * @return Success (status code 200)
-     */
-    @Operation(
-        operationId = "getOfficeOccupancies",
-        summary = "Get office occupancies",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = OfficeOccupancy.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/occupancy/offices",
-        produces = { "application/json" }
-    )
-    
-    ResponseEntity<List<OfficeOccupancy>> getOfficeOccupancies(
-        
-    );
-
-
-    /**
      * GET /occupancy/offices/{id} : Get office occupancy
      *
      * @param id  (required)
+     * @param date  (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -77,13 +56,16 @@ public interface OccupancyApi {
     )
     
     ResponseEntity<OfficeOccupancy> getOfficeOccupancy(
-        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
+        @Parameter(name = "date", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     );
 
 
     /**
      * GET /occupancy/rooms : Get room occupancies
      *
+     * @param officeId  (required)
+     * @param date  (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -102,7 +84,8 @@ public interface OccupancyApi {
     )
     
     ResponseEntity<List<RoomOccupancy>> getRoomOccupancies(
-        
+        @NotNull @Parameter(name = "officeId", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "officeId", required = true) Long officeId,
+        @Parameter(name = "date", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     );
 
 
@@ -110,6 +93,7 @@ public interface OccupancyApi {
      * GET /occupancy/rooms/{id} : Get room occupancy
      *
      * @param id  (required)
+     * @param date  (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -128,7 +112,8 @@ public interface OccupancyApi {
     )
     
     ResponseEntity<RoomOccupancy> getRoomOccupancy(
-        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
+        @Parameter(name = "date", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     );
 
 }

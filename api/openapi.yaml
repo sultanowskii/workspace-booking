@@ -40,8 +40,6 @@ paths:
     $ref: ./resources/meetingRooms/bookings/meetingRoomBookings.yaml
   /meetingRoomBookings/{id}:
     $ref: ./resources/meetingRooms/bookings/meetingRoomBooking.yaml
-  /occupancy/offices:
-    $ref: ./resources/occupancy/offices/offices.yaml
   /occupancy/offices/{id}:
     $ref: ./resources/occupancy/offices/office.yaml
   /occupancy/rooms:

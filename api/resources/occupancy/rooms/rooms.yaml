@@ -1,6 +1,19 @@
 get:
   operationId: getRoomOccupancies
   summary: Get room occupancies
+  parameters:
+    - name: officeId
+      in: query
+      schema:
+        type: integer
+        format: int64
+      required: true
+    - name: date
+      in: query
+      schema:
+        type: string
+        format: date
+      required: false
   responses:
     "200":
       description: Success
