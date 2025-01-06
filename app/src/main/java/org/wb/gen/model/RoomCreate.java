@@ -16,9 +16,9 @@ import jakarta.annotation.Generated;
  * Room
  */
 
-@Schema(name = "RoomCreateUpdate", description = "Room")
+@Schema(name = "RoomCreate", description = "Room")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class RoomCreateUpdate {
+public class RoomCreate {
 
   private Long officeId;
 
@@ -27,7 +27,7 @@ public class RoomCreateUpdate {
   @Valid
   private List<@Valid RoomWall> walls = new ArrayList<>();
 
-  public RoomCreateUpdate officeId(Long officeId) {
+  public RoomCreate officeId(Long officeId) {
     this.officeId = officeId;
     return this;
   }
@@ -47,7 +47,7 @@ public class RoomCreateUpdate {
     this.officeId = officeId;
   }
 
-  public RoomCreateUpdate name(String name) {
+  public RoomCreate name(String name) {
     this.name = name;
     return this;
   }
@@ -67,12 +67,12 @@ public class RoomCreateUpdate {
     this.name = name;
   }
 
-  public RoomCreateUpdate walls(List<@Valid RoomWall> walls) {
+  public RoomCreate walls(List<@Valid RoomWall> walls) {
     this.walls = walls;
     return this;
   }
 
-  public RoomCreateUpdate addWallsItem(RoomWall wallsItem) {
+  public RoomCreate addWallsItem(RoomWall wallsItem) {
     if (this.walls == null) {
       this.walls = new ArrayList<>();
     }
@@ -103,10 +103,10 @@ public class RoomCreateUpdate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RoomCreateUpdate roomCreateUpdate = (RoomCreateUpdate) o;
-    return Objects.equals(this.officeId, roomCreateUpdate.officeId) &&
-        Objects.equals(this.name, roomCreateUpdate.name) &&
-        Objects.equals(this.walls, roomCreateUpdate.walls);
+    RoomCreate roomCreate = (RoomCreate) o;
+    return Objects.equals(this.officeId, roomCreate.officeId) &&
+        Objects.equals(this.name, roomCreate.name) &&
+        Objects.equals(this.walls, roomCreate.walls);
   }
 
   @Override
@@ -117,7 +117,7 @@ public class RoomCreateUpdate {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RoomCreateUpdate {\n");
+    sb.append("class RoomCreate {\n");
     sb.append("    officeId: ").append(toIndentedString(officeId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    walls: ").append(toIndentedString(walls)).append("\n");

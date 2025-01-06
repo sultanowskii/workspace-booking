@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wb.gen.api.MeetingRoomsApi;
 import org.wb.gen.model.MeetingRoom;
-import org.wb.gen.model.MeetingRoomCreateUpdate;
+import org.wb.gen.model.MeetingRoomCreate;
+import org.wb.gen.model.MeetingRoomUpdate;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -19,7 +20,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Controller
-@RequestMapping("${openapi.workplaceBooking.base-path:}")
+@RequestMapping("${openapi.workspaceBooking.base-path:}")
 public class MeetingRoomApiController implements MeetingRoomsApi {
     @Override
     public ResponseEntity<List<MeetingRoom>> getMeetingRooms(
@@ -32,7 +33,7 @@ public class MeetingRoomApiController implements MeetingRoomsApi {
     }
 
     @Override
-    public ResponseEntity<MeetingRoom> createMeetingRoom(@Valid MeetingRoomCreateUpdate meetingRoomCreateUpdate) {
+    public ResponseEntity<MeetingRoom> createMeetingRoom(@Valid MeetingRoomCreate meetingRoomCreate) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -45,7 +46,7 @@ public class MeetingRoomApiController implements MeetingRoomsApi {
 
     @Override
     public ResponseEntity<MeetingRoom> updateMeetingRoom(Long id,
-            @Valid MeetingRoomCreateUpdate meetingRoomCreateUpdate) {
+            @Valid MeetingRoomUpdate meetingRoomUpdate) {
         // TODO Auto-generated method stub
         return null;
     }

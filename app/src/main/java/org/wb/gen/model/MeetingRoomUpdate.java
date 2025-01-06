@@ -13,11 +13,9 @@ import jakarta.annotation.Generated;
  * Meeting room
  */
 
-@Schema(name = "MeetingRoomCreateUpdate", description = "Meeting room")
+@Schema(name = "MeetingRoomUpdate", description = "Meeting room")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class MeetingRoomCreateUpdate {
-
-  private Long roomId;
+public class MeetingRoomUpdate {
 
   private String name;
 
@@ -29,27 +27,7 @@ public class MeetingRoomCreateUpdate {
 
   private Double height;
 
-  public MeetingRoomCreateUpdate roomId(Long roomId) {
-    this.roomId = roomId;
-    return this;
-  }
-
-  /**
-   * Room ID
-   * @return roomId
-   */
-  
-  @Schema(name = "roomId", description = "Room ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("roomId")
-  public Long getRoomId() {
-    return roomId;
-  }
-
-  public void setRoomId(Long roomId) {
-    this.roomId = roomId;
-  }
-
-  public MeetingRoomCreateUpdate name(String name) {
+  public MeetingRoomUpdate name(String name) {
     this.name = name;
     return this;
   }
@@ -69,7 +47,7 @@ public class MeetingRoomCreateUpdate {
     this.name = name;
   }
 
-  public MeetingRoomCreateUpdate x(Double x) {
+  public MeetingRoomUpdate x(Double x) {
     this.x = x;
     return this;
   }
@@ -89,7 +67,7 @@ public class MeetingRoomCreateUpdate {
     this.x = x;
   }
 
-  public MeetingRoomCreateUpdate y(Double y) {
+  public MeetingRoomUpdate y(Double y) {
     this.y = y;
     return this;
   }
@@ -109,7 +87,7 @@ public class MeetingRoomCreateUpdate {
     this.y = y;
   }
 
-  public MeetingRoomCreateUpdate width(Double width) {
+  public MeetingRoomUpdate width(Double width) {
     this.width = width;
     return this;
   }
@@ -129,7 +107,7 @@ public class MeetingRoomCreateUpdate {
     this.width = width;
   }
 
-  public MeetingRoomCreateUpdate height(Double height) {
+  public MeetingRoomUpdate height(Double height) {
     this.height = height;
     return this;
   }
@@ -157,25 +135,23 @@ public class MeetingRoomCreateUpdate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MeetingRoomCreateUpdate meetingRoomCreateUpdate = (MeetingRoomCreateUpdate) o;
-    return Objects.equals(this.roomId, meetingRoomCreateUpdate.roomId) &&
-        Objects.equals(this.name, meetingRoomCreateUpdate.name) &&
-        Objects.equals(this.x, meetingRoomCreateUpdate.x) &&
-        Objects.equals(this.y, meetingRoomCreateUpdate.y) &&
-        Objects.equals(this.width, meetingRoomCreateUpdate.width) &&
-        Objects.equals(this.height, meetingRoomCreateUpdate.height);
+    MeetingRoomUpdate meetingRoomUpdate = (MeetingRoomUpdate) o;
+    return Objects.equals(this.name, meetingRoomUpdate.name) &&
+        Objects.equals(this.x, meetingRoomUpdate.x) &&
+        Objects.equals(this.y, meetingRoomUpdate.y) &&
+        Objects.equals(this.width, meetingRoomUpdate.width) &&
+        Objects.equals(this.height, meetingRoomUpdate.height);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(roomId, name, x, y, width, height);
+    return Objects.hash(name, x, y, width, height);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MeetingRoomCreateUpdate {\n");
-    sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
+    sb.append("class MeetingRoomUpdate {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    x: ").append(toIndentedString(x)).append("\n");
     sb.append("    y: ").append(toIndentedString(y)).append("\n");

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("${openapi.workplaceBooking.base-path:}")
+@RequestMapping("${openapi.workspaceBooking.base-path:}")
 public class OfficeApiController implements OfficesApi {
     @Autowired
     private OfficeService service;

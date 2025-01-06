@@ -9,7 +9,8 @@ import org.wb.gen.model.Error;
 import org.springframework.data.domain.Pageable;
 import org.springdoc.core.annotations.ParameterObject;
 import org.wb.gen.model.Room;
-import org.wb.gen.model.RoomCreateUpdate;
+import org.wb.gen.model.RoomCreate;
+import org.wb.gen.model.RoomUpdate;
 import org.wb.gen.model.RoomWithWalls;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +39,7 @@ public interface RoomsApi {
     /**
      * POST /rooms : Create room
      *
-     * @param roomCreateUpdate  (required)
+     * @param roomCreate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -58,7 +59,7 @@ public interface RoomsApi {
     )
     
     ResponseEntity<RoomWithWalls> createRoom(
-        @Parameter(name = "RoomCreateUpdate", description = "", required = true) @Valid @RequestBody RoomCreateUpdate roomCreateUpdate
+        @Parameter(name = "RoomCreate", description = "", required = true) @Valid @RequestBody RoomCreate roomCreate
     );
 
 
@@ -157,7 +158,7 @@ public interface RoomsApi {
      * PUT /rooms/{id} : Update room
      *
      * @param id  (required)
-     * @param roomCreateUpdate  (required)
+     * @param roomUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -182,7 +183,7 @@ public interface RoomsApi {
     
     ResponseEntity<RoomWithWalls> updateRoom(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "RoomCreateUpdate", description = "", required = true) @Valid @RequestBody RoomCreateUpdate roomCreateUpdate
+        @Parameter(name = "RoomUpdate", description = "", required = true) @Valid @RequestBody RoomUpdate roomUpdate
     );
 
 }

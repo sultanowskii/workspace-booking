@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("${openapi.workplaceBooking.base-path:}")
+@RequestMapping("${openapi.workspaceBooking.base-path:}")
 public class WorkplaceBookingApiController implements WorkplaceBookingsApi {
     @Override
     public ResponseEntity<List<WorkplaceBooking>> getWorkplaceBookings(

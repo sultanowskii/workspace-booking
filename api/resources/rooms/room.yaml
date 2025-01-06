@@ -32,7 +32,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/rooms/RoomCreateUpdate.yaml
+          $ref: ../../schemas/rooms/RoomUpdate.yaml
   responses:
     "200":
       description: Success

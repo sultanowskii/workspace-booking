@@ -1,0 +1,30 @@
+name: MeetingRoomCreate
+description: Meeting room
+type: object
+properties:
+  roomId:
+    description: Room ID
+    type: integer
+    format: int64
+  name:
+    description: Name
+    type: string
+    minLength: 1
+  x:
+    description: X
+    type: number
+    format: double
+  "y":
+    description: "Y"
+    type: number
+    format: double
+  width:
+    description: Width
+    type: number
+    format: double
+    exclusiveMinimum: 0
+  height:
+    description: Height
+    type: number
+    format: double
+    exclusiveMinimum: 0

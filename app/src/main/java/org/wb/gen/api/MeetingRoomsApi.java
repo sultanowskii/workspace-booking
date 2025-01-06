@@ -7,7 +7,8 @@ package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
 import org.wb.gen.model.MeetingRoom;
-import org.wb.gen.model.MeetingRoomCreateUpdate;
+import org.wb.gen.model.MeetingRoomCreate;
+import org.wb.gen.model.MeetingRoomUpdate;
 import org.springframework.data.domain.Pageable;
 import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,7 @@ public interface MeetingRoomsApi {
     /**
      * POST /meetingRooms : Create meeting room
      *
-     * @param meetingRoomCreateUpdate  (required)
+     * @param meetingRoomCreate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -57,7 +58,7 @@ public interface MeetingRoomsApi {
     )
     
     ResponseEntity<MeetingRoom> createMeetingRoom(
-        @Parameter(name = "MeetingRoomCreateUpdate", description = "", required = true) @Valid @RequestBody MeetingRoomCreateUpdate meetingRoomCreateUpdate
+        @Parameter(name = "MeetingRoomCreate", description = "", required = true) @Valid @RequestBody MeetingRoomCreate meetingRoomCreate
     );
 
 
@@ -156,7 +157,7 @@ public interface MeetingRoomsApi {
      * PUT /meetingRooms/{id} : Update meeting room
      *
      * @param id  (required)
-     * @param meetingRoomCreateUpdate  (required)
+     * @param meetingRoomUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -181,7 +182,7 @@ public interface MeetingRoomsApi {
     
     ResponseEntity<MeetingRoom> updateMeetingRoom(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "MeetingRoomCreateUpdate", description = "", required = true) @Valid @RequestBody MeetingRoomCreateUpdate meetingRoomCreateUpdate
+        @Parameter(name = "MeetingRoomUpdate", description = "", required = true) @Valid @RequestBody MeetingRoomUpdate meetingRoomUpdate
     );
 
 }

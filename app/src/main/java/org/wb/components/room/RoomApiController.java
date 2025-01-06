@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.wb.components.common.paging.Paginator;
 import org.wb.gen.api.RoomsApi;
 import org.wb.gen.model.Room;
-import org.wb.gen.model.RoomCreateUpdate;
+import org.wb.gen.model.RoomCreate;
+import org.wb.gen.model.RoomUpdate;
 import org.wb.gen.model.RoomWithWalls;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,7 +24,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Controller
-@RequestMapping("${openapi.workplaceBooking.base-path:}")
+@RequestMapping("${openapi.workspaceBooking.base-path:}")
 public class RoomApiController implements RoomsApi {
     @Autowired
     private RoomService service;
@@ -44,8 +45,8 @@ public class RoomApiController implements RoomsApi {
     }
 
     @Override
-    public ResponseEntity<RoomWithWalls> createRoom(@Valid RoomCreateUpdate roomCreateUpdate) {
-        var result = service.create(roomCreateUpdate);
+    public ResponseEntity<RoomWithWalls> createRoom(@Valid RoomCreate roomCreate) {
+        var result = service.create(roomCreate);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
@@ -56,8 +57,8 @@ public class RoomApiController implements RoomsApi {
     }
 
     @Override
-    public ResponseEntity<RoomWithWalls> updateRoom(Long id, @Valid RoomCreateUpdate roomCreateUpdate) {
-        var result = service.update(id, roomCreateUpdate);
+    public ResponseEntity<RoomWithWalls> updateRoom(Long id, @Valid RoomUpdate roomUpdate) {
+        var result = service.update(id, roomUpdate);
         return ResponseEntity.ok(result);
     }
 

@@ -1,0 +1,31 @@
+name: WorkplaceCreate
+description: Workplace
+type: object
+properties:
+  roomId:
+    description: Room ID
+    type: integer
+    format: int64
+  numberOfMonitors:
+    description: Number of monitors
+    type: integer
+    format: int64
+    minimum: 0
+  x:
+    description: X
+    type: number
+    format: double
+  "y":
+    description: "Y"
+    type: number
+    format: double
+  width:
+    description: Width
+    type: number
+    format: double
+    exclusiveMinimum: 0
+  height:
+    description: Height
+    type: number
+    format: double
+    exclusiveMinimum: 0

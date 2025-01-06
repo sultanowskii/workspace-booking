@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 @Controller
-@RequestMapping("${openapi.workplaceBooking.base-path:}")
+@RequestMapping("${openapi.workspaceBooking.base-path:}")
 public class OccupancyApiController implements OccupancyApi {
     @Autowired
     private OccupancyService service;

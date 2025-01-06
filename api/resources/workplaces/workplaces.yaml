@@ -2,7 +2,7 @@ get:
   operationId: getWorkplaces
   summary: Get workplaces
   description: |
-    Get list of workplaces. Supported sort/search fields: `numberOfMonitors`, `x`, `y`, `width`, `height`
+    Get list of workplaces. Supported sort/search fields: `numberOfMonitors`
   x-spring-paginated: true
   parameters:
     - name: roomId
@@ -20,10 +20,6 @@ get:
         type: string
         enum:
           - numberOfMonitors
-          - x
-          - "y"
-          - width
-          - height
     - name: searchString
       in: query
       schema:
@@ -47,7 +43,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/workplaces/WorkplaceCreateUpdate.yaml
+          $ref: ../../schemas/workplaces/WorkplaceCreate.yaml
   responses:
     "201":
       description: Success

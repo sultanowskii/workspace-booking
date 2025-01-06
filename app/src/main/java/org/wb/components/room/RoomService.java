@@ -6,14 +6,15 @@ import org.wb.components.common.EntityService;
 import org.wb.components.error.exception.PermissionDeniedException;
 import org.wb.components.room.wall.RoomWall;
 import org.wb.components.room.wall.RoomWallRepository;
-import org.wb.gen.model.RoomCreateUpdate;
+import org.wb.gen.model.RoomCreate;
+import org.wb.gen.model.RoomUpdate;
 import org.wb.gen.model.RoomWithWalls;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class RoomService
-        extends EntityService<Room, RoomWithWalls, org.wb.gen.model.Room, RoomCreateUpdate, RoomCreateUpdate> {
+        extends EntityService<Room, RoomWithWalls, org.wb.gen.model.Room, RoomCreate, RoomUpdate> {
     @Autowired
     protected RoomWallRepository wallRepo;
 
@@ -34,13 +35,12 @@ public class RoomService
 
     @Override
     protected boolean isUpdateAllowed(Room entity) {
-        // return isCurrentUserAdmin();
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
     protected boolean isDeleteAllowed(Room entity) {
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class RoomService
 
     @Override
     @Transactional
-    public RoomWithWalls update(long id, RoomCreateUpdate updateDto) {
+    public RoomWithWalls update(long id, RoomUpdate updateDto) {
         var room = getRaw(id);
 
         if (!isUpdateAllowed(room)) {

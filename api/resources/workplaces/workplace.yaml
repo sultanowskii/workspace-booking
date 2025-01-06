@@ -32,7 +32,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: ../../schemas/workplaces/WorkplaceCreateUpdate.yaml
+          $ref: ../../schemas/workplaces/WorkplaceUpdate.yaml
   responses:
     "200":
       description: Success

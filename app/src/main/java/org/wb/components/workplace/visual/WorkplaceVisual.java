@@ -9,14 +9,14 @@ import org.wb.components.workplace.Workplace;
 
 @Entity
 @Data
-public class WorkplaceVisual implements org.wb.components.common.Entity {
+@Table(name = "workplace_visual")
+public class WorkplaceVisual {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workplace_visual_seq")
-    @SequenceGenerator(name = "workplace_visual_seq", sequenceName = "workplace_visual_id_seq", allocationSize = 1)
-    private Long id;
+    @Column(name = "workplace_id")
+    private long workplaceId;
 
-    @ManyToOne
-    @JoinColumn(name = "workplace_id", nullable = false)
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "workplace_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Workplace workplace;

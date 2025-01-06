@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import lombok.Data;
 
 import org.wb.components.room.Room;
+import org.wb.components.workplace.visual.WorkplaceVisual;
 
 @Data
 @Entity
@@ -25,4 +26,8 @@ public class Workplace implements org.wb.components.common.Entity {
     @PositiveOrZero
     @Column(name = "number_of_monitors", nullable = false)
     private int numberOfMonitors;
+
+    @NotNull
+    @OneToOne(mappedBy = "workplace")
+    private WorkplaceVisual visual;
 }

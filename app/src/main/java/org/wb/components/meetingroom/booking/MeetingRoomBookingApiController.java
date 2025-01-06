@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 
 @Controller
-@RequestMapping("${openapi.workplaceBooking.base-path:}")
+@RequestMapping("${openapi.workspaceBooking.base-path:}")
 public class MeetingRoomBookingApiController implements MeetingRoomBookingsApi {
     @Override
     public ResponseEntity<List<MeetingRoomBookingShort>> getMeetingRoomBookings(

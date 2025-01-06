@@ -26,7 +26,7 @@ CREATE TABLE meeting_room (
 );
 
 CREATE TABLE meeting_room_visual (
-    meeting_room_id INTEGER NOT NULL UNIQUE REFERENCES meeting_room(id) ON DELETE CASCADE,
+    meeting_room_id INTEGER PRIMARY KEY REFERENCES meeting_room(id) ON DELETE CASCADE,
     x DOUBLE PRECISION NOT NULL,
     y DOUBLE PRECISION NOT NULL,
     width DOUBLE PRECISION NOT NULL CHECK (width > 0),
@@ -41,7 +41,7 @@ CREATE TABLE workplace (
 ALTER SEQUENCE room_wall_id_seq INCREMENT BY 16;
 
 CREATE TABLE workplace_visual (
-    workplace_id INTEGER NOT NULL UNIQUE REFERENCES workplace(id) ON DELETE CASCADE,
+    workplace_id INTEGER PRIMARY KEY REFERENCES workplace(id) ON DELETE CASCADE,
     x DOUBLE PRECISION NOT NULL,
     y DOUBLE PRECISION NOT NULL, 
     width DOUBLE PRECISION NOT NULL CHECK (width > 0),

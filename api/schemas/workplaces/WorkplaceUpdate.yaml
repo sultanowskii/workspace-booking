@@ -1,15 +1,12 @@
-name: MeetingRoomCreateUpdate
-description: Meeting room
+name: WorkplaceUpdate
+description: Workplace
 type: object
 properties:
-  roomId:
-    description: Room ID
+  numberOfMonitors:
+    description: Number of monitors
     type: integer
     format: int64
-  name:
-    description: Name
-    type: string
-    minLength: 1
+    minimum: 0
   x:
     description: X
     type: number

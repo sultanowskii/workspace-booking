@@ -10,16 +10,16 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * Workplace
+ * Meeting room
  */
 
-@Schema(name = "WorkplaceCreateUpdate", description = "Workplace")
+@Schema(name = "MeetingRoomCreate", description = "Meeting room")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class WorkplaceCreateUpdate {
+public class MeetingRoomCreate {
 
   private Long roomId;
 
-  private Long numberOfMonitors;
+  private String name;
 
   private Double x;
 
@@ -29,7 +29,7 @@ public class WorkplaceCreateUpdate {
 
   private Double height;
 
-  public WorkplaceCreateUpdate roomId(Long roomId) {
+  public MeetingRoomCreate roomId(Long roomId) {
     this.roomId = roomId;
     return this;
   }
@@ -49,28 +49,27 @@ public class WorkplaceCreateUpdate {
     this.roomId = roomId;
   }
 
-  public WorkplaceCreateUpdate numberOfMonitors(Long numberOfMonitors) {
-    this.numberOfMonitors = numberOfMonitors;
+  public MeetingRoomCreate name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
-   * Number of monitors
-   * minimum: 0
-   * @return numberOfMonitors
+   * Name
+   * @return name
    */
-  @Min(0L) 
-  @Schema(name = "numberOfMonitors", description = "Number of monitors", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("numberOfMonitors")
-  public Long getNumberOfMonitors() {
-    return numberOfMonitors;
+  @Size(min = 1) 
+  @Schema(name = "name", description = "Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("name")
+  public String getName() {
+    return name;
   }
 
-  public void setNumberOfMonitors(Long numberOfMonitors) {
-    this.numberOfMonitors = numberOfMonitors;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public WorkplaceCreateUpdate x(Double x) {
+  public MeetingRoomCreate x(Double x) {
     this.x = x;
     return this;
   }
@@ -90,7 +89,7 @@ public class WorkplaceCreateUpdate {
     this.x = x;
   }
 
-  public WorkplaceCreateUpdate y(Double y) {
+  public MeetingRoomCreate y(Double y) {
     this.y = y;
     return this;
   }
@@ -110,7 +109,7 @@ public class WorkplaceCreateUpdate {
     this.y = y;
   }
 
-  public WorkplaceCreateUpdate width(Double width) {
+  public MeetingRoomCreate width(Double width) {
     this.width = width;
     return this;
   }
@@ -130,7 +129,7 @@ public class WorkplaceCreateUpdate {
     this.width = width;
   }
 
-  public WorkplaceCreateUpdate height(Double height) {
+  public MeetingRoomCreate height(Double height) {
     this.height = height;
     return this;
   }
@@ -158,26 +157,26 @@ public class WorkplaceCreateUpdate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    WorkplaceCreateUpdate workplaceCreateUpdate = (WorkplaceCreateUpdate) o;
-    return Objects.equals(this.roomId, workplaceCreateUpdate.roomId) &&
-        Objects.equals(this.numberOfMonitors, workplaceCreateUpdate.numberOfMonitors) &&
-        Objects.equals(this.x, workplaceCreateUpdate.x) &&
-        Objects.equals(this.y, workplaceCreateUpdate.y) &&
-        Objects.equals(this.width, workplaceCreateUpdate.width) &&
-        Objects.equals(this.height, workplaceCreateUpdate.height);
+    MeetingRoomCreate meetingRoomCreate = (MeetingRoomCreate) o;
+    return Objects.equals(this.roomId, meetingRoomCreate.roomId) &&
+        Objects.equals(this.name, meetingRoomCreate.name) &&
+        Objects.equals(this.x, meetingRoomCreate.x) &&
+        Objects.equals(this.y, meetingRoomCreate.y) &&
+        Objects.equals(this.width, meetingRoomCreate.width) &&
+        Objects.equals(this.height, meetingRoomCreate.height);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(roomId, numberOfMonitors, x, y, width, height);
+    return Objects.hash(roomId, name, x, y, width, height);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class WorkplaceCreateUpdate {\n");
+    sb.append("class MeetingRoomCreate {\n");
     sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
-    sb.append("    numberOfMonitors: ").append(toIndentedString(numberOfMonitors)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    x: ").append(toIndentedString(x)).append("\n");
     sb.append("    y: ").append(toIndentedString(y)).append("\n");
     sb.append("    width: ").append(toIndentedString(width)).append("\n");

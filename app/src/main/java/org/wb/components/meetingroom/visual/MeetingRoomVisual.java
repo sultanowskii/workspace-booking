@@ -10,15 +10,14 @@ import org.wb.components.meetingroom.MeetingRoom;
 @Data
 @Entity
 @Table(name = "meeting_room_visual")
-public class MeetingRoomVisual implements org.wb.components.common.Entity {
+public class MeetingRoomVisual {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meeting_room_visual_seq")
-    @SequenceGenerator(name = "meeting_room_visual_seq", sequenceName = "meeting_room_visual_id_seq", allocationSize = 1)
-    private Long id;
+    @Column(name = "meeting_room_id")
+    private long meetingRoomId;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "meeting_room_id", nullable = false)
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "meeting_room_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MeetingRoom meetingRoom;
 

@@ -9,7 +9,8 @@ import org.wb.gen.model.Error;
 import org.springframework.data.domain.Pageable;
 import org.springdoc.core.annotations.ParameterObject;
 import org.wb.gen.model.Workplace;
-import org.wb.gen.model.WorkplaceCreateUpdate;
+import org.wb.gen.model.WorkplaceCreate;
+import org.wb.gen.model.WorkplaceUpdate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -37,7 +38,7 @@ public interface WorkplacesApi {
     /**
      * POST /workplaces : Create workplace
      *
-     * @param workplaceCreateUpdate  (required)
+     * @param workplaceCreate  (required)
      * @return Success (status code 201)
      */
     @Operation(
@@ -57,7 +58,7 @@ public interface WorkplacesApi {
     )
     
     ResponseEntity<Workplace> createWorkplace(
-        @Parameter(name = "WorkplaceCreateUpdate", description = "", required = true) @Valid @RequestBody WorkplaceCreateUpdate workplaceCreateUpdate
+        @Parameter(name = "WorkplaceCreate", description = "", required = true) @Valid @RequestBody WorkplaceCreate workplaceCreate
     );
 
 
@@ -121,7 +122,7 @@ public interface WorkplacesApi {
 
     /**
      * GET /workplaces : Get workplaces
-     * Get list of workplaces. Supported sort/search fields: &#x60;numberOfMonitors&#x60;, &#x60;x&#x60;, &#x60;y&#x60;, &#x60;width&#x60;, &#x60;height&#x60; 
+     * Get list of workplaces. Supported sort/search fields: &#x60;numberOfMonitors&#x60; 
      *
      * @param roomId Room ID (required)
      * @param searchFieldName  (optional)
@@ -131,7 +132,7 @@ public interface WorkplacesApi {
     @Operation(
         operationId = "getWorkplaces",
         summary = "Get workplaces",
-        description = "Get list of workplaces. Supported sort/search fields: `numberOfMonitors`, `x`, `y`, `width`, `height` ",
+        description = "Get list of workplaces. Supported sort/search fields: `numberOfMonitors` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Workplace.class)))
@@ -156,7 +157,7 @@ public interface WorkplacesApi {
      * PUT /workplaces/{id} : Update workplace
      *
      * @param id  (required)
-     * @param workplaceCreateUpdate  (required)
+     * @param workplaceUpdate  (required)
      * @return Success (status code 200)
      *         or Resource Not Found (status code 404)
      */
@@ -181,7 +182,7 @@ public interface WorkplacesApi {
     
     ResponseEntity<Workplace> updateWorkplace(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "WorkplaceCreateUpdate", description = "", required = true) @Valid @RequestBody WorkplaceCreateUpdate workplaceCreateUpdate
+        @Parameter(name = "WorkplaceUpdate", description = "", required = true) @Valid @RequestBody WorkplaceUpdate workplaceUpdate
     );
 
 }
