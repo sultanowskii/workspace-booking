@@ -23,8 +23,7 @@ public class WorkplaceService extends
 
     @Override
     protected boolean isCreateAllowed() {
-        // return isCurrentUserAdmin();
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
@@ -34,14 +33,12 @@ public class WorkplaceService extends
 
     @Override
     protected boolean isUpdateAllowed(Workplace workplace) {
-        // return isCurrentUserAdmin();
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
     protected boolean isDeleteAllowed(Workplace workplace) {
-        // return isCurrentUserAdmin();
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override

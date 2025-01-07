@@ -124,7 +124,7 @@ public interface WorkplaceBookingsApi {
 
     /**
      * GET /workplaceBookings : Get workplace bookings
-     * Get list of meeting room bookings. 
+     * Get list of workplace bookings. 
      *
      * @param employeeId Employee ID (optional)
      * @param workplaceId Workplace ID (optional)
@@ -134,7 +134,7 @@ public interface WorkplaceBookingsApi {
     @Operation(
         operationId = "getWorkplaceBookings",
         summary = "Get workplace bookings",
-        description = "Get list of meeting room bookings. ",
+        description = "Get list of workplace bookings. ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = WorkplaceBooking.class)))

@@ -1,21 +1,19 @@
 CREATE OR REPLACE FUNCTION check_meeting_room_booking_overlap()
 RETURNS TRIGGER AS $$
-DECLARE
-    overlapping_booking RECORD;
 BEGIN
     -- Check for overlaps with existing bookings for the same meeting room on the same day.
-    SELECT * INTO overlapping_booking
-    FROM meeting_room_booking
-    WHERE meeting_room_booking.meeting_room_id = NEW.meeting_room_id
-    AND meeting_room_booking.booking_date = NEW.booking_date
-    AND (
-        (NEW.start_time < meeting_room_booking.end_time AND NEW.end_time > meeting_room_booking.start_time) -- NEW is "inside"
-        OR (NEW.start_time < meeting_room_booking.start_time AND NEW.end_time > meeting_room_booking.start_time) -- NEW ending overlaps
-        OR (NEW.start_time < meeting_room_booking.end_time AND NEW.end_time > meeting_room_booking.end_time) -- NEW start overlaps
-    );
-
-    IF FOUND THEN
-        RAISE EXCEPTION 'Meeting room booking overlaps with existing booking for meeting room ID: % on date: %', NEW.meeting_rooms_id, NEW.booking_date;
+    IF EXISTS (
+        SELECT 1
+        FROM meeting_room_booking
+        WHERE meeting_room_booking.meeting_room_id = NEW.meeting_room_id
+        AND meeting_room_booking.booking_date = NEW.booking_date
+        AND (
+            (NEW.start_time < meeting_room_booking.end_time AND NEW.end_time > meeting_room_booking.start_time) -- NEW is "inside"
+            OR (NEW.start_time < meeting_room_booking.start_time AND NEW.end_time > meeting_room_booking.start_time) -- NEW ending overlaps
+            OR (NEW.start_time < meeting_room_booking.end_time AND NEW.end_time > meeting_room_booking.end_time) -- NEW start overlaps
+        )
+    ) THEN
+        RAISE EXCEPTION 'Meeting room booking overlaps with existing booking' USING ERRCODE = 'U0003';
     END IF;
 
     RETURN NEW;

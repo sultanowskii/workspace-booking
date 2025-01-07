@@ -24,4 +24,5 @@ properties:
     type: array
     items:
       schema:
-        $ref: ../../employees/Employee.yaml
+        type: integer
+        format: int64

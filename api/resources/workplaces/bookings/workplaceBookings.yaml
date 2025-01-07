@@ -2,7 +2,7 @@ get:
   operationId: getWorkplaceBookings
   summary: Get workplace bookings
   description: |
-    Get list of meeting room bookings.
+    Get list of workplace bookings.
   x-spring-paginated: true
   parameters:
     - name: employeeId
