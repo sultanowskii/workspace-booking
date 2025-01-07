@@ -1,6 +1,8 @@
 package org.wb.components.error;
 
 import jakarta.validation.ConstraintViolationException;
+
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpHeaders;
 
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
@@ -22,6 +25,7 @@ import org.wb.components.error.exception.InvalidBodyException;
 import org.wb.components.error.exception.InvalidParamsException;
 import org.wb.components.error.exception.NotFoundException;
 import org.wb.components.error.exception.PermissionDeniedException;
+import org.wb.db.DBError;
 import org.wb.gen.model.Error;
 
 @ControllerAdvice
@@ -102,5 +106,17 @@ public class WbExceptionHandler extends ResponseEntityExceptionHandler {
                 .message("Invalid request (params)")
                 .description(ex.getLocalizedMessage());
         return new ResponseEntity<>(Error, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ JpaSystemException.class })
+    public ResponseEntity<Object> handleJpaSystemException(JpaSystemException ex) {
+        var cause = ex.getMostSpecificCause();
+        if (cause instanceof PSQLException) {
+            var postgresException = (PSQLException) cause;
+            if (postgresException.getSQLState().equals(DBError.VISUAL_OBJECTS_COLLIDE.getCode())) {
+                throw new InvalidBodyException(postgresException.getLocalizedMessage());
+            }
+        }
+        throw ex;
     }
 }

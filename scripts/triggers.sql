@@ -144,7 +144,7 @@ BEGIN
                 (new_object->>'y')::DOUBLE PRECISION + (new_object->>'height')::DOUBLE PRECISION < (other_object->>'y')::DOUBLE PRECISION -- NEW is to the top
             )
         ) THEN
-            RAISE EXCEPTION 'Overlap detected between objects: % and %', new_object, other_object;
+            RAISE EXCEPTION 'Collision detected between objects: % and %', new_object, other_object USING ERRCODE = 'U0001';
         END IF;
     END LOOP;
 
