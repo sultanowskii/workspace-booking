@@ -3,7 +3,10 @@ package org.wb.components.employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.wb.components.admin.Admin;
+import org.wb.components.admin.AdminRepository;
 import org.wb.components.common.EntityService;
+import org.wb.components.error.exception.PermissionDeniedException;
 import org.wb.components.user.User;
 import org.wb.gen.model.EmployeeCreate;
 import org.wb.gen.model.EmployeeUpdate;
@@ -18,6 +21,8 @@ public class EmployeeService
     private EmployeeRepository repo;
     @Autowired
     private EmployeeMapper mapper;
+    @Autowired
+    private AdminRepository adminRepo;
 
     @Override
     protected boolean isListAllowed() {
@@ -34,6 +39,11 @@ public class EmployeeService
         return true;
     }
 
+    protected boolean isCurrentUserAdmin() {
+        var currentUser = userService.getCurrentUser();
+        return currentUser.isAdmin();
+    }
+
     @Override
     protected boolean isUpdateAllowed(Employee employee) {
         var currentUser = userService.getCurrentUser();
@@ -42,8 +52,7 @@ public class EmployeeService
 
     @Override
     protected boolean isDeleteAllowed(Employee employee) {
-        var currentUser = userService.getCurrentUser();
-        return currentUser.isAdmin();
+        return isCurrentUserAdmin();
     }
 
     @Override
@@ -86,5 +95,22 @@ public class EmployeeService
 
         var createdEmployee = repo.save(e);
         return mapper.toDto(createdEmployee);
+    }
+
+    @Transactional
+    public void grantAdmin(long id) {
+        if (!isCurrentUserAdmin()) {
+            throw new PermissionDeniedException("You can't access this resource");
+        }
+
+        var employee = getRaw(id);
+        var user = employee.getUser();
+
+        var admin = new Admin(null, user, employee.getFullName());
+        adminRepo.save(admin);
+
+        repo.delete(employee);
+
+        user.setRole(User.Role.ADMIN);
     }
 }

@@ -31,6 +31,8 @@ paths:
     $ref: ./resources/employees/employees.yaml
   /employees/{id}:
     $ref: ./resources/employees/employee.yaml
+  /employees/{id}/grant-admin:
+    $ref: ./resources/employees/employeeGrantAdmin.yaml
   /workplaceBookings:
     $ref: ./resources/workplaces/bookings/workplaceBookings.yaml
   /workplaceBookings/{id}:

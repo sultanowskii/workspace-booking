@@ -64,4 +64,10 @@ public class EmployeeApiController implements EmployeesApi {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @Override
+    public ResponseEntity<Void> grantAdmin(Long id) {
+        service.grantAdmin(id);
+        return ResponseEntity.ok().build();
+    }
 }

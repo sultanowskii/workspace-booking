@@ -42,11 +42,7 @@ put:
           schema:
             $ref: ../../schemas/employees/Employee.yaml
     "400":
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: ../../schemas/common/errors/InvalidRequest.yaml
+      $ref: ../../schemas/common/errors/InvalidRequest.yaml
     "404":
       $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 delete:

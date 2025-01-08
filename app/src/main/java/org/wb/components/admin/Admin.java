@@ -2,7 +2,10 @@ package org.wb.components.admin;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.wb.components.user.User;
@@ -10,6 +13,8 @@ import org.wb.components.user.User;
 @Data
 @Entity
 @Table(name = "admin")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Admin implements org.wb.components.common.Entity {
     @Id
     @SequenceGenerator(name = "admin_seq", sequenceName = "admin_id_seq", allocationSize = 1)

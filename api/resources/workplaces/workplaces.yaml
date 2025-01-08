@@ -52,8 +52,4 @@ post:
           schema:
             $ref: ../../schemas/workplaces/Workplace.yaml
     "400":
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: ../../schemas/common/errors/InvalidRequest.yaml
+      $ref: ../../schemas/common/errors/InvalidRequest.yaml

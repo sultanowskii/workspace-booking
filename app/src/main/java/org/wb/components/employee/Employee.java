@@ -10,11 +10,15 @@ import org.wb.components.user.User;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "employee")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee implements org.wb.components.common.Entity {
     @Id
     @SequenceGenerator(name = "employee_seq", sequenceName = "employee_id_seq", allocationSize = 1)
@@ -39,4 +43,10 @@ public class Employee implements org.wb.components.common.Entity {
 
     @ManyToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<MeetingParticipant> meetings;
+
+    public Employee(User user, EmployeeGroup employeeGroup, String fullName) {
+        this.user = user;
+        this.employeeGroup = employeeGroup;
+        this.fullName = fullName;
+    }
 }

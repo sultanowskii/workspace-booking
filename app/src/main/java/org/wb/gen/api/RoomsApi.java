@@ -52,7 +52,7 @@ public interface RoomsApi {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = RoomWithWalls.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
         },
         security = {
@@ -188,7 +188,7 @@ public interface RoomsApi {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = RoomWithWalls.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))

@@ -6,8 +6,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.wb.components.admin.Admin;
+import org.wb.components.admin.AdminRepository;
 import org.wb.components.auth.dto.*;
+import org.wb.components.employee.Employee;
+import org.wb.components.employee.EmployeeRepository;
 import org.wb.components.user.User;
 import org.wb.components.user.UserService;
 
@@ -18,6 +21,8 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final AdminRepository adminRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Transactional
     public JwtAuthResponseDto signUp(SignUpRequestDto request) {
@@ -28,10 +33,13 @@ public class AuthService {
 
         var createdUser = userService.create(user);
 
-        if (request.getRole().equals(User.Role.ADMIN)) {
-            if (userService.canAdminBeCreatedWithoutApplication()) {
-                user.setRole(User.Role.ADMIN);
-            }
+        if (request.getRole().equals(User.Role.ADMIN) && userService.canAdminBeCreatedWithoutApplication()) {
+            user.setRole(User.Role.ADMIN);
+            var admin = new Admin(null, user, user.getUsername());
+            adminRepository.save(admin);
+        } else {
+            var employee = new Employee(user, null, user.getUsername());
+            employeeRepository.save(employee);
         }
 
         var jwt = jwtService.generateToken(createdUser);

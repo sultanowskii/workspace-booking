@@ -51,7 +51,7 @@ public interface EmployeeGroupsApi {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             }),
             @ApiResponse(responseCode = "403", description = "Permission denied", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -195,7 +195,7 @@ public interface EmployeeGroupsApi {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             }),
             @ApiResponse(responseCode = "403", description = "Permission denied", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))

@@ -1,0 +1,19 @@
+post:
+  # admin-only
+  operationId: grantAdmin
+  summary: Grant employee an admin privileges
+  parameters:
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
+  responses:
+    "200":
+      description: Success
+      content:
+    "403":
+      $ref: ../../schemas/common/errors/PermissionDenied.yaml
+    "404":
+      $ref: ../../schemas/common/errors/ResourceNotFound.yaml

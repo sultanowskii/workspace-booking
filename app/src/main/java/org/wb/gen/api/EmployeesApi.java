@@ -51,7 +51,7 @@ public interface EmployeesApi {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
         },
         security = {
@@ -169,6 +169,41 @@ public interface EmployeesApi {
 
 
     /**
+     * POST /employees/{id}/grant-admin : Grant employee an admin privileges
+     *
+     * @param id  (required)
+     * @return Success (status code 200)
+     *         or Permission denied (status code 403)
+     *         or Resource Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "grantAdmin",
+        summary = "Grant employee an admin privileges",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "403", description = "Permission denied", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/employees/{id}/grant-admin",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<Void> grantAdmin(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+    );
+
+
+    /**
      * PUT /employees/{id} : Update employee
      *
      * @param id  (required)
@@ -185,7 +220,7 @@ public interface EmployeesApi {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
