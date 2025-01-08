@@ -7,14 +7,17 @@ import lombok.Data;
 import org.hibernate.annotations.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.wb.components.employee.Employee;
-import org.wb.components.workplace.Workplace;
+import org.wb.components.error.exception.InvalidBodyException;
+import org.wb.components.meetingroom.MeetingRoom;
+import org.wb.components.meetingroom.booking.participant.MeetingParticipant;
 
 @Data
 @Entity
-@Table(name = "meeting_room_bookings")
+@Table(name = "meeting_room_booking")
 public class MeetingRoomBooking implements org.wb.components.common.Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meeting_room_booking_seq")
@@ -22,16 +25,16 @@ public class MeetingRoomBooking implements org.wb.components.common.Entity {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "workplace_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meeting_room_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Workplace workplace;
+    private MeetingRoom meetingRoom;
 
     @NotNull
     @Column(name = "booking_date", nullable = false)
@@ -50,17 +53,15 @@ public class MeetingRoomBooking implements org.wb.components.common.Entity {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
-    @JoinTable(name = "meeting_participant", joinColumns = @JoinColumn(name = "meeting_room_booking_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
-            "meeting_room_booking_id", "employee_id" }))
-    private List<Employee> meetingParticipants;
+    @OneToMany(mappedBy = "meetingRoomBooking", fetch = FetchType.LAZY)
+    private List<MeetingParticipant> participants = new ArrayList<>();
 
     // TODO: same for other models
     @PrePersist
     @PreUpdate
     private void validateTime() {
         if (endTime != null && startTime != null && !endTime.isAfter(startTime)) {
-            throw new IllegalArgumentException("End time must be after start time");
+            throw new InvalidBodyException("End time must be after start time");
         }
     }
 }

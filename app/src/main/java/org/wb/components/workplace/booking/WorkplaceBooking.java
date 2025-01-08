@@ -12,10 +12,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "workplace_id", "booking_date" }),
-        @UniqueConstraint(columnNames = { "employee_id", "booking_date" })
-})
+@Table(name = "workplace_booking")
 public class WorkplaceBooking implements org.wb.components.common.Entity {
     @Id
     @SequenceGenerator(name = "workplace_booking_seq", sequenceName = "workplace_booking_id_seq", allocationSize = 1)

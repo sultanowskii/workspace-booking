@@ -7,18 +7,23 @@ properties:
     type: string
     minLength: 1
   # timezone?
-  startDate:
-    description: Start date
+  date:
+    description: Date
     type: string
-    format: date-time
-  endDate:
-    description: End date
+    format: date
+  startTime:
+    description: Start time
     type: string
-    format: date-time
+  endTime:
+    description: End time
+    type: string
+  meetingRoomId:
+    description: Workplace ID
+    type: integer
+    format: int64
   participants:
     description: Other participants
     type: array
     items:
-      schema:
-        type: integer
-        format: int64
+      type: integer
+      format: int64

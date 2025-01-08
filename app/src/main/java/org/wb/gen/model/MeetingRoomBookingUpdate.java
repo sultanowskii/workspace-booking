@@ -2,11 +2,10 @@ package org.wb.gen.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
-import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,14 +24,17 @@ public class MeetingRoomBookingUpdate {
 
   private String description;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime startDate;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate date;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime endDate;
+  private String startTime;
+
+  private String endTime;
+
+  private Long meetingRoomId;
 
   @Valid
-  private List<Object> participants = new ArrayList<>();
+  private List<Long> participants = new ArrayList<>();
 
   public MeetingRoomBookingUpdate description(String description) {
     this.description = description;
@@ -54,52 +56,92 @@ public class MeetingRoomBookingUpdate {
     this.description = description;
   }
 
-  public MeetingRoomBookingUpdate startDate(OffsetDateTime startDate) {
-    this.startDate = startDate;
+  public MeetingRoomBookingUpdate date(LocalDate date) {
+    this.date = date;
     return this;
   }
 
   /**
-   * Start date
-   * @return startDate
+   * Date
+   * @return date
    */
   @Valid 
-  @Schema(name = "startDate", description = "Start date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("startDate")
-  public OffsetDateTime getStartDate() {
-    return startDate;
+  @Schema(name = "date", description = "Date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("date")
+  public LocalDate getDate() {
+    return date;
   }
 
-  public void setStartDate(OffsetDateTime startDate) {
-    this.startDate = startDate;
+  public void setDate(LocalDate date) {
+    this.date = date;
   }
 
-  public MeetingRoomBookingUpdate endDate(OffsetDateTime endDate) {
-    this.endDate = endDate;
+  public MeetingRoomBookingUpdate startTime(String startTime) {
+    this.startTime = startTime;
     return this;
   }
 
   /**
-   * End date
-   * @return endDate
+   * Start time
+   * @return startTime
    */
-  @Valid 
-  @Schema(name = "endDate", description = "End date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("endDate")
-  public OffsetDateTime getEndDate() {
-    return endDate;
+  
+  @Schema(name = "startTime", description = "Start time", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("startTime")
+  public String getStartTime() {
+    return startTime;
   }
 
-  public void setEndDate(OffsetDateTime endDate) {
-    this.endDate = endDate;
+  public void setStartTime(String startTime) {
+    this.startTime = startTime;
   }
 
-  public MeetingRoomBookingUpdate participants(List<Object> participants) {
+  public MeetingRoomBookingUpdate endTime(String endTime) {
+    this.endTime = endTime;
+    return this;
+  }
+
+  /**
+   * End time
+   * @return endTime
+   */
+  
+  @Schema(name = "endTime", description = "End time", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("endTime")
+  public String getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(String endTime) {
+    this.endTime = endTime;
+  }
+
+  public MeetingRoomBookingUpdate meetingRoomId(Long meetingRoomId) {
+    this.meetingRoomId = meetingRoomId;
+    return this;
+  }
+
+  /**
+   * Workplace ID
+   * @return meetingRoomId
+   */
+  
+  @Schema(name = "meetingRoomId", description = "Workplace ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("meetingRoomId")
+  public Long getMeetingRoomId() {
+    return meetingRoomId;
+  }
+
+  public void setMeetingRoomId(Long meetingRoomId) {
+    this.meetingRoomId = meetingRoomId;
+  }
+
+  public MeetingRoomBookingUpdate participants(List<Long> participants) {
     this.participants = participants;
     return this;
   }
 
-  public MeetingRoomBookingUpdate addParticipantsItem(Object participantsItem) {
+  public MeetingRoomBookingUpdate addParticipantsItem(Long participantsItem) {
     if (this.participants == null) {
       this.participants = new ArrayList<>();
     }
@@ -114,11 +156,11 @@ public class MeetingRoomBookingUpdate {
   
   @Schema(name = "participants", description = "Other participants", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("participants")
-  public List<Object> getParticipants() {
+  public List<Long> getParticipants() {
     return participants;
   }
 
-  public void setParticipants(List<Object> participants) {
+  public void setParticipants(List<Long> participants) {
     this.participants = participants;
   }
 
@@ -132,14 +174,16 @@ public class MeetingRoomBookingUpdate {
     }
     MeetingRoomBookingUpdate meetingRoomBookingUpdate = (MeetingRoomBookingUpdate) o;
     return Objects.equals(this.description, meetingRoomBookingUpdate.description) &&
-        Objects.equals(this.startDate, meetingRoomBookingUpdate.startDate) &&
-        Objects.equals(this.endDate, meetingRoomBookingUpdate.endDate) &&
+        Objects.equals(this.date, meetingRoomBookingUpdate.date) &&
+        Objects.equals(this.startTime, meetingRoomBookingUpdate.startTime) &&
+        Objects.equals(this.endTime, meetingRoomBookingUpdate.endTime) &&
+        Objects.equals(this.meetingRoomId, meetingRoomBookingUpdate.meetingRoomId) &&
         Objects.equals(this.participants, meetingRoomBookingUpdate.participants);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, startDate, endDate, participants);
+    return Objects.hash(description, date, startTime, endTime, meetingRoomId, participants);
   }
 
   @Override
@@ -147,8 +191,10 @@ public class MeetingRoomBookingUpdate {
     StringBuilder sb = new StringBuilder();
     sb.append("class MeetingRoomBookingUpdate {\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    date: ").append(toIndentedString(date)).append("\n");
+    sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
+    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+    sb.append("    meetingRoomId: ").append(toIndentedString(meetingRoomId)).append("\n");
     sb.append("    participants: ").append(toIndentedString(participants)).append("\n");
     sb.append("}");
     return sb.toString();

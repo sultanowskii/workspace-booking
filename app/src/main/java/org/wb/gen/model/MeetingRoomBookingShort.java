@@ -2,9 +2,8 @@ package org.wb.gen.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
-import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,13 +24,16 @@ public class MeetingRoomBookingShort {
 
   private String description;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime startDate;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate date;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime endDate;
+  private String startTime;
 
-  private Object organizer;
+  private String endTime;
+
+  private Long meetingRoomId;
+
+  private Long employeeId;
 
   public MeetingRoomBookingShort id(Long id) {
     this.id = id;
@@ -73,64 +75,104 @@ public class MeetingRoomBookingShort {
     this.description = description;
   }
 
-  public MeetingRoomBookingShort startDate(OffsetDateTime startDate) {
-    this.startDate = startDate;
+  public MeetingRoomBookingShort date(LocalDate date) {
+    this.date = date;
     return this;
   }
 
   /**
-   * Start date
-   * @return startDate
+   * Date
+   * @return date
    */
   @Valid 
-  @Schema(name = "startDate", description = "Start date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("startDate")
-  public OffsetDateTime getStartDate() {
-    return startDate;
+  @Schema(name = "date", description = "Date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("date")
+  public LocalDate getDate() {
+    return date;
   }
 
-  public void setStartDate(OffsetDateTime startDate) {
-    this.startDate = startDate;
+  public void setDate(LocalDate date) {
+    this.date = date;
   }
 
-  public MeetingRoomBookingShort endDate(OffsetDateTime endDate) {
-    this.endDate = endDate;
+  public MeetingRoomBookingShort startTime(String startTime) {
+    this.startTime = startTime;
     return this;
   }
 
   /**
-   * End date
-   * @return endDate
-   */
-  @Valid 
-  @Schema(name = "endDate", description = "End date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("endDate")
-  public OffsetDateTime getEndDate() {
-    return endDate;
-  }
-
-  public void setEndDate(OffsetDateTime endDate) {
-    this.endDate = endDate;
-  }
-
-  public MeetingRoomBookingShort organizer(Object organizer) {
-    this.organizer = organizer;
-    return this;
-  }
-
-  /**
-   * Organizer
-   * @return organizer
+   * Start time
+   * @return startTime
    */
   
-  @Schema(name = "organizer", description = "Organizer", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("organizer")
-  public Object getOrganizer() {
-    return organizer;
+  @Schema(name = "startTime", description = "Start time", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("startTime")
+  public String getStartTime() {
+    return startTime;
   }
 
-  public void setOrganizer(Object organizer) {
-    this.organizer = organizer;
+  public void setStartTime(String startTime) {
+    this.startTime = startTime;
+  }
+
+  public MeetingRoomBookingShort endTime(String endTime) {
+    this.endTime = endTime;
+    return this;
+  }
+
+  /**
+   * End time
+   * @return endTime
+   */
+  
+  @Schema(name = "endTime", description = "End time", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("endTime")
+  public String getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(String endTime) {
+    this.endTime = endTime;
+  }
+
+  public MeetingRoomBookingShort meetingRoomId(Long meetingRoomId) {
+    this.meetingRoomId = meetingRoomId;
+    return this;
+  }
+
+  /**
+   * Workplace ID
+   * @return meetingRoomId
+   */
+  
+  @Schema(name = "meetingRoomId", description = "Workplace ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("meetingRoomId")
+  public Long getMeetingRoomId() {
+    return meetingRoomId;
+  }
+
+  public void setMeetingRoomId(Long meetingRoomId) {
+    this.meetingRoomId = meetingRoomId;
+  }
+
+  public MeetingRoomBookingShort employeeId(Long employeeId) {
+    this.employeeId = employeeId;
+    return this;
+  }
+
+  /**
+   * Employee ID (organizer)
+   * @return employeeId
+   */
+  
+  @Schema(name = "employeeId", description = "Employee ID (organizer)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("employeeId")
+  public Long getEmployeeId() {
+    return employeeId;
+  }
+
+  public void setEmployeeId(Long employeeId) {
+    this.employeeId = employeeId;
   }
 
   @Override
@@ -144,14 +186,16 @@ public class MeetingRoomBookingShort {
     MeetingRoomBookingShort meetingRoomBookingShort = (MeetingRoomBookingShort) o;
     return Objects.equals(this.id, meetingRoomBookingShort.id) &&
         Objects.equals(this.description, meetingRoomBookingShort.description) &&
-        Objects.equals(this.startDate, meetingRoomBookingShort.startDate) &&
-        Objects.equals(this.endDate, meetingRoomBookingShort.endDate) &&
-        Objects.equals(this.organizer, meetingRoomBookingShort.organizer);
+        Objects.equals(this.date, meetingRoomBookingShort.date) &&
+        Objects.equals(this.startTime, meetingRoomBookingShort.startTime) &&
+        Objects.equals(this.endTime, meetingRoomBookingShort.endTime) &&
+        Objects.equals(this.meetingRoomId, meetingRoomBookingShort.meetingRoomId) &&
+        Objects.equals(this.employeeId, meetingRoomBookingShort.employeeId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, description, startDate, endDate, organizer);
+    return Objects.hash(id, description, date, startTime, endTime, meetingRoomId, employeeId);
   }
 
   @Override
@@ -160,9 +204,11 @@ public class MeetingRoomBookingShort {
     sb.append("class MeetingRoomBookingShort {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
-    sb.append("    organizer: ").append(toIndentedString(organizer)).append("\n");
+    sb.append("    date: ").append(toIndentedString(date)).append("\n");
+    sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
+    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+    sb.append("    meetingRoomId: ").append(toIndentedString(meetingRoomId)).append("\n");
+    sb.append("    employeeId: ").append(toIndentedString(employeeId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

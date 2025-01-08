@@ -108,7 +108,7 @@ public class RoomService
         });
         wallRepo.saveAll(room.getWalls());
 
-        repo.save(room);
-        return mapper.toDto(room);
+        var updatedRoom = repo.save(room);
+        return mapper.toDto(updatedRoom);
     }
 }

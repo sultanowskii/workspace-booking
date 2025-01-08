@@ -9,15 +9,21 @@ properties:
   description:
     description: Description
     type: string
-  startDate:
-    description: Start date
+  date:
+    description: Date
     type: string
-    format: date-time
-  endDate:
-    description: End date
+    format: date
+  startTime:
+    description: Start time
     type: string
-    format: date-time
-  organizer:
-    description: Organizer
-    schema:
-      $ref: ../../employees/Employee.yaml
+  endTime:
+    description: End time
+    type: string
+  meetingRoomId:
+    description: Workplace ID
+    type: integer
+    format: int64
+  employeeId:
+    description: Employee ID (organizer)
+    type: integer
+    format: int64

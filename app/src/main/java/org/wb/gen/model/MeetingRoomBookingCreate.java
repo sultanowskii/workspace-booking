@@ -2,11 +2,10 @@ package org.wb.gen.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
-import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,16 +24,19 @@ public class MeetingRoomBookingCreate {
 
   private String description;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime startDate;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate date;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime endDate;
+  private String startTime;
 
-  private Object organizer;
+  private String endTime;
+
+  private Long employeeId;
+
+  private Long meetingRoomId;
 
   @Valid
-  private List<Object> participants = new ArrayList<>();
+  private List<Long> participants = new ArrayList<>();
 
   public MeetingRoomBookingCreate description(String description) {
     this.description = description;
@@ -56,72 +58,112 @@ public class MeetingRoomBookingCreate {
     this.description = description;
   }
 
-  public MeetingRoomBookingCreate startDate(OffsetDateTime startDate) {
-    this.startDate = startDate;
+  public MeetingRoomBookingCreate date(LocalDate date) {
+    this.date = date;
     return this;
   }
 
   /**
-   * Start date
-   * @return startDate
+   * Date
+   * @return date
    */
   @Valid 
-  @Schema(name = "startDate", description = "Start date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("startDate")
-  public OffsetDateTime getStartDate() {
-    return startDate;
+  @Schema(name = "date", description = "Date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("date")
+  public LocalDate getDate() {
+    return date;
   }
 
-  public void setStartDate(OffsetDateTime startDate) {
-    this.startDate = startDate;
+  public void setDate(LocalDate date) {
+    this.date = date;
   }
 
-  public MeetingRoomBookingCreate endDate(OffsetDateTime endDate) {
-    this.endDate = endDate;
+  public MeetingRoomBookingCreate startTime(String startTime) {
+    this.startTime = startTime;
     return this;
   }
 
   /**
-   * End date
-   * @return endDate
-   */
-  @Valid 
-  @Schema(name = "endDate", description = "End date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("endDate")
-  public OffsetDateTime getEndDate() {
-    return endDate;
-  }
-
-  public void setEndDate(OffsetDateTime endDate) {
-    this.endDate = endDate;
-  }
-
-  public MeetingRoomBookingCreate organizer(Object organizer) {
-    this.organizer = organizer;
-    return this;
-  }
-
-  /**
-   * Organizer
-   * @return organizer
+   * Start time
+   * @return startTime
    */
   
-  @Schema(name = "organizer", description = "Organizer", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("organizer")
-  public Object getOrganizer() {
-    return organizer;
+  @Schema(name = "startTime", description = "Start time", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("startTime")
+  public String getStartTime() {
+    return startTime;
   }
 
-  public void setOrganizer(Object organizer) {
-    this.organizer = organizer;
+  public void setStartTime(String startTime) {
+    this.startTime = startTime;
   }
 
-  public MeetingRoomBookingCreate participants(List<Object> participants) {
+  public MeetingRoomBookingCreate endTime(String endTime) {
+    this.endTime = endTime;
+    return this;
+  }
+
+  /**
+   * End time
+   * @return endTime
+   */
+  
+  @Schema(name = "endTime", description = "End time", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("endTime")
+  public String getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(String endTime) {
+    this.endTime = endTime;
+  }
+
+  public MeetingRoomBookingCreate employeeId(Long employeeId) {
+    this.employeeId = employeeId;
+    return this;
+  }
+
+  /**
+   * Employee ID (organizer)
+   * @return employeeId
+   */
+  
+  @Schema(name = "employeeId", description = "Employee ID (organizer)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("employeeId")
+  public Long getEmployeeId() {
+    return employeeId;
+  }
+
+  public void setEmployeeId(Long employeeId) {
+    this.employeeId = employeeId;
+  }
+
+  public MeetingRoomBookingCreate meetingRoomId(Long meetingRoomId) {
+    this.meetingRoomId = meetingRoomId;
+    return this;
+  }
+
+  /**
+   * Workplace ID
+   * @return meetingRoomId
+   */
+  
+  @Schema(name = "meetingRoomId", description = "Workplace ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("meetingRoomId")
+  public Long getMeetingRoomId() {
+    return meetingRoomId;
+  }
+
+  public void setMeetingRoomId(Long meetingRoomId) {
+    this.meetingRoomId = meetingRoomId;
+  }
+
+  public MeetingRoomBookingCreate participants(List<Long> participants) {
     this.participants = participants;
     return this;
   }
 
-  public MeetingRoomBookingCreate addParticipantsItem(Object participantsItem) {
+  public MeetingRoomBookingCreate addParticipantsItem(Long participantsItem) {
     if (this.participants == null) {
       this.participants = new ArrayList<>();
     }
@@ -136,11 +178,11 @@ public class MeetingRoomBookingCreate {
   
   @Schema(name = "participants", description = "Other participants", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("participants")
-  public List<Object> getParticipants() {
+  public List<Long> getParticipants() {
     return participants;
   }
 
-  public void setParticipants(List<Object> participants) {
+  public void setParticipants(List<Long> participants) {
     this.participants = participants;
   }
 
@@ -154,15 +196,17 @@ public class MeetingRoomBookingCreate {
     }
     MeetingRoomBookingCreate meetingRoomBookingCreate = (MeetingRoomBookingCreate) o;
     return Objects.equals(this.description, meetingRoomBookingCreate.description) &&
-        Objects.equals(this.startDate, meetingRoomBookingCreate.startDate) &&
-        Objects.equals(this.endDate, meetingRoomBookingCreate.endDate) &&
-        Objects.equals(this.organizer, meetingRoomBookingCreate.organizer) &&
+        Objects.equals(this.date, meetingRoomBookingCreate.date) &&
+        Objects.equals(this.startTime, meetingRoomBookingCreate.startTime) &&
+        Objects.equals(this.endTime, meetingRoomBookingCreate.endTime) &&
+        Objects.equals(this.employeeId, meetingRoomBookingCreate.employeeId) &&
+        Objects.equals(this.meetingRoomId, meetingRoomBookingCreate.meetingRoomId) &&
         Objects.equals(this.participants, meetingRoomBookingCreate.participants);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, startDate, endDate, organizer, participants);
+    return Objects.hash(description, date, startTime, endTime, employeeId, meetingRoomId, participants);
   }
 
   @Override
@@ -170,9 +214,11 @@ public class MeetingRoomBookingCreate {
     StringBuilder sb = new StringBuilder();
     sb.append("class MeetingRoomBookingCreate {\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
-    sb.append("    organizer: ").append(toIndentedString(organizer)).append("\n");
+    sb.append("    date: ").append(toIndentedString(date)).append("\n");
+    sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
+    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+    sb.append("    employeeId: ").append(toIndentedString(employeeId)).append("\n");
+    sb.append("    meetingRoomId: ").append(toIndentedString(meetingRoomId)).append("\n");
     sb.append("    participants: ").append(toIndentedString(participants)).append("\n");
     sb.append("}");
     return sb.toString();

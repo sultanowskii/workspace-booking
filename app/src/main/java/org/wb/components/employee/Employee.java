@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.wb.components.employeegroup.EmployeeGroup;
-import org.wb.components.meetingroom.booking.MeetingRoomBooking;
+import org.wb.components.meetingroom.booking.participant.MeetingParticipant;
 import org.wb.components.user.User;
 
 import jakarta.persistence.*;
@@ -37,6 +37,6 @@ public class Employee implements org.wb.components.common.Entity {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @ManyToMany(mappedBy = "meetingParticipants", fetch = FetchType.LAZY)
-    private List<MeetingRoomBooking> meetings;
+    @ManyToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<MeetingParticipant> meetings;
 }
