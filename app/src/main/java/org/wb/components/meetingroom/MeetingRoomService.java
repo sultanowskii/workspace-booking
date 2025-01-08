@@ -1,5 +1,8 @@
 package org.wb.components.meetingroom;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wb.components.common.EntityService;
@@ -23,8 +26,7 @@ public class MeetingRoomService extends
 
     @Override
     protected boolean isCreateAllowed() {
-        // return isCurrentUserAdmin();
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
@@ -34,14 +36,12 @@ public class MeetingRoomService extends
 
     @Override
     protected boolean isUpdateAllowed(MeetingRoom meetingRoom) {
-        // return isCurrentUserAdmin();
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
     protected boolean isDeleteAllowed(MeetingRoom meetingRoom) {
-        // return isCurrentUserAdmin();
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
@@ -68,6 +68,37 @@ public class MeetingRoomService extends
         createdMeetingRoom.setVisual(createdMeetingRoomVisual);
 
         return mapper.toDto(createdMeetingRoom);
+    }
+
+    @Override
+    @Transactional
+    public List<MeetingRoom> createAllRaw(List<MeetingRoomCreate> dtos) {
+        if (!isCreateAllowed()) {
+            throw new PermissionDeniedException("You can't create " + entityName());
+        }
+        var meetingRooms = dtos
+                .stream()
+                .map(dto -> {
+                    var w = mapper.fromCreateDto(dto);
+                    w.setVisual(null);
+                    return w;
+                })
+                .toList();
+        var createdMeetingRooms = repo.saveAll(meetingRooms);
+
+        var meetingRoomVisuals = IntStream
+                .range(0, createdMeetingRooms.size())
+                .mapToObj(i -> {
+                    var visual = mapper.fromCreateDto(dtos.get(i)).getVisual();
+                    visual.setMeetingRoom(createdMeetingRooms.get(i));
+                    visual.setMeetingRoomId(createdMeetingRooms.get(i).getId());
+                    createdMeetingRooms.get(i).setVisual(visual);
+                    return visual;
+                })
+                .toList();
+        visualRepo.saveAll(meetingRoomVisuals);
+
+        return createdMeetingRooms;
     }
 
     @Override

@@ -67,6 +67,11 @@ public abstract class EntityService<T extends Entity, TDto, TListDto, TCreateDto
         return mapper.toDto(createdEntity);
     }
 
+    public List<T> createAllRaw(List<TCreateDto> dtos) {
+        var entities = dtos.stream().map(mapper::fromCreateDto).toList();
+        return repo.saveAll(entities);
+    }
+
     public TDto get(long id) {
         var entity = getRaw(id);
         if (!isReadAllowed(entity)) {

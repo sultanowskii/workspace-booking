@@ -27,7 +27,6 @@ public class Workplace implements org.wb.components.common.Entity {
     @Column(name = "number_of_monitors", nullable = false)
     private int numberOfMonitors;
 
-    @NotNull
-    @OneToOne(mappedBy = "workplace", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "workplace", fetch = FetchType.LAZY, optional = false)
     private WorkplaceVisual visual;
 }

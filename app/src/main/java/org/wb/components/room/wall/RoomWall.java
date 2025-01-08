@@ -28,19 +28,15 @@ public class RoomWall implements org.wb.components.common.Entity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
 
-    @NotNull
     @Column(name = "x1", nullable = false)
     private double x1;
 
-    @NotNull
     @Column(name = "y1", nullable = false)
     private double y1;
 
-    @NotNull
     @Column(name = "x2", nullable = false)
     private double x2;
 
-    @NotNull
     @Column(name = "y2", nullable = false)
     private double y2;
 }

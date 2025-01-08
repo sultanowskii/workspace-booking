@@ -1,5 +1,8 @@
 package org.wb.components.workplace;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wb.components.common.EntityService;
@@ -65,6 +68,37 @@ public class WorkplaceService extends
         createdWorkplace.setVisual(createdWorkplaceVisual);
 
         return mapper.toDto(createdWorkplace);
+    }
+
+    @Override
+    @Transactional
+    public List<Workplace> createAllRaw(List<WorkplaceCreate> dtos) {
+        if (!isCreateAllowed()) {
+            throw new PermissionDeniedException("You can't create " + entityName());
+        }
+        var workplaces = dtos
+                .stream()
+                .map(dto -> {
+                    var w = mapper.fromCreateDto(dto);
+                    w.setVisual(null);
+                    return w;
+                })
+                .toList();
+        var createdWorkplaces = repo.saveAll(workplaces);
+
+        var workplaceVisuals = IntStream
+                .range(0, createdWorkplaces.size())
+                .mapToObj(i -> {
+                    var visual = mapper.fromCreateDto(dtos.get(i)).getVisual();
+                    visual.setWorkplace(createdWorkplaces.get(i));
+                    visual.setWorkplaceId(createdWorkplaces.get(i).getId());
+                    createdWorkplaces.get(i).setVisual(visual);
+                    return visual;
+                })
+                .toList();
+        visualRepo.saveAll(workplaceVisuals);
+
+        return createdWorkplaces;
     }
 
     @Override

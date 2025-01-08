@@ -108,21 +108,27 @@ public class WbExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Error, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({ PSQLException.class })
+    public ResponseEntity<Object> handlePSQLException(PSQLException ex) {
+        switch (DBError.valueFrom(ex.getSQLState())) {
+            case DBError.VISUAL_OBJECTS_COLLIDE:
+                return handleInvalidBodyException(ex);
+            case DBError.WORKPLACE_BOOKING_DATE_OUTSIDE_RANGE:
+                return handleInvalidBodyException(ex);
+            case DBError.MEETING_ROOM_BOOKING_DATE_OUTSIDE_RANGE:
+                return handleInvalidBodyException(ex);
+            default:
+                break;
+        }
+        throw new InternalError(ex);
+    }
+
     @ExceptionHandler({ JpaSystemException.class })
     public ResponseEntity<Object> handleJpaSystemException(JpaSystemException ex) {
         var cause = ex.getMostSpecificCause();
         if (cause instanceof PSQLException) {
             var postgresException = (PSQLException) cause;
-            switch (DBError.valueOf(postgresException.getSQLState())) {
-                case DBError.VISUAL_OBJECTS_COLLIDE:
-                    throw new InvalidBodyException(postgresException.getLocalizedMessage());
-                case DBError.WORKPLACE_BOOKING_DATE_OUTSIDE_RANGE:
-                    throw new InvalidBodyException(postgresException.getLocalizedMessage());
-                case DBError.MEETING_ROOM_BOOKING_DATE_OUTSIDE_RANGE:
-                    throw new InvalidBodyException(postgresException.getLocalizedMessage());
-                default:
-                    break;
-            }
+            return handlePSQLException(postgresException);
         }
         throw ex;
     }

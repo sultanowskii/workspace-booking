@@ -15,27 +15,23 @@ public class WorkplaceVisual {
     @Column(name = "workplace_id")
     private long workplaceId;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @PrimaryKeyJoinColumn(name = "workplace_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Workplace workplace;
 
     @Column(name = "x", nullable = false)
-    @NotNull
     private double x;
 
     @Column(name = "y", nullable = false)
-    @NotNull
     private double y;
 
     @Column(name = "width", nullable = false)
-    @NotNull
     @Positive
     private double width;
 
     @Column(name = "height", nullable = false)
-    @NotNull
     @Positive
     private double height;
 }

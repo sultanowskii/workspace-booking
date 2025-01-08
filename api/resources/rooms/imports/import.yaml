@@ -1,0 +1,14 @@
+post:
+  operationId: importRoom
+  summary: Import room
+  description: Import room (layout)
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            file:
+              type: string
+              format: binary

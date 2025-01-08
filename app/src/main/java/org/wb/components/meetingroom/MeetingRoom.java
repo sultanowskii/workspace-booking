@@ -27,7 +27,6 @@ public class MeetingRoom implements org.wb.components.common.Entity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
-    @OneToOne(mappedBy = "meetingRoom", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "meetingRoom", fetch = FetchType.LAZY, optional = false)
     private MeetingRoomVisual visual;
 }

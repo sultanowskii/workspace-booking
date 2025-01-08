@@ -15,27 +15,23 @@ public class MeetingRoomVisual {
     @Column(name = "meeting_room_id")
     private long meetingRoomId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @PrimaryKeyJoinColumn(name = "meeting_room_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private MeetingRoom meetingRoom;
 
-    @NotNull
     @Column(name = "x", nullable = false)
     private double x;
 
-    @NotNull
     @Column(name = "y", nullable = false)
     private double y;
 
-    @NotNull
     @Positive
     @Column(name = "width", nullable = false)
     private double width;
 
     @Positive
-    @NotNull
     @Column(name = "height", nullable = false)
     private double height;
 }

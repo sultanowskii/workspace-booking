@@ -1,0 +1,69 @@
+{
+    "officeId": 1,
+    "name": "room #123",
+    "walls": [
+        {
+            "x1": 0,
+            "y1": 0,
+            "x2": 10,
+            "y2": 0
+        },
+        {
+            "x1": 10,
+            "y1": 0,
+            "x2": 10,
+            "y2": 10
+        },
+        {
+            "x1": 10,
+            "y1": 10,
+            "x2": 0,
+            "y2": 10
+        },
+        {
+            "x1": 0,
+            "y1": 10,
+            "x2": 0,
+            "y2": 0
+        }
+    ],
+    "workplaces": [
+        {
+            "numberOfMonitors": 2,
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+        },
+        {
+            "numberOfMonitors": 2,
+            "x": 1.1,
+            "y": 0,
+            "width": 1,
+            "height": 1
+        },
+        {
+            "numberOfMonitors": 2,
+            "x": 2.2,
+            "y": 0,
+            "width": 1,
+            "height": 1
+        }
+    ],
+    "meetingRooms": [
+        {
+            "name": "blue",
+            "x": 0,
+            "y": 3,
+            "width": 3,
+            "height": 3
+        },
+        {
+            "name": "red",
+            "x": 4,
+            "y": 3,
+            "width": 3,
+            "height": 3
+        }
+    ]
+}
