@@ -113,8 +113,15 @@ public class WbExceptionHandler extends ResponseEntityExceptionHandler {
         var cause = ex.getMostSpecificCause();
         if (cause instanceof PSQLException) {
             var postgresException = (PSQLException) cause;
-            if (postgresException.getSQLState().equals(DBError.VISUAL_OBJECTS_COLLIDE.getCode())) {
-                throw new InvalidBodyException(postgresException.getLocalizedMessage());
+            switch (DBError.valueOf(postgresException.getSQLState())) {
+                case DBError.VISUAL_OBJECTS_COLLIDE:
+                    throw new InvalidBodyException(postgresException.getLocalizedMessage());
+                case DBError.WORKPLACE_BOOKING_DATE_OUTSIDE_RANGE:
+                    throw new InvalidBodyException(postgresException.getLocalizedMessage());
+                case DBError.MEETING_ROOM_BOOKING_DATE_OUTSIDE_RANGE:
+                    throw new InvalidBodyException(postgresException.getLocalizedMessage());
+                default:
+                    break;
             }
         }
         throw ex;

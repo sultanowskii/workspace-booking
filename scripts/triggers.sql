@@ -1,3 +1,37 @@
+CREATE OR REPLACE FUNCTION check_workplace_booking_date_in_range()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.booking_date < CURRENT_DATE OR NEW.booking_date >= (CURRENT_DATE + INTERVAL '5' day) THEN
+        RAISE EXCEPTION 'Workplace booking date must be within 5 days' USING ERRCODE = 'U0002';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER check_workplace_booking_date_in_range_trigger
+BEFORE INSERT ON workplace_booking
+FOR EACH ROW
+EXECUTE PROCEDURE check_workplace_booking_date_in_range();
+
+
+CREATE OR REPLACE FUNCTION check_meeting_room_booking_date_in_range()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.booking_date < CURRENT_DATE OR NEW.booking_date >= (CURRENT_DATE + INTERVAL '5' day) THEN
+        RAISE EXCEPTION 'Meeting room booking date must be within 5 days' USING ERRCODE = 'U0003';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER check_meeting_room_booking_date_in_range_trigger
+BEFORE INSERT ON meeting_room_booking
+FOR EACH ROW
+EXECUTE PROCEDURE check_meeting_room_booking_date_in_range();
+
+
 CREATE OR REPLACE FUNCTION check_meeting_room_booking_overlap()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -13,7 +47,7 @@ BEGIN
             OR (NEW.start_time < meeting_room_booking.end_time AND NEW.end_time > meeting_room_booking.end_time) -- NEW start overlaps
         )
     ) THEN
-        RAISE EXCEPTION 'Meeting room booking overlaps with existing booking' USING ERRCODE = 'U0003';
+        RAISE EXCEPTION 'Meeting room booking overlaps with existing booking' USING ERRCODE = 'U0004';
     END IF;
 
     RETURN NEW;
