@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,9 @@ public interface EmployeeGroupsApi {
             @ApiResponse(responseCode = "403", description = "Permission denied", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -88,6 +92,9 @@ public interface EmployeeGroupsApi {
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -118,6 +125,9 @@ public interface EmployeeGroupsApi {
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -148,6 +158,9 @@ public interface EmployeeGroupsApi {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EmployeeGroup.class)))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -190,6 +203,9 @@ public interface EmployeeGroupsApi {
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(

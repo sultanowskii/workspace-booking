@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,9 @@ public interface MeetingRoomsApi {
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -81,6 +85,9 @@ public interface MeetingRoomsApi {
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -111,6 +118,9 @@ public interface MeetingRoomsApi {
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -141,6 +151,9 @@ public interface MeetingRoomsApi {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeetingRoom.class)))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(
@@ -179,6 +192,9 @@ public interface MeetingRoomsApi {
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
             })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
         }
     )
     @RequestMapping(

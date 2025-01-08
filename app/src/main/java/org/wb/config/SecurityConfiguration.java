@@ -2,6 +2,7 @@ package org.wb.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.wb.components.auth.JwtFilter;
 import org.wb.components.common.Sha384Encoder;
 import org.wb.components.user.UserService;
 
@@ -26,8 +29,10 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+    @Autowired
     private final UserService userService;
-    // TODO: implement
+    @Autowired
+    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,9 +51,23 @@ public class SecurityConfiguration {
                                 }))
                 .authorizeHttpRequests(
                         request -> {
-                            request.anyRequest().permitAll();
+                            request
+                                    .requestMatchers("/api-docs", "/api-docs/**").permitAll()
+                                    .requestMatchers("/swagger-resources/**").permitAll()
+                                    .requestMatchers("/swagger-ui", "/swagger-ui/**").permitAll();
+
+                            request
+                                    .requestMatchers("/auth/**").permitAll();
+
+                            request
+                                    .requestMatchers("/api/**").authenticated();
+
+                            request
+                                    .requestMatchers("/**").permitAll();
                         })
-                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

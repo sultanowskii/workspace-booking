@@ -33,12 +33,12 @@ public class JwtService {
         return (String) extractAllClaims(token).get("username");
     }
 
-    public long extractId(String token) {
-        return (long) extractAllClaims(token).get("id");
+    public int extractId(String token) {
+        return (int) extractAllClaims(token).get("id");
     }
 
-    public String extractType(String token) {
-        return (String) extractAllClaims(token).get("type");
+    public String extractRole(String token) {
+        return (String) extractAllClaims(token).get("role");
     }
 
     private Date extractExpiration(String token) {

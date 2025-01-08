@@ -47,3 +47,11 @@ paths:
     $ref: ./resources/occupancy/rooms/room.yaml
   /imports:
     $ref: ./resources/rooms/imports/import.yaml
+security:
+  - bearerTokenAuth: []
+components:
+  securitySchemes:
+    bearerTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

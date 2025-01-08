@@ -40,14 +40,14 @@ public class JwtFilter extends OncePerRequestFilter {
         var jwt = authHeader.substring(BEARER_PREFIX.length());
         var username = jwtService.extractUsername(jwt);
         var userId = jwtService.extractId(jwt);
-        var role = User.Role.valueOf(jwtService.extractType(jwt));
+        var role = User.Role.valueOf(jwtService.extractRole(jwt));
 
         if (username.length() == 0 || SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        UserDetails userDetails = new User(userId, username, null, role);
+        UserDetails userDetails = new User((long) userId, username, null, role);
 
         if (!jwtService.isTokenValid(jwt, userDetails)) {
             filterChain.doFilter(request, response);
