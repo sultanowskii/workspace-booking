@@ -1,0 +1,27 @@
+get:
+  operationId: getRoomBookings
+  summary: Get room bookings
+  description: |
+    Get room bookings
+  parameters:
+    - name: id
+      description: ID
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
+    - name: date
+      description: date (2024-11-01T11:30:00+00:00) - RFC3339
+      in: query
+      schema:
+        type: string
+        format: date-time
+      required: false
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../../schemas/rooms/RoomBookings.yaml

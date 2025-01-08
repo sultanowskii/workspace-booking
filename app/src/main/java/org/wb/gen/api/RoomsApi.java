@@ -5,10 +5,13 @@
  */
 package org.wb.gen.api;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.wb.gen.model.Error;
+import java.time.OffsetDateTime;
 import org.springframework.data.domain.Pageable;
 import org.springdoc.core.annotations.ParameterObject;
 import org.wb.gen.model.Room;
+import org.wb.gen.model.RoomBookings;
 import org.wb.gen.model.RoomCreate;
 import org.wb.gen.model.RoomLayout;
 import org.wb.gen.model.RoomUpdate;
@@ -133,6 +136,39 @@ public interface RoomsApi {
     
     ResponseEntity<RoomWithWalls> getRoom(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+    );
+
+
+    /**
+     * GET /rooms/{id}/bookings : Get room bookings
+     * Get room bookings 
+     *
+     * @param id ID (required)
+     * @param date date (optional)
+     * @return Success (status code 200)
+     */
+    @Operation(
+        operationId = "getRoomBookings",
+        summary = "Get room bookings",
+        description = "Get room bookings ",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = RoomBookings.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/rooms/{id}/bookings",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<RoomBookings> getRoomBookings(
+        @Parameter(name = "id", description = "ID", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
+        @Parameter(name = "date", description = "date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime date
     );
 
 

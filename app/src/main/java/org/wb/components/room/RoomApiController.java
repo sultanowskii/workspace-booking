@@ -1,18 +1,22 @@
 package org.wb.components.room;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wb.components.common.paging.Paginator;
 import org.wb.gen.api.RoomsApi;
 import org.wb.gen.model.Room;
+import org.wb.gen.model.RoomBookings;
 import org.wb.gen.model.RoomCreate;
 import org.wb.gen.model.RoomLayout;
 import org.wb.gen.model.RoomUpdate;
@@ -31,6 +35,8 @@ public class RoomApiController implements RoomsApi {
     private RoomService service;
     @Autowired
     private RoomLayoutService layoutService;
+    @Autowired
+    private RoomBookingsService bookingsService;
 
     @Override
     public ResponseEntity<List<Room>> getRooms(
@@ -74,6 +80,14 @@ public class RoomApiController implements RoomsApi {
     @Override
     public ResponseEntity<RoomLayout> getRoomLayout(Long id) {
         var result = layoutService.geRoomLayout(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @Override
+    public ResponseEntity<RoomBookings> getRoomBookings(
+            @Parameter(name = "id", description = "ID", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
+            @Parameter(name = "date", description = "date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime date) {
+        var result = bookingsService.getRoomBookings(id, date);
         return ResponseEntity.ok(result);
     }
 }
