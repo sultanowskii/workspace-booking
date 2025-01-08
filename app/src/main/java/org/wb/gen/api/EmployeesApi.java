@@ -40,6 +40,7 @@ public interface EmployeesApi {
      *
      * @param employeeCreate  (required)
      * @return Success (status code 201)
+     *         or Invalid request (status code 400)
      */
     @Operation(
         operationId = "createEmployee",
@@ -47,6 +48,9 @@ public interface EmployeesApi {
         responses = {
             @ApiResponse(responseCode = "201", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             })
         }
     )
@@ -157,6 +161,7 @@ public interface EmployeesApi {
      * @param id  (required)
      * @param employeeUpdate  (required)
      * @return Success (status code 200)
+     *         or Invalid request (status code 400)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
@@ -165,6 +170,9 @@ public interface EmployeesApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))

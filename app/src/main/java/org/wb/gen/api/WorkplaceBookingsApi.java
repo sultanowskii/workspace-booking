@@ -42,6 +42,7 @@ public interface WorkplaceBookingsApi {
      *
      * @param workplaceBookingCreate  (required)
      * @return Success (status code 201)
+     *         or Invalid request (status code 400)
      */
     @Operation(
         operationId = "createWorkplaceBooking",
@@ -49,6 +50,9 @@ public interface WorkplaceBookingsApi {
         responses = {
             @ApiResponse(responseCode = "201", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = WorkplaceBooking.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             })
         }
     )
@@ -161,6 +165,7 @@ public interface WorkplaceBookingsApi {
      * @param id  (required)
      * @param workplaceBookingUpdate  (required)
      * @return Success (status code 200)
+     *         or Invalid request (status code 400)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
@@ -169,6 +174,9 @@ public interface WorkplaceBookingsApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = WorkplaceBooking.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))

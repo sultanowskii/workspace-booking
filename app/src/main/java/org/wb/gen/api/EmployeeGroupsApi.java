@@ -39,6 +39,7 @@ public interface EmployeeGroupsApi {
      *
      * @param employeeGroupCreateUpdate  (required)
      * @return Success (status code 201)
+     *         or Invalid request (status code 400)
      *         or Permission denied (status code 403)
      */
     @Operation(
@@ -47,6 +48,9 @@ public interface EmployeeGroupsApi {
         responses = {
             @ApiResponse(responseCode = "201", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             }),
             @ApiResponse(responseCode = "403", description = "Permission denied", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -166,6 +170,7 @@ public interface EmployeeGroupsApi {
      * @param id  (required)
      * @param employeeGroupCreateUpdate  (required)
      * @return Success (status code 200)
+     *         or Invalid request (status code 400)
      *         or Permission denied (status code 403)
      *         or Resource Not Found (status code 404)
      */
@@ -175,6 +180,9 @@ public interface EmployeeGroupsApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             }),
             @ApiResponse(responseCode = "403", description = "Permission denied", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))

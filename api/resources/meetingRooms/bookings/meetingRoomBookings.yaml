@@ -66,3 +66,9 @@ post:
         application/json:
           schema:
             $ref: ../../../schemas/meetingRooms/bookings/MeetingRoomBooking.yaml
+    "400":
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: ../../../schemas/common/errors/InvalidRequest.yaml

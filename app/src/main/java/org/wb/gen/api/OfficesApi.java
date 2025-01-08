@@ -69,6 +69,7 @@ public interface OfficesApi {
      *
      * @param officeCreateUpdate  (required)
      * @return Success (status code 201)
+     *         or Invalid request (status code 400)
      */
     @Operation(
         operationId = "createOffice",
@@ -76,6 +77,9 @@ public interface OfficesApi {
         responses = {
             @ApiResponse(responseCode = "201", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Office.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             })
         }
     )
@@ -218,6 +222,7 @@ public interface OfficesApi {
      * @param id  (required)
      * @param officeCreateUpdate  (required)
      * @return Success (status code 200)
+     *         or Invalid request (status code 400)
      *         or Resource Not Found (status code 404)
      */
     @Operation(
@@ -226,6 +231,9 @@ public interface OfficesApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Office.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
