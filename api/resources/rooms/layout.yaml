@@ -1,0 +1,20 @@
+get:
+  operationId: getRoomLayout
+  summary: Get room layout
+  description: |
+    Get room layout
+  parameters:
+    - name: id
+      description: ID
+      in: path
+      schema:
+        type: integer
+        format: int64
+      required: true
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../../schemas/rooms/RoomLayout.yaml

@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.wb.components.meetingroom.MeetingRoom;
 import org.wb.components.office.Office;
 import org.wb.components.room.wall.RoomWall;
+import org.wb.components.workplace.Workplace;
 
 @Entity
 @Data
@@ -33,4 +35,10 @@ public class Room implements org.wb.components.common.Entity {
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private List<RoomWall> walls = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    private List<Workplace> workplaces = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    private List<MeetingRoom> meetingRooms = new ArrayList<>();
 }

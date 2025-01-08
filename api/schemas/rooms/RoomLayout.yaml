@@ -1,0 +1,30 @@
+name: RoomLayout
+description: Room layout
+type: object
+properties:
+  id:
+    description: ID
+    type: integer
+    format: int64
+  officeId:
+    description: Office ID
+    type: integer
+    format: int64
+  name:
+    description: Name
+    type: string
+  walls:
+    description: List of room walls
+    type: array
+    items:
+      $ref: ./RoomWall.yaml
+  workplaces:
+    description: Workplaces
+    type: array
+    items:
+      $ref: ../workplaces/Workplace.yaml
+  meetingRooms:
+    description: Meeting rooms
+    type: array
+    items:
+      $ref: ../meetingRooms/MeetingRoom.yaml

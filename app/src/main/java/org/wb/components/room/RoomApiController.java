@@ -14,6 +14,7 @@ import org.wb.components.common.paging.Paginator;
 import org.wb.gen.api.RoomsApi;
 import org.wb.gen.model.Room;
 import org.wb.gen.model.RoomCreate;
+import org.wb.gen.model.RoomLayout;
 import org.wb.gen.model.RoomUpdate;
 import org.wb.gen.model.RoomWithWalls;
 
@@ -28,6 +29,8 @@ import jakarta.validation.constraints.Size;
 public class RoomApiController implements RoomsApi {
     @Autowired
     private RoomService service;
+    @Autowired
+    private RoomLayoutService layoutService;
 
     @Override
     public ResponseEntity<List<Room>> getRooms(
@@ -66,5 +69,11 @@ public class RoomApiController implements RoomsApi {
     public ResponseEntity<Void> deleteRoom(Long id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Override
+    public ResponseEntity<RoomLayout> getRoomLayout(Long id) {
+        var result = layoutService.geRoomLayout(id);
+        return ResponseEntity.ok(result);
     }
 }

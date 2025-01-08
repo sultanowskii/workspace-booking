@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springdoc.core.annotations.ParameterObject;
 import org.wb.gen.model.Room;
 import org.wb.gen.model.RoomCreate;
+import org.wb.gen.model.RoomLayout;
 import org.wb.gen.model.RoomUpdate;
 import org.wb.gen.model.RoomWithWalls;
 import io.swagger.v3.oas.annotations.Operation;
@@ -132,6 +133,37 @@ public interface RoomsApi {
     
     ResponseEntity<RoomWithWalls> getRoom(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+    );
+
+
+    /**
+     * GET /rooms/{id}/layout : Get room layout
+     * Get room layout 
+     *
+     * @param id ID (required)
+     * @return Success (status code 200)
+     */
+    @Operation(
+        operationId = "getRoomLayout",
+        summary = "Get room layout",
+        description = "Get room layout ",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = RoomLayout.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "bearerTokenAuth")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/rooms/{id}/layout",
+        produces = { "application/json" }
+    )
+    
+    ResponseEntity<RoomLayout> getRoomLayout(
+        @Parameter(name = "id", description = "ID", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
