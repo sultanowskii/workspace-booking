@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.wb.gen.api.ImportsApi;
+import org.wb.gen.model.RoomWithWalls;
 
 @Controller
 @RequestMapping("${openapi.workspaceBooking.base-path:}")
@@ -16,12 +17,12 @@ public class ImportApiController implements ImportsApi {
     protected ImportService service;
 
     @Override
-    public ResponseEntity<Void> importRoom(MultipartFile file) {
+    public ResponseEntity<RoomWithWalls> importRoom(MultipartFile file) {
         try {
-            service.extractAndCreateRoom(file);
+            var result = service.extractAndCreateRoom(file);
+            return ResponseEntity.ok(result);
         } catch (IOException e) {
-            System.out.println(e);
+            return ResponseEntity.internalServerError().build();
         }
-        return ResponseEntity.ok().build();
     }
 }

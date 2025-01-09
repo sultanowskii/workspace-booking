@@ -14,6 +14,7 @@ import org.wb.components.workplace.WorkplaceService;
 import org.wb.gen.model.MeetingRoomCreate;
 import org.wb.gen.model.RoomCreate;
 import org.wb.gen.model.RoomWall;
+import org.wb.gen.model.RoomWithWalls;
 import org.wb.gen.model.WorkplaceCreate;
 
 import com.google.gson.Gson;
@@ -31,7 +32,7 @@ public class ImportService {
     protected MeetingRoomService meetingRoomService;
 
     @Transactional
-    public void createRoom(RoomImportDto dto) {
+    public RoomWithWalls createRoom(RoomImportDto dto) {
         var walls = dto.getWalls();
 
         var roomCreateForm = new RoomCreate()
@@ -78,6 +79,8 @@ public class ImportService {
                 })
                 .toList();
         meetingRoomService.createAllRaw(meetingRoomsCreateForm);
+
+        return createdRoom;
     }
 
     private void validate(RoomImportDto dto) {
@@ -93,7 +96,7 @@ public class ImportService {
         }
     }
 
-    public void extractAndCreateRoom(MultipartFile file) throws IOException {
+    public RoomWithWalls extractAndCreateRoom(MultipartFile file) throws IOException {
         var gson = new Gson();
 
         RoomImportDto dto;
@@ -105,6 +108,6 @@ public class ImportService {
 
         validate(dto);
 
-        createRoom(dto);
+        return createRoom(dto);
     }
 }

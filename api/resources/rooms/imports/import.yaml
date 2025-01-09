@@ -12,3 +12,10 @@ post:
             file:
               type: string
               format: binary
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../../../schemas/rooms/RoomWithWalls.yaml

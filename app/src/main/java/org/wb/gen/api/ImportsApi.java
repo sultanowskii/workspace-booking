@@ -5,8 +5,12 @@
  */
 package org.wb.gen.api;
 
+import org.wb.gen.model.RoomWithWalls;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +33,16 @@ public interface ImportsApi {
      * Import room (layout)
      *
      * @param file  (optional)
-     * @return 
+     * @return Success (status code 200)
      */
     @Operation(
         operationId = "importRoom",
         summary = "Import room",
         description = "Import room (layout)",
         responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = RoomWithWalls.class))
+            })
         },
         security = {
             @SecurityRequirement(name = "bearerTokenAuth")
@@ -44,10 +51,11 @@ public interface ImportsApi {
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/imports",
+        produces = { "application/json" },
         consumes = { "multipart/form-data" }
     )
     
-    ResponseEntity<Void> importRoom(
+    ResponseEntity<RoomWithWalls> importRoom(
         @Parameter(name = "file", description = "") @RequestPart(value = "file", required = false) MultipartFile file
     );
 

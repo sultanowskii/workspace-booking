@@ -144,7 +144,7 @@ public interface RoomsApi {
      * Get room bookings 
      *
      * @param id ID (required)
-     * @param date date (optional)
+     * @param date date (2024-11-01T11:30:00+00:00) - RFC3339 (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -168,7 +168,7 @@ public interface RoomsApi {
     
     ResponseEntity<RoomBookings> getRoomBookings(
         @Parameter(name = "id", description = "ID", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
-        @Parameter(name = "date", description = "date", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime date
+        @Parameter(name = "date", description = "date (2024-11-01T11:30:00+00:00) - RFC3339", in = ParameterIn.QUERY) @Valid @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime date
     );
 
 
