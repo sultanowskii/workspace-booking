@@ -1,0 +1,11 @@
+app.Dockerfile
+docker-compose.yaml
+import/
+build/
+docs/
+.vscode/
+.VSCodeCounter/
+.venv/
+.mypy_cache/
+.gradle/
+api/
