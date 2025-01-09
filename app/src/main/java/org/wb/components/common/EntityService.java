@@ -10,7 +10,7 @@ import org.wb.components.error.exception.NotFoundException;
 import org.wb.components.error.exception.PermissionDeniedException;
 import org.wb.components.user.UserService;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 public abstract class EntityService<T extends Entity, TDto, TListDto, TCreateDto, TUpdateDto> {
     @Autowired

@@ -6,7 +6,7 @@ import org.wb.components.common.EntityService;
 import org.wb.components.employeegroup.EmployeeGroupService;
 import org.wb.gen.model.OfficeCreateUpdate;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OfficeService

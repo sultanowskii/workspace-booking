@@ -12,7 +12,7 @@ import org.wb.gen.model.MeetingRoomBookingCreate;
 import org.wb.gen.model.MeetingRoomBookingShort;
 import org.wb.gen.model.MeetingRoomBookingUpdate;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MeetingRoomBookingService extends

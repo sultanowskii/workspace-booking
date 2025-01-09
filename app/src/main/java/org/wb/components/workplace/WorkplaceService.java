@@ -11,7 +11,7 @@ import org.wb.components.workplace.visual.WorkplaceVisualRepository;
 import org.wb.gen.model.WorkplaceCreate;
 import org.wb.gen.model.WorkplaceUpdate;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WorkplaceService extends

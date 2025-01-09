@@ -10,7 +10,7 @@ import org.wb.gen.model.RoomCreate;
 import org.wb.gen.model.RoomUpdate;
 import org.wb.gen.model.RoomWithWalls;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RoomService

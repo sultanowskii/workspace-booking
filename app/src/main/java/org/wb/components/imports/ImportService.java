@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.wb.components.common.LoudValidator;
 import org.wb.components.error.exception.InvalidBodyException;
@@ -19,8 +20,6 @@ import org.wb.gen.model.WorkplaceCreate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class ImportService {

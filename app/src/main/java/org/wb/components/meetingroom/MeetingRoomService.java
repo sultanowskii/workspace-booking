@@ -11,7 +11,7 @@ import org.wb.components.meetingroom.visual.MeetingRoomVisualRepository;
 import org.wb.gen.model.MeetingRoomCreate;
 import org.wb.gen.model.MeetingRoomUpdate;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MeetingRoomService extends

@@ -11,7 +11,7 @@ import org.wb.components.user.User;
 import org.wb.gen.model.EmployeeCreate;
 import org.wb.gen.model.EmployeeUpdate;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmployeeService
