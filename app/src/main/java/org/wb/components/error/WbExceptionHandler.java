@@ -111,11 +111,11 @@ public class WbExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ PSQLException.class })
     public ResponseEntity<Object> handlePSQLException(PSQLException ex) {
         switch (DBError.valueFrom(ex.getSQLState())) {
-            case DBError.VISUAL_OBJECTS_COLLIDE:
+            case VISUAL_OBJECTS_COLLIDE:
                 return handleInvalidBodyException(ex);
-            case DBError.WORKPLACE_BOOKING_DATE_OUTSIDE_RANGE:
+            case WORKPLACE_BOOKING_DATE_OUTSIDE_RANGE:
                 return handleInvalidBodyException(ex);
-            case DBError.MEETING_ROOM_BOOKING_DATE_OUTSIDE_RANGE:
+            case MEETING_ROOM_BOOKING_DATE_OUTSIDE_RANGE:
                 return handleInvalidBodyException(ex);
             default:
                 break;

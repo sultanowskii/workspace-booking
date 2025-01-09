@@ -12,6 +12,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: workspace_booking
       JWT_KEY: ${JWT_KEY}
+      PORT: ${PORT}
     ports:
       - 8080:8080
     depends_on:

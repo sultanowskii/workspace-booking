@@ -30,7 +30,7 @@ public class RoomLayoutService {
                     root.fetch("walls");
                     return builder.equal(root.get("id"), id);
                 })
-                .getFirst();
+                .get(0);
 
         var workplaces = workplaceRepo.findAll((root, query, builder) -> {
             root.fetch("visual");
