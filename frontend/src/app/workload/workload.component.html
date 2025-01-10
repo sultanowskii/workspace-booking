@@ -1,0 +1,41 @@
+<h1>Загруженность офиса</h1>
+
+<div [class.hide]="isreg == 0">
+  <div>
+    <label>Выберите офис:</label>&nbsp;
+    <select [(ngModel)]="officeForm.office" (change)="getOffice(this)">
+      <option *ngFor="let office of offices" [ngValue]="office.id">{{ office.name }}</option>
+    </select>
+  </div>
+  <br>
+
+  <!-- Показываем выбор помещения только если выбран офис -->
+  <div *ngIf="officeForm.office">
+    <label>Выберите помещение:</label>&nbsp;
+    <select [(ngModel)]="roomForm.room" (change)="getRoom(this)">
+      <option *ngFor="let room of rooms" [ngValue]="room.id">{{ room.name }}</option>
+    </select>
+  </div>
+  <br>
+
+  <!-- Показываем выбор даты только если выбрано помещение -->
+  <div *ngIf="roomForm.room">
+    <label for="start">Выберите день:</label>
+    &nbsp;<input 
+      type="date" 
+      id="start" 
+      name="trip-start" 
+      (change)="checkDate(bookingForm.date)" 
+      [(ngModel)]="bookingForm.date" 
+    />
+    <br /><br />
+  </div>
+
+  <div>
+    <br> {{ this.loadreport }}
+  </div>
+</div>
+
+<div [class.hide]="isreg == 1">
+  <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
+</div>
