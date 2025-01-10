@@ -23,6 +23,8 @@ public class EmployeeCreate {
 
   private String fullName;
 
+  private Long employeeGroupId = null;
+
   public EmployeeCreate username(String username) {
     this.username = username;
     return this;
@@ -83,6 +85,26 @@ public class EmployeeCreate {
     this.fullName = fullName;
   }
 
+  public EmployeeCreate employeeGroupId(Long employeeGroupId) {
+    this.employeeGroupId = employeeGroupId;
+    return this;
+  }
+
+  /**
+   * Employee Group ID
+   * @return employeeGroupId
+   */
+  
+  @Schema(name = "employeeGroupId", description = "Employee Group ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("employeeGroupId")
+  public Long getEmployeeGroupId() {
+    return employeeGroupId;
+  }
+
+  public void setEmployeeGroupId(Long employeeGroupId) {
+    this.employeeGroupId = employeeGroupId;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -94,12 +116,13 @@ public class EmployeeCreate {
     EmployeeCreate employeeCreate = (EmployeeCreate) o;
     return Objects.equals(this.username, employeeCreate.username) &&
         Objects.equals(this.password, employeeCreate.password) &&
-        Objects.equals(this.fullName, employeeCreate.fullName);
+        Objects.equals(this.fullName, employeeCreate.fullName) &&
+        Objects.equals(this.employeeGroupId, employeeCreate.employeeGroupId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, password, fullName);
+    return Objects.hash(username, password, fullName, employeeGroupId);
   }
 
   @Override
@@ -109,6 +132,7 @@ public class EmployeeCreate {
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    password: ").append("*").append("\n");
     sb.append("    fullName: ").append(toIndentedString(fullName)).append("\n");
+    sb.append("    employeeGroupId: ").append(toIndentedString(employeeGroupId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

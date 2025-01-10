@@ -21,6 +21,8 @@ public class Employee {
 
   private String username;
 
+  private Long employeeGroupId;
+
   private String fullName;
 
   public Employee id(Long id) {
@@ -63,6 +65,26 @@ public class Employee {
     this.username = username;
   }
 
+  public Employee employeeGroupId(Long employeeGroupId) {
+    this.employeeGroupId = employeeGroupId;
+    return this;
+  }
+
+  /**
+   * Employee Group ID
+   * @return employeeGroupId
+   */
+  
+  @Schema(name = "employeeGroupId", description = "Employee Group ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("employeeGroupId")
+  public Long getEmployeeGroupId() {
+    return employeeGroupId;
+  }
+
+  public void setEmployeeGroupId(Long employeeGroupId) {
+    this.employeeGroupId = employeeGroupId;
+  }
+
   public Employee fullName(String fullName) {
     this.fullName = fullName;
     return this;
@@ -94,12 +116,13 @@ public class Employee {
     Employee employee = (Employee) o;
     return Objects.equals(this.id, employee.id) &&
         Objects.equals(this.username, employee.username) &&
+        Objects.equals(this.employeeGroupId, employee.employeeGroupId) &&
         Objects.equals(this.fullName, employee.fullName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, fullName);
+    return Objects.hash(id, username, employeeGroupId, fullName);
   }
 
   @Override
@@ -108,6 +131,7 @@ public class Employee {
     sb.append("class Employee {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
+    sb.append("    employeeGroupId: ").append(toIndentedString(employeeGroupId)).append("\n");
     sb.append("    fullName: ").append(toIndentedString(fullName)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -6,3 +6,8 @@ properties:
     description: Full name
     type: string
     minLength: 1
+  employeeGroupId:
+    description: Employee Group ID
+    type: integer
+    format: int64
+    nullable: true

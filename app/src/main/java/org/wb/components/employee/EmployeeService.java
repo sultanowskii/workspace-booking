@@ -31,7 +31,7 @@ public class EmployeeService
 
     @Override
     protected boolean isCreateAllowed() {
-        return true;
+        return isCurrentUserAdmin();
     }
 
     @Override
@@ -46,8 +46,7 @@ public class EmployeeService
 
     @Override
     protected boolean isUpdateAllowed(Employee employee) {
-        var currentUser = userService.getCurrentUser();
-        return employee.getUser().equals(currentUser) || currentUser.isAdmin();
+        return isCurrentUserAdmin();
     }
 
     @Override

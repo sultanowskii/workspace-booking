@@ -31,8 +31,10 @@ public class EmployeeApiController implements EmployeesApi {
     public ResponseEntity<List<Employee>> getEmployees(
             @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
             @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+            @Parameter(name = "employeeGroupId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeGroupId", required = false) Long employeeGroupId,
             @ParameterObject final Pageable pageable) {
         var searchSpec = new EmployeeSpecificationBuilder()
+                .withEmployeeGroupId(employeeGroupId)
                 .withFieldContaining(searchFieldName, searchString)
                 .build();
         var paginator = Paginator.from(pageable);

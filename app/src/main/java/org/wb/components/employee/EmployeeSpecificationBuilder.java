@@ -13,4 +13,11 @@ public class EmployeeSpecificationBuilder extends EntitySpecificationBuilder<Emp
     public boolean isFieldValid(String fieldName) {
         return VALID_SEARCH_FIELDS.contains(fieldName);
     }
+
+    public EmployeeSpecificationBuilder withEmployeeGroupId(Long employeeGroupId) {
+        andOtherSpec((root, query, builder) -> {
+            return builder.equal(root.get("employeeGroup").get("id"), employeeGroupId);
+        });
+        return this;
+    }
 }

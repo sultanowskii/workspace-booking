@@ -9,6 +9,10 @@ properties:
   username:
     description: Username
     type: string
+  employeeGroupId:
+    description: Employee Group ID
+    type: integer
+    format: int64
   fullName:
     description: Full name
     type: string

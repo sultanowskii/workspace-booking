@@ -19,6 +19,8 @@ public class EmployeeUpdate {
 
   private String fullName;
 
+  private Long employeeGroupId = null;
+
   public EmployeeUpdate fullName(String fullName) {
     this.fullName = fullName;
     return this;
@@ -39,6 +41,26 @@ public class EmployeeUpdate {
     this.fullName = fullName;
   }
 
+  public EmployeeUpdate employeeGroupId(Long employeeGroupId) {
+    this.employeeGroupId = employeeGroupId;
+    return this;
+  }
+
+  /**
+   * Employee Group ID
+   * @return employeeGroupId
+   */
+  
+  @Schema(name = "employeeGroupId", description = "Employee Group ID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("employeeGroupId")
+  public Long getEmployeeGroupId() {
+    return employeeGroupId;
+  }
+
+  public void setEmployeeGroupId(Long employeeGroupId) {
+    this.employeeGroupId = employeeGroupId;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -48,12 +70,13 @@ public class EmployeeUpdate {
       return false;
     }
     EmployeeUpdate employeeUpdate = (EmployeeUpdate) o;
-    return Objects.equals(this.fullName, employeeUpdate.fullName);
+    return Objects.equals(this.fullName, employeeUpdate.fullName) &&
+        Objects.equals(this.employeeGroupId, employeeUpdate.employeeGroupId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fullName);
+    return Objects.hash(fullName, employeeGroupId);
   }
 
   @Override
@@ -61,6 +84,7 @@ public class EmployeeUpdate {
     StringBuilder sb = new StringBuilder();
     sb.append("class EmployeeUpdate {\n");
     sb.append("    fullName: ").append(toIndentedString(fullName)).append("\n");
+    sb.append("    employeeGroupId: ").append(toIndentedString(employeeGroupId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -140,6 +140,7 @@ public interface EmployeesApi {
      *
      * @param searchFieldName  (optional)
      * @param searchString  (optional)
+     * @param employeeGroupId  (optional)
      * @return Success (status code 200)
      */
     @Operation(
@@ -164,6 +165,7 @@ public interface EmployeesApi {
     ResponseEntity<List<Employee>> getEmployees(
         @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
         @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
+        @Parameter(name = "employeeGroupId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeGroupId", required = false) Long employeeGroupId,
         @ParameterObject final Pageable pageable
     );
 
