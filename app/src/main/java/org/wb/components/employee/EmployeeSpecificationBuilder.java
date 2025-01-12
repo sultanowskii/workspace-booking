@@ -15,6 +15,10 @@ public class EmployeeSpecificationBuilder extends EntitySpecificationBuilder<Emp
     }
 
     public EmployeeSpecificationBuilder withEmployeeGroupId(Long employeeGroupId) {
+        if (employeeGroupId == null) {
+            return this;
+        }
+
         andOtherSpec((root, query, builder) -> {
             return builder.equal(root.get("employeeGroup").get("id"), employeeGroupId);
         });
