@@ -41,12 +41,11 @@ public class SecurityConfiguration {
                         cors -> cors.configurationSource(
                                 request -> {
                                     var corsConfiguration = new CorsConfiguration();
-                                    corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+                                    corsConfiguration.setAllowedOrigins(List.of("*"));
                                     corsConfiguration.setAllowedMethods(
                                             List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "CONNECT"));
                                     corsConfiguration.setAllowedHeaders(
                                             List.of("Authorization", "Cache-Control", "Content-Type"));
-                                    corsConfiguration.setAllowCredentials(true);
                                     return corsConfiguration;
                                 }))
                 .authorizeHttpRequests(
