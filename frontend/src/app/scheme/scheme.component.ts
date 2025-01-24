@@ -4,10 +4,9 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from "@angular/router";
-import { getAuth,createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, set, update } from "firebase/database";
-import { getStorage, ref as ref_storage, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {CdkDragDrop, CdkDragEnd, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import { table } from "console";
+import { AuthService } from "../services/auth.service";
 
 @Component({
     selector: "scheme-app",
@@ -21,27 +20,70 @@ import {CdkDragDrop, CdkDragEnd, CdkDrag, CdkDropList, moveItemInArray} from '@a
 })
 
 export class SchemeComponent {
-    offices: Array<{id: number; name: string; }> = [];
+    offices: Array<{id: number; name: string; address: string}> = [];
     rooms: Array<{id: number; name: string; office: string}> = [];
-    tables:  Array<{name: string; visibility: string; mon: number; type: string; position: {x: number, y: number}; length: number; width: number; room: string, book: string;} > = [];
+    tables:  Array<{id: number; name: string; visibility: string; mon: number; type: string; position: {x: number, y: number}; length: number; width: number; room: string, book: string;} > = [];
     books: Array<{id: number; name: string; date: string; user: string;} > = [];
     walls: Array<{visibility: string; position: {x1: number, y1: number, x2: number, y2: number}; room: string;} > = [];
 
     private baseUrl = environment.baseUrl;
-    status = '';
-    selectedTable = '';
+    role = '';
     tableType = '';
     useroffice = '';
+    selectedTable: any;
+    isBookingModalOpen = false;
     user = '';
+    filteredRooms: Array<{ id: number; name: string; office: string }> = [];
+    filteredOffices = [...this.offices];
+    officeSearch = '';
+    groups: Array<{id: number; name: string; office: string;} > = [];
     isbooked: string[] = [];
+    userRooms: Array<{ id: number; name: string; office: string }> = []; 
+    isAddTableFormOpen = false;
 
-    bookingForm: any = {
-        date: '',
-        datetime: '',
+    newTable = {
+      tabtype: 'rm',  
+      rabpernme: '',
+      x: '',
+      y: '',
+      length: '',
+      width: '',
+      mon: 0
+    };
+    officeForm:
+    any = {
+    office: '',
     }
+    roomForm:
+    any = {
+    room: '',
+    }
+    bookingForm: any = {date: null, selectedTimes:[]};
+    availableDates: Date[] = [];
+    availableTimes: string[] = [];
+      isMyBookingsFormOpen = false;
+    
+      myBookings: any[] = [];
+    
+      // openMyBookingsForm() {
+      //   this.isMyBookingsFormOpen = true;
+      //   this.getMyBookings(); 
+      // }
+    
+      closeMyBookingsForm() {
+        this.isMyBookingsFormOpen = false;
+      }
+    
+      // getMyBookings() {
+      //   ...
+      //   ;
+      // }
+    
+    
 
     addtable() {
         this.tables.push({
+            id: this.tablesForm.id,
             name: this.tablesForm.rabpernme,
             visibility: 'visible',
             mon: Number(this.tablesForm.mon),
@@ -64,17 +106,11 @@ export class SchemeComponent {
         this.updateWalls();
     }
 
-    dragEnded_new(event: CdkDragEnd<string[]>, i: number) {
-        this.tables[i].position = this.newposition(this.tables[i].position.x, event.distance.x, this.tables[i].position.y, event.distance.y);
-        this.updateTables();
-    }
-
     newposition(x: number, x2: number, y: number, y2: number) {
         let new_x = x + x2;
         let new_y = y + y2;
         return {"x": new_x, "y": new_y};
     }
-
     tablesForm: any = {
         x: 0,
         y: 0,
@@ -93,25 +129,37 @@ export class SchemeComponent {
 
     isreg = 0;
 
-    constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient ) {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const uid = user.uid;
-                if (user.email != null) {
-                    this.user = user.email;
-                    this.GetStatus(user.email);
-                }
-                this.isreg = 1;
-                this.officeslist();
-                this.roomslist();
-                this.tableslist();
-                this.getBooks();
+    constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
+    if (authService.user) {
+        this.isreg = 1;
+        this.officeslist();
+        this.groupslist();
+        this.tableslist();
+        this.getBooks();
+        this.generateAvailableDates();
+        this.generateAvailableTimes();
+        this.bookingForm.date = this.availableDates[0];
             } else {
                 console.log('not reged');
             }
-        });
-    }
+        };
+    
+        groupslist() {
+            this.http
+              .get(this.baseUrl + "/api/employeeGroups", {
+                headers: {
+                  Authorization: `Bearer ${this.authService.user.token}`,
+                },
+              })
+              .subscribe((data: any) => {
+                data.forEach((group: any) => {
+                  this.groups.push({
+                    id: group["id"],
+                    name: group["name"],
+                  } as any);
+                });
+              });
+          }
 
     doBook() {
 		if (this.bookingForm.date !== "" || this.bookingForm.datetime !== "") {
@@ -130,7 +178,7 @@ export class SchemeComponent {
 				user: this.user
 			});
 	
-			this.http.post(this.baseUrl, book_json).subscribe(data => {
+			this.http.post(this.baseUrl+"/api", book_json).subscribe(data => {
 				// Если бронирование прошло успешно
 				if (data && Object.values(data)[0] > 0) {
 					this.isbooked.push(this.selectedTable);
@@ -144,7 +192,16 @@ export class SchemeComponent {
 			});
 		}
 	}
-	
+
+
+    updateFilteredRooms(): void {
+        this.filteredRooms = this.rooms.filter(room => 
+          room.office === this.officeForm.office
+        );
+        this.userRooms = this.filteredRooms;
+      }
+      
+  
 
     updateTables() {
         var tables_json = JSON.stringify(this.tables);
@@ -159,16 +216,22 @@ export class SchemeComponent {
     }
 
     officeslist() {
-        let params = new HttpParams().set('type', 'offices');
-        this.http.get(this.baseUrl, {params}).subscribe(data => {
-            (Object.keys(data)).forEach((key, index) => {
-                this.offices.push({
-                    id: Object.values(data)[index]["id"],
-                    name: Object.values(data)[index]["name"]
-                });
+        this.http
+          .get(`${this.baseUrl}/api/offices`, {
+            headers: {
+              Authorization: `Bearer ${this.authService.user.token}`,
+            },
+          })
+          .subscribe((data: any) => {
+            data.forEach((office: any) => {
+              this.offices.push({
+                id: office["id"],
+                name: office["name"],
+                address: office["address"]
+              });
             });
-        });
-    }
+          });
+      }
 
     roomslist() {
         let params = new HttpParams().set('type', 'rooms');
@@ -181,13 +244,6 @@ export class SchemeComponent {
                 });
             });
         });
-    }
-
-    deltab(i: number) {
-        this.tables.splice(i, 1);
-        var tables_json = JSON.stringify(this.tables);
-        const body = {json: tables_json};
-        this.http.post(this.baseUrl, body).subscribe(data => {});
     }
 
 	unbook(table: string) {
@@ -211,6 +267,7 @@ export class SchemeComponent {
 		let params = new HttpParams().set('type', 'tables');
 		this.http.get(this.baseUrl, { params }).subscribe(data => {
 			this.tables = Object.values(data).map((table: any) => ({
+        id: table.id,
 				name: table.name,
 				visibility: table.visibility,
 				mon: table.mon,
@@ -224,32 +281,6 @@ export class SchemeComponent {
 			this.getBooks();
 		});
 	}
-	
-
-    GetStatus(user: string) {
-        let params = new HttpParams()
-            .set('type', 'status')
-            .set('user', user);
-        this.http.get(this.baseUrl, {params}).subscribe(data => {
-            (Object.keys(data)).forEach((key, index) => {
-                this.status = Object.values(data)[0];
-                this.useroffice = Object.values(data)[1];
-            });
-        });
-    }
-
-    checkDate(date: string) {
-		// Сначала сбрасываем все статусы бронирования
-		this.tables = this.tables.map(item => ({ ...item, book: '' }));
-		// Фильтруем по дате
-		let items = this.books.filter(item => item.date.includes(date));
-		// Обновляем статус бронирования для каждого стола
-		this.tables = this.tables.map(item => {
-			const bookedItem = items.find(newItem => newItem.name === item.name);
-			return bookedItem ? { ...item, book: bookedItem.user === this.user ? '1' : '0' } : item;
-		});
-	}
-	
 
     getBooks(): void {
 		let params = new HttpParams().set('type', 'getbooks');
@@ -265,4 +296,118 @@ export class SchemeComponent {
 			});
 		});
 	}
-}	
+
+
+    generateAvailableDates(){
+        this.availableDates = [];
+        const today = new Date();
+        for (let i = 0; i < 5; i++){
+            const nextDay = new Date(today);
+            nextDay.setDate(today.getDate() + i);
+            this.availableDates.push(nextDay);
+        }
+    }
+
+    generateAvailableTimes(){
+      this.availableTimes = [];
+      for (let hour = 9; hour < 18; hour++){
+        const time = `${hour.toString().padStart(2, '0')}:00`
+          this.availableTimes.push(time);
+      }
+    }
+
+    filterOffices() {
+      if (this.role === 'ADMIN') {
+      this.filteredOffices = [...this.offices];
+      } else {
+      this.filteredOffices = this.offices.filter((office) => {
+        return this.groups.some((group) => group.office === office.name);
+      });
+      }
+    }
+    
+
+  selectOffice(office: any) {
+    this.officeForm.office = office;
+    this.filteredOffices = [];
+    this.officeSearch = '';
+      if (office.rooms){
+          this.tablesForm.room = office.rooms[0].name;
+          this.roomForm.room = this.tablesForm.room
+      }
+  }
+
+  onRoomChange(){
+    this.roomForm.room = this.tablesForm.room
+  }
+
+   checkDate(date: Date) {
+    console.log('Selected date:', date);
+    // Дополнительная логика проверки даты
+  }
+
+   dragEnded_new(event: any, i:number){
+        this.tables[i].position = event.source.getFreeDragPosition();
+   }
+
+  deltab(i: number){
+    this.tables.splice(i, 1);
+  }
+
+    openBookingModal(table:any){
+       this.selectedTable = table;
+       this.isBookingModalOpen = true;
+        console.log('table: ', table);
+    }
+
+  closeBookingModal(){
+      this.isBookingModalOpen = false;
+      this.selectedTable = null;
+      this.bookingForm.selectedTimes = [];
+  }
+
+    onTimeChange(time:string, event:any) {
+    if (event.target.checked) {
+      this.bookingForm.selectedTimes.push(time);
+    } else {
+      this.bookingForm.selectedTimes = this.bookingForm.selectedTimes.filter((t: string) => t !== time);
+    }
+  }
+
+    bookTable(){
+      console.log('Забронировано:', this.selectedTable, ' на дату: ', this.bookingForm.date, ' время: ', this.bookingForm.selectedTimes);
+        this.selectedTable.book = '1';
+        this.closeBookingModal()
+    }
+
+    openAddTableForm() {
+      this.isAddTableFormOpen = true;
+    }
+  
+    // Функция для закрытия формы
+    closeAddTableForm() {
+      this.isAddTableFormOpen = false;
+    }
+  
+    // Функция для сохранения нового рабочего места
+    saveTable() {
+      if (this.newTable.rabpernme && this.newTable.x && this.newTable.y) {
+        // Логика сохранения нового рабочего места, например, отправка данных на сервер
+        console.log('Сохранено новое рабочее место:', this.newTable);
+  
+        // Закрытие формы после сохранения
+        this.closeAddTableForm();
+        
+        // Очистка формы
+        this.newTable = {
+          tabtype: 'rm',
+          rabpernme: '',
+          x: '',
+          y: '',
+          length: '',
+          width: '',
+          mon: 0
+        };
+      }
+    }
+  }

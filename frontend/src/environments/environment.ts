@@ -1,5 +1,4 @@
 
 export const environment = {
-//TODO
-  baseUrl: '',
+  baseUrl: 'http://localhost:8081',
 };

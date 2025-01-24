@@ -1,0 +1,69 @@
+<h4>Список групп</h4>
+<table border=1 cellpadding=5>
+    <tr *ngFor="let group of groups">
+        <td>{{group.id}}</td>
+        <td>{{group.name}}</td>
+        <td>{{group.office}}</td>
+        <td>
+            <input type="button" value="Прикрепить к офису" (click)="this.selectedGroup = group.id">
+        </td>
+        <td> &nbsp;<a style="text-decoration: none;" href="#" (click)="delGroup(group.id); "><font color="red">x</font></a> &nbsp;</td>
+    </tr>
+</table>
+
+<h4>Список пользователей</h4>
+<table border=1 cellpadding=5>
+    <tr>
+        <td>№</td>
+        <td>Пользователи</td>
+        <td>Группы</td>
+        <td> </td>
+    </tr>
+    <tr *ngFor="let user of users">
+        <td>{{user.id}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.groupname}}</td>
+        <td>
+            <input type="button" value="Прикрепить к группе" (click)="this.selectedUser = user.id">
+        </td>
+    </tr>
+</table>
+
+<div [ngClass]="selectedUser == 0 ? 'wind2' : 'wind2_vis'" id="wind2">
+    № Пользователя: <b>{{this.selectedUser}}</b><br/><br/>
+    <label for="start">Группа:</label>&nbsp;
+    <select [(ngModel)]="adduserForm.grid"> 
+        <option *ngFor="let group of groups" [value]="group.id">{{group.name}}</option>
+    </select>
+    <br/><br/>
+    <button type="button" (click)="addUser()">прикрепить к группе</button>&nbsp;&nbsp;
+    <button type="button" (click)="selectedUser=0">закрыть</button>
+</div>
+<div [ngClass]="selectedRoom == 0 ? 'wind2' : 'wind2_vis'" id="wind2">
+    Название помещения: <b>{{this.selectedRoom}}</b><br/><br/>
+    <label for="start">Офис:</label>&nbsp;
+    <select [(ngModel)]="addroomForm.ofid"> 
+        <option *ngFor="let office of (role === 'ADMIN' ? offices : filteredOffices)" [value]="office.id">{{office.name}}</option>
+    </select>
+    <br/><br/>
+    <button type="button" (click)="addroom()">прикрепить к офису</button>&nbsp;&nbsp;
+    <button type="button" (click)="selectedRoom=0">закрыть</button>
+</div>
+<div [ngClass]="selectedGroup == 0 ? 'wind2' : 'wind2_vis'" id="wind2">
+    № группы: <b>{{this.selectedGroup}}</b><br/><br/>
+    <label for="start">Офис:</label>&nbsp;
+    <select [(ngModel)]="addgroupForm.ofid"> 
+        <option *ngFor="let office of (role === 'ADMIN' ? offices : filteredOffices)" [value]="office.id">{{office.name}}</option>
+    </select>
+    <br/><br/>
+    <button type="button" (click)="addGroup()">прикрепить к офису</button>&nbsp;&nbsp;
+    <button type="button" (click)="selectedGroup=0">закрыть</button>
+</div>
+
+
+<div [class.hide]="isreg==1">
+    <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
+</div>
+<div [class.hide]="role=='ADMIN' || role==''">
+    <p>Данная страница доступна только для админов</p>
+</div>

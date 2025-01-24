@@ -3,14 +3,16 @@
 <tr>
 <td>
   <a [class.active]="act==''" href="/">Главная</a>
-  <a [class.active]="act=='/wokers'" href="/wokers">Сотрудники и группы</a>
+  <a [class.active]="act=='/offices'" href="/offices">Офисы</a>
+  <a [class.active]="act=='/rooms'" href="/rooms">Помещения</a>
+  <a [class.active]="act=='/groups'" href="/groups">Группы</a>
   <a [class.active]="act=='/scheme'" href="/scheme">Карта офиса</a>
-  <a [class.active]="act=='/workload'" href="/workload">Загруженности офиса</a>
+  <a [class.active]="act=='/workload'" href="/workload">Загруженность офиса</a>
 </td>
 <td align=right>
 <div  [class.hide]="isreg==0">
-<font color=white>Ваш статус: <b>{{status}}</b></font> &nbsp;&nbsp;
-<input type="button" (click)="SignOut()" value="Выйти">&nbsp;&nbsp;
+<font color=white>Ваш статус: <b>{{role}}</b></font> &nbsp;&nbsp;
+<input type="button" (click)="signOut()" value="Выйти">&nbsp;&nbsp;
 </div>
 </td>
 </tr>

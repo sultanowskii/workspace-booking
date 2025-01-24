@@ -1,56 +1,182 @@
-<h1>Рабочие места и переговорные</h1>
 <div [class.hide]="isreg==0">
-    <div class='hid' [class.vis]="status=='admin'">
+  <div class='hid' [class.vis]="role=='ADMIN'">
+    <button (click)="openAddTableForm()" *ngIf="role === 'ADMIN'">Добавить рабочее место</button>
+    
     <input type="radio" id="rab" name="tabtype" value="rm" [(ngModel)]="tablesForm.tabtype" />
-    <label for="sorudnik">Рабочее место</label>
+    <label for="EMPLOYEE">Рабочее место</label>
     &nbsp;&nbsp;
     <input type="radio" id="per" name="tabtype" value="pe" [(ngModel)]="tablesForm.tabtype" />
-    <label for="admin">Переговорная</label>
+    <label for="ADMIN">Переговорная</label>
     <br/><br/>
     Название/№:&nbsp;
     <input id="rabpernme" type="text" [(ngModel)]="tablesForm.rabpernme" /> <br/><br/>
     Координаты:&nbsp;
     <input id="x" type="text" size=3 [(ngModel)]="tablesForm.x" /> :x &nbsp;&nbsp;<input id="y" type="text" size=3 [(ngModel)]="tablesForm.y"/> :y
     <br/><br/>
+    Длина:&nbsp;
+    <input id="length" type="text" size=3 [(ngModel)]="tablesForm.length" /> 
+    <br/><br/>
+    Ширина:&nbsp;
+    <input id="width" type="text" size=3 [(ngModel)]="tablesForm.width" /> 
+    <br/><br/>
     Количество мониторов: - 
     <input id="mon" type="text" size=3 [(ngModel)]="tablesForm.mon"/> <br/><br/>
-    
-    <!-- Офис доступен только администратору -->
-    <div *ngIf="status=='admin'">
-    Офис - 
-    <select [(ngModel)]="tablesForm.office">
-    <option *ngFor="let office of offices" [ngValue]="office.id">{{office.name}}</option>
-    </select>
-    <br/><br/>
-    </div>
-
-    Помещение - 
-    <select [(ngModel)]="tablesForm.room">
-      <option *ngFor="let room of rooms" [ngValue]="room.id">{{room.name}}</option>
-    </select>
-    <br/><br/>
-    <input type="button" value="Создать" (click)="addtable()"><br/><br/>
-    </div>
-
-  <div cdkDrag *ngFor="let c of tables; index as i" 
-      [cdkDragFreeDragPosition]="c.position"
-      (cdkDragEnded)="dragEnded_new($event, i)"
-      [cdkDragDisabled]="status !== 'admin'"
-      [ngClass]="{
-          'example-box-booked': c.book === '1',
-          'example-box': c.book !== '1'
-      }">
-      {{ c.name }}<br/>
-      <b>(Помещение: {{ c.room }})</b>
-      <div *ngIf="status === 'admin'">
-          <a href="#" (click)="$event.preventDefault(); deltab(i)" style="text-decoration: none; color: red;">x</a>
-      </div>
-      <div style="position: absolute; top: 5px; left: 5px;">
-          <img src="monitor2.png" *ngIf="c.mon > 0">
-          <img src="monitor2.png" *ngIf="c.mon > 1">
-      </div>
-      <div *ngIf="status === 'сотрудник'"></div>
   </div>
+</div>
+
+<div *ngIf="isAddTableFormOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeAddTableForm()">&times;</span>
+    <h2>Добавить рабочее место</h2>
+    <form (ngSubmit)="saveTable()">
+      <label for="tabtype">Тип:</label><br/>
+      <input type="radio" id="rab" name="tabtype" value="rm" [(ngModel)]="newTable.tabtype" /> Рабочее место
+      <input type="radio" id="per" name="tabtype" value="pe" [(ngModel)]="newTable.tabtype" /> Переговорная<br/><br/>
+
+      <label for="rabpernme">Название/№:</label><br/>
+      <input id="rabpernme" type="text" [(ngModel)]="newTable.rabpernme" name="rabpernme" required /><br/><br/>
+
+      <label for="x">Координаты X:</label><br/>
+      <input id="x" type="text" size=3 [(ngModel)]="newTable.x" name="x" required /> :x &nbsp;&nbsp;
+      <label for="y">Координаты Y:</label>
+      <input id="y" type="text" size=3 [(ngModel)]="newTable.y" name="y" required /><br/><br/>
+
+      <label for="length">Длина:</label><br/>
+      <input id="length" type="text" size=3 [(ngModel)]="newTable.length" name="length" required /><br/><br/>
+
+      <label for="width">Ширина:</label><br/>
+      <input id="width" type="text" size=3 [(ngModel)]="newTable.width" name="width" required /><br/><br/>
+
+      <label for="mon">Количество мониторов:</label><br/>
+      <input id="mon" type="text" size=3 [(ngModel)]="newTable.mon" name="mon" required /><br/><br/>
+
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+
+<div [class.hide]="isreg==0">
+  <div class='hid' [class.vis]="role === 'сотрудник'">
+    <!-- Кнопка для показа всех бронирований -->
+    <!-- <button (click)="openMyBookingsForm()" *ngIf="role === 'сотрудник'">Показать все мои бронирования</button> -->
+  </div>
+</div>
+
+<!-- Форма для отображения всех бронирований -->
+<div *ngIf="isMyBookingsFormOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeMyBookingsForm()">&times;</span>
+    <h2>Мои бронирования</h2>
+    <table *ngIf="myBookings.length > 0">
+      <thead>
+        <tr>
+          <th>Офис</th>
+          <th>Помещение</th>
+          <th>Название рабочего места</th>
+          <th>Дата</th>
+          <th>Время</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of myBookings">
+          <td>{{ booking.office }}</td>
+          <td>{{ booking.room }}</td>
+          <td>{{ booking.tableName }}</td>
+          <td>{{ booking.date | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ booking.time }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="myBookings.length === 0">
+      <p>Нет бронирований</p>
+    </div>
+  </div>
+</div>
+
+  <div [class.hide]="isreg == 0">
+      <!-- Форма выбора офиса -->
+      <div>
+        <label>Введите название офиса:</label>&nbsp;
+        <input 
+          type="text" 
+          [(ngModel)]="officeSearch" 
+          (input)="filterOffices()" 
+          placeholder="Введите название офиса"
+        />
+        <ul *ngIf="filteredOffices.length > 0" class="dropdown">
+          <li 
+            *ngFor="let office of filteredOffices" 
+            (click)="selectOffice(office)" 
+            class="dropdown-item" 
+            tabindex="0"
+            (keydown.enter)="selectOffice(office)"
+          >
+            {{ office.name }}
+          </li>
+        </ul>
+      </div>
+      <br />
+    
+      <div *ngIf="officeForm.office">
+        <label>Выберите помещение:</label>&nbsp;
+        <select [(ngModel)]="tablesForm.room" (change)="onRoomChange()" >
+            <option *ngFor="let room of officeForm.office.rooms" [value]="room.name">
+                {{room.name}}
+            </option>
+        </select>
+        <br/> <br/>
+      </div>
+
+      <div *ngIf="roomForm.room">
+        <label for="start">Выберите дату:</label>
+          <select id="start" name="trip-start" [(ngModel)]="bookingForm.date" (change)="checkDate(bookingForm.date)" >
+              <option *ngFor="let date of availableDates" [value]="date">{{date | date: 'yyyy-MM-dd'}}</option>
+          </select>
+      </div>
+      <br />
+
+<div cdkDrag *ngFor="let c of tables; index as i" 
+    [cdkDragFreeDragPosition]="c.position"
+    (cdkDragEnded)="dragEnded_new($event, i)"
+    (click)="openBookingModal(c)"
+    [cdkDragDisabled]="role !== 'ADMIN'"
+    [ngClass]="{
+        'example-box-booked': c.book === '1',
+        'example-box': c.book !== '1'
+    }">
+    {{ c.name }}<br/>
+    <b>(Помещение: {{ c.room }})</b>
+    <div *ngIf="role === 'ADMIN'">
+        <a href="#" (click)="$event.preventDefault(); deltab(i)" style="text-decoration: none; color: red;">x</a>
+    </div>
+    <div style="position: absolute; top: 5px; left: 5px;">
+        <img src="" *ngIf="c.mon > 0">
+        <img src="" *ngIf="c.mon > 1">
+    </div>
+    <div *ngIf="role === 'сотрудник'"></div>
+</div>
+
+<!-- Модальное окно бронирования -->
+<div *ngIf="isBookingModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeBookingModal()">&times;</span>
+      <div *ngIf="selectedTable">
+          <h2 *ngIf="tablesForm.tabtype === 'rm'">Бронирование рабочего места</h2>
+           <h2 *ngIf="tablesForm.tabtype === 'pe'">Бронирование переговорной</h2>
+           <p>Выбранная дата: {{ bookingForm.date | date: 'yyyy-MM-dd' }}</p>
+
+           <div *ngIf="tablesForm.tabtype === 'pe'">
+              <label for="time">Выберите время:</label>
+               <div *ngFor="let time of availableTimes; let i = index">
+                    <input type="checkbox" id="time_{{i}}" value="{{time}}" [checked]="bookingForm.selectedTimes.includes(time)" (change)="onTimeChange(time, $event)"  >
+                    <label for="time_{{i}}">{{time}}</label>
+                </div>
+            </div>
+            <br/>
+           <button (click)="bookTable()">Забронировать</button>
+       </div>
+  </div>
+</div>
 
 </div>
 

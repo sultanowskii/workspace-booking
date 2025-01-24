@@ -1,0 +1,73 @@
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+
+.alert div {
+  background-color: #fed3d3;
+  color: #820000;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.wind2 {
+       position: absolute;
+    width:300px;
+    left: 35%;
+      top: 300px;
+    border:solid #4699C3 4px;
+    text-align: left;
+  display: none;
+      z-index: 10;
+    overflow: hidden;
+    background-color:#fff;
+    color:#000;
+
+    padding:10px;
+}
+.wind2_vis {
+       position: absolute;
+    width:300px;
+    left: 35%;
+      top: 300px;
+    border:solid #4699C3 4px;
+    text-align: left;
+  display: block;
+      z-index: 10;
+    overflow: hidden;
+    background-color:#fff;
+    color:#000;
+
+    padding:10px;
+}
+.office-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.office-form input {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.office-form button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.office-form button:hover {
+  background-color: #45a049;
+}
