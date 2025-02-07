@@ -1,0 +1,71 @@
+<br /><br />
+<div *ngIf="isreg == 1">
+  <div>
+    <label>Введите название офиса:</label>&nbsp;
+    <input 
+      type="text" 
+      [(ngModel)]="officeSearch" 
+      (input)="filterOffices()" 
+      placeholder="Введите название офиса"
+    />
+    <ul *ngIf="filteredOffices.length > 0" class="dropdown">
+      <li 
+        *ngFor="let office of filteredOffices"
+        (click)="selectOffice(office)"
+        class="dropdown-item"
+        tabindex="0"
+        (keydown.enter)="selectOffice(office)"
+      >
+        {{ office.name }}
+      </li>
+    </ul>
+  </div>
+
+  <br />
+
+  <div *ngIf="officeForm.office">
+    <label for="start">Выберите дату:</label>
+    <input 
+      type="date" 
+      id="start" 
+      name="trip-start" 
+      (change)="checkDate(bookingForm.date)" 
+      [(ngModel)]="bookingForm.date" 
+    />
+  </div>
+
+  <br />
+
+  <div *ngIf="officeForm.office && bookingForm.date">
+    <h3>Загруженность офиса: {{ officeSearch }}</h3>
+    <p>{{ officeLoad || 0 }}%</p>
+  </div>
+
+  <br />
+
+  <h3 *ngIf="roomLoadPercentages.length">Загруженность доступных мне помещений на {{ bookingForm.date }}</h3>
+
+  <table class="styled-table" *ngIf="roomLoadPercentages.length">
+    <thead>
+      <tr>
+        <th>Офис</th>
+        <th>Помещение</th>
+        <th>Загруженность</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let roomData of roomLoadPercentages">
+        <td>{{ roomData.office }}</td>
+        <td>{{ roomData.room }}</td>
+        <td>{{ roomData.load }}%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!roomLoadPercentages.length">Нет доступных данных о загруженности помещений.</p>
+
+</div>
+
+<div *ngIf="isreg == 0">
+  <p>Для просмотра данного раздела необходимо <a routerLink="/">авторизоваться</a></p>
+</div>

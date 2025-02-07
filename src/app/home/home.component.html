@@ -1,0 +1,28 @@
+
+<div [class.hide]="doauth==1">
+  <h2>Регистрация</h2>
+  <input id="login" type="text" [(ngModel)]="loginForm.login" required minlength="3" /> - Логин <br /><br />
+  <input id="passw" type="password" [(ngModel)]="loginForm.password" required /> - Пароль<br /><br />
+  <input id="passw2" type="password" [(ngModel)]="loginForm.password2" required /> - Повторите пароль <br /><br />
+  <input type="radio" id="EMPLOYEE" name="type" value="EMPLOYEE" [(ngModel)]="loginForm.role" checked />
+  <label for="EMPLOYEE">Сотрудник</label>
+  <input type="radio" id="ADMIN" name="type" value="ADMIN" [(ngModel)]="loginForm.role" />
+  <label for="ADMIN">Админ</label><br /><br />
+  <input type="button" value="Зарегистрироваться" (click)="reg()" />
+</div>
+
+
+<div [class.hide]="isreg == 1 || doauth == 0">
+  <h2>Авторизация</h2>
+  <input id="loginAuth" type="text" [(ngModel)]="loginFormAuth.loginAuth" required /> - Логин <br /><br />
+  <input id="passwAuth" type="password" [(ngModel)]="loginFormAuth.passwordAuth" required /> - Пароль <br /><br />
+  <input type="button" value="Войти" (click)="signIn()" />
+  <div [class.hide]="doauth == 0">
+    <br /><a href="#" (click)="doauth = 0">Регистрация</a>
+  </div>
+</div>
+
+<div [class.hide]="isreg == 0">
+  <h2>Вы авторизованы</h2>
+  <p>Добро пожаловать, {{ authService.data?.user.username }}!</p>
+</div>
