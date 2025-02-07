@@ -1,6 +1,5 @@
-<h1>Загруженность офиса</h1>
-
-<div [class.hide]="isreg == 0">
+<br /><br />
+<div *ngIf="isreg == 1">
   <div>
     <label>Введите название офиса:</label>&nbsp;
     <input 
@@ -21,6 +20,7 @@
       </li>
     </ul>
   </div>
+
   <br />
 
   <div *ngIf="officeForm.office">
@@ -33,16 +33,19 @@
       [(ngModel)]="bookingForm.date" 
     />
   </div>
+
   <br />
 
   <div *ngIf="officeForm.office && bookingForm.date">
     <h3>Загруженность офиса: {{ officeSearch }}</h3>
-    <p>{{ officeLoad }}%</p>
+    <p>{{ officeLoad || 0 }}%</p>
   </div>
+
   <br />
 
-  <h2>Загруженность доступных мне помещений на {{ bookingForm.date }}</h2>
-  <table>
+  <h3 *ngIf="roomLoadPercentages.length">Загруженность доступных мне помещений на {{ bookingForm.date }}</h3>
+
+  <table class="styled-table" *ngIf="roomLoadPercentages.length">
     <thead>
       <tr>
         <th>Офис</th>
@@ -58,8 +61,11 @@
       </tr>
     </tbody>
   </table>
-  
 
-<div [class.hide]="isreg == 1">
-  <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
+  <p *ngIf="!roomLoadPercentages.length">Нет доступных данных о загруженности помещений.</p>
+
+</div>
+
+<div *ngIf="isreg == 0">
+  <p>Для просмотра данного раздела необходимо <a routerLink="/">авторизоваться</a></p>
 </div>

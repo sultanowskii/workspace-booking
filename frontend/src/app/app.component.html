@@ -10,8 +10,8 @@
   <a [class.active]="act=='/workload'" href="/workload">Загруженность офиса</a>
 </td>
 <td align=right>
-<div  [class.hide]="isreg==0">
-<font color=white>Ваш статус: <b>{{role}}</b></font> &nbsp;&nbsp;
+<div  [class.hide]="doauth==0">
+<font color=white>Ваш статус: <b>{{authService.data?.user.role}}</b></font> &nbsp;&nbsp;
 <input type="button" (click)="signOut()" value="Выйти">&nbsp;&nbsp;
 </div>
 </td>

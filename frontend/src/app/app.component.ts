@@ -14,16 +14,16 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
   isreg = 0;
+  doauth = 1;
   title = 'Бронирование офисов';
   act = '';
   role = '';
   private baseUrl = environment.baseUrl;
+  
 constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, private location: Location, public authService: AuthService) {
-    console.log('AuthService.user:', this.authService.user);
-
-  if (this.authService.user) {
+  if (this.authService.data) {
     this.isreg = 1;
-    console.log('AuthService.user:', this.authService.user);
+    console.log('authService.data:', this.authService.data);
     }
   else
       {
@@ -31,13 +31,11 @@ constructor(private route: ActivatedRoute, private router: Router, private http:
       }
   };
 
-    signOut(){
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem("user");
-          console.log('Signed Out');
-          window.location.reload();
-        }
+  signOut() {
+    localStorage.removeItem("user");
+    window.location.reload();
   }
+  
 
   ngOnInit() {
     this.act = this.location.path();

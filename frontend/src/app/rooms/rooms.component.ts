@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { BehaviorSubject, of } from "rxjs";
 
 
 @Component({
@@ -28,27 +29,32 @@ showRoomForm: boolean = false;
 isreg = 0;
 
 get role(): any {
-    return this.authService.user.role;
+    return this.authService.data.user.role;
   }
 offices: Array<{id: number; name: string; address:string  } > = [];
 rooms: Array<{id: number; name: string; office: string; }> = [];
 groups: Array<{id: number; name: string; office: string;} > = [];
 users: Array<{id: number; name: string; group: string; groupname: string; } > = [];
-selectedRoomId: number | null = null; // ID редактируемого офиса
-filteredOffices: Array<{ id: number; name: string; address: string }> = [];
+selectedRoomId: number | null = null;
+filteredOffices = new BehaviorSubject<any>(null);
+officeSearch = '';
+
 officeForm:
-any = {
-oname: '',
-oaddress: '',
+	any = {
+		id: undefined,
+		name: '',
+		address: '',
 }
 
 roomForm:
 any = {
 rname: '',
+walls: {
+	"x1": 0,
+	"y1": 0,
+	"x2": 0,
+	"y2": 0
 }
-
-openRoomForm() {
-	this.showRoomForm = true;
 }
 
 closeRoomForm() {
@@ -57,74 +63,37 @@ closeRoomForm() {
 	this.roomForm.office = '';
 }
 
-closeEditRoomForm() {
-	this.showRoomForm = false;
-	this.roomForm.rname = '';
-	this.roomForm.office = '';
+openEditRoomForm(room: { id: number, name: string, office: string }) {
+	this.selectedRoomId = room.id;
+	this.roomForm.rname = room.name;
+	this.showRoomForm = true;
 }
 
-	// addOffice() {
-	// 	if (this.officeForm.oname ) {//&& this.officeForm.oaddress
-	// 	const office_json = JSON.stringify({
-	// 		office_name: this.officeForm.oname,
-	// 		// office_address: this.officeForm.oaddress,
-	// 	});
-	
-	// 	this.http.post(this.baseUrl, office_json).subscribe((data) => {
-	// 		if (data && Object.values(data)[0] === 'ok') {
-	// 		// Добавление нового офиса в массив
-	// 		this.offices.push({
-	// 			id: Object.values(data)[1],  // предполагаем, что сервер возвращает id нового офиса
-	// 			name: this.officeForm.oname,
-	// 			// address: this.officeForm.oaddress,
-	// 		});
-	
-	// 		alert('Офис создан успешно');
-	// 		this.showOfficeForm = false; // Закрываем форму после успешного добавления
-	// 		}
-	// 	});
-	// 	} else {
-	// 	alert('Пожалуйста, заполните все поля');
-	// 	}
-	// }
+editRoom() {
+	if (this.roomForm.rname) {
+	const room_json = JSON.stringify({
+		room_name: this.roomForm.rname,
+		id: this.selectedRoomId
+	});
 
-	openEditRoomForm(room: { id: number, name: string, office: string }) {
-		// Заполняем форму данными выбранного офиса
-		this.selectedRoomId = room.id; // Сохраняем ID офиса для редактирования
-		this.roomForm.rname = room.name;
-		// this.officeForm.oaddress = office.address; // Если есть адрес
-		this.showRoomForm = true; // Показываем форму редактирования
-	}
-	
-	editRoom() {
-		if (this.roomForm.rname) { // Проверка, чтобы название офиса не было пустым
-		const room_json = JSON.stringify({
-			room_name: this.roomForm.rname,
-			// office_address: this.officeForm.oaddress, // Если хотите редактировать адрес
-			id: this.selectedRoomId // Добавляем ID офиса для обновления
-		});
-	
-		this.http.post(this.baseUrl  + "/api/rooms", room_json).subscribe((data) => {
-			if (data && Object.values(data)[0] === 'ok') {
-			// Обновляем офис в массиве
-			const index = this.rooms.findIndex(room => room.id === this.selectedRoomId);
-			if (index !== -1) {
-				this.rooms[index].name = this.roomForm.rname;
-				// this.offices[index].address = this.officeForm.oaddress; // Если обновляется адрес
-			}
-	
-			alert('Помещение обновлено успешно');
-			this.showRoomForm = false; // Закрываем форму после успешного обновления
-			}
-		});
-		} else {
-		alert('Пожалуйста, заполните все поля');
+	this.http.post(this.baseUrl  + "/api/rooms", room_json).subscribe((data) => {
+		if (data && Object.values(data)[0] === 'ok') {
+		const index = this.rooms.findIndex(room => room.id === this.selectedRoomId);
+		if (index !== -1) {
+			this.rooms[index].name = this.roomForm.rname;
 		}
+		alert('Помещение обновлено успешно');
+		this.showRoomForm = false;
+		}
+	});
+	} else {
+	alert('Пожалуйста, заполните все поля');
 	}
-	
+}
+
 
 constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
-	if (authService.user) {
+	if (authService.data) {
 		this.isreg = 1;
 	}
 	else
@@ -133,91 +102,77 @@ constructor(private route: ActivatedRoute, private router: Router, private http:
 	}
 };
 
-  
+
 filterOffices() {
-	if (this.role === 'ADMIN') {
-	  this.filteredOffices = [...this.offices]; // Все офисы для администратора
+	if (this.authService.data.user.role === 'ADMIN'){
+		const offices = [...this.offices];
+		this.filteredOffices.next(offices);
 	} else {
-	  // Логика фильтрации доступных офисов для сотрудника
-	  this.filteredOffices = this.offices.filter((office) => {
-		// Добавьте условие фильтрации, если оно известно, например:
-		return this.groups.some((group) => group.office === office.name);
-	  });
+		this.filteredOffices.next(this.offices.filter((office) => {
+			return this.groups.some((group) => group.office === office.name);
+		}));
 	}
-  }
-  
+}
 
-// officeslist() {
-// 	let params = new HttpParams().set('type', 'offices');
-// 	this.http.get(this.baseUrl, { params }).subscribe((data) => {
-// 	  this.offices = [];
-// 	  (Object.keys(data)).forEach((key, index) => {
-// 		this.offices.push({
-// 		  id: Object.values(data)[index]["id"],
-// 		  name: Object.values(data)[index]["name"],
-// 		});
-// 	  });
-  
-// 	  // Фильтрация офисов
-// 	  this.filterOffices();
-// 	});
-//   }
-  
-//   filterOffices() {
-// 	if (this.role === 'ADMIN') {
-// 	  this.filteredOffices = [...this.offices]; // Все офисы для администратора
-// 	} else {
-// 	  // Логика фильтрации доступных офисов для сотрудника
-// 	  this.filteredOffices = this.offices.filter((office) => {
-// 		// Добавьте условие фильтрации, если оно известно, например:
-// 		return this.groups.some((group) => group.office === office.name);
-// 	  });
-// 	}
-//   }
+selectOffice(office: { id: number; name: string }): void {
+	this.officeForm.office = office;
+	this.officeSearch = office.name;
+	this.filteredOffices.next([]);
+	this.roomForm.room = '';
+}
 
-  
+
 addRoom() {
-    if (this.roomForm.rname != "") {
-      var room_json = JSON.stringify({room_name: this.roomForm.rname});
-      this.http
-        .post(this.baseUrl + "/api/rooms", room_json, {
-          headers: {
-            Authorization: `Bearer ${this.authService.user.token}`,
-          },
-        })
-        .subscribe((data) => {
-          Object.keys(data).forEach((key, index) => {
-            if (Object.values(data)[0] != "") {
-              this.rooms.push({
-                id: Object.values(data)[0],
-                name: this.roomForm.rname,
-                office: "",
-              });
-              alert("Помещение успешно создано");
-            }
-          });
-        });
-    } else {
-      alert("Введите название помещения");
-    }
-  }
-
-
+if (this.roomForm.rname != "") {
+	const room_json = {name: this.roomForm.rname, walls: this.roomForm.walls, officeId: this.officeForm.id};
+	this.http
+	.post(this.baseUrl + `/api/rooms`, room_json, {
+		headers: {
+		Authorization: `Bearer ${this.authService.data.token}`,
+		},
+	})
+	.subscribe((data) => {
+		Object.keys(data).forEach((key, index) => {
+		if (Object.values(data)[0] != "") {
+			this.rooms.push({
+			id: Object.values(data)[0],
+			name: this.roomForm.rname,
+			office: this.officeForm.name,
+			});
+			alert("Помещение успешно создано");
+		}
+		});
+	});
+} else {
+	alert("Введите название помещения");
+}
+}
 
 delRoom(id: number)
 {
-	let params = new HttpParams()
-		.set('type','delroom')
-		.set('id',id);
-	this.http.get(this.baseUrl, {params}).subscribe(  data => {
-			(Object.keys(data)).forEach((key, index) => {
-			if (Object.values(data)[0]=='ok')
-			{
-				this.rooms = this.rooms.filter(room => room.id !== id);
-				alert("Помещение удалено");
-			};
+let params = new HttpParams()
+	.set('id',id);
+this.http.get(this.baseUrl, {params}).subscribe(  data => {
+		(Object.keys(data)).forEach((key, index) => {
+		if (Object.values(data)[0]=='ok')
+		{
+			this.rooms = this.rooms.filter(room => room.id !== id);
+			alert("Помещение удалено");
+		};
+		});
+	});
+	return false;
+}
+
+roomsList() {
+	this.http.get(this.baseUrl + `/api/rooms`).subscribe(data => {
+		(Object.keys(data)).forEach((key, index) => {
+			this.rooms.push({
+				id: Object.values(data)[index]["id"],
+				name: Object.values(data)[index]["name"],
+				office: Object.values(data)[index]["office"]
 			});
 		});
-		return false;
+	});
 }
 }

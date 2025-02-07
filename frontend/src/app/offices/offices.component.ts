@@ -26,7 +26,7 @@ showOfficeForm: boolean = false;
 isreg = 0;
 
 get role(): any {
-  const user = this.authService.user;
+  const user = this.authService.data;
   return user ? user.role : null;
 }
 
@@ -46,7 +46,7 @@ any = {
 rname: '',
 }
 
-addroomForm:
+addRoomForm:
 any = {
 roof: 0,
 }
@@ -70,11 +70,11 @@ closeEditOfficeForm() {
 
 addOffice() {
     if (this.officeForm.oname != "") {
-      var off_json = JSON.stringify({office_name: this.officeForm.oname});
+      const off_json = {name: this.officeForm.oname, address: this.officeForm.oaddress};
       this.http
-        .post(this.baseUrl + "/api/offices", off_json, {
+        .post(this.baseUrl + `/api/offices`, off_json, {
           headers: {
-            Authorization: `Bearer ${this.authService.user.token}`,
+            Authorization: `Bearer ${this.authService.data.token}`,
           },
         })
         .subscribe((data) => {
@@ -99,11 +99,11 @@ addOffice() {
 	editOffice() {
 		if (this.officeForm.oname) {
 		const office_json = JSON.stringify({
-			office_name: this.officeForm.oname,
+			officeName: this.officeForm.oname,
 			id: this.selectedOfficeId
 		});
 	
-		this.http.post(this.baseUrl + "/api/offices", office_json).subscribe((data) => {
+		this.http.put(this.baseUrl + `/api/offices`, office_json).subscribe((data) => {
 			if (data && Object.values(data)[0] === 'ok') {
 			const index = this.offices.findIndex(office => office.id === this.selectedOfficeId);
 			if (index !== -1) {
@@ -121,9 +121,9 @@ addOffice() {
 	
 
 constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
-	if (authService.user) {
+	if (authService.data) {
 		this.isreg = 1;
-		this.officeslist();
+		this.officesList();
 	}
 	else
 	{
@@ -131,37 +131,45 @@ constructor(private route: ActivatedRoute, private router: Router, private http:
 	}
 };
 
-officeslist() {
+officesList() {
     this.http
-      .get(`${this.baseUrl}/api/offices`, {
+      .get(this.baseUrl + `/api/offices`, {
         headers: {
-          Authorization: `Bearer ${this.authService.user.token}`,
+          Authorization: `Bearer ${this.authService.data.token}`,
         },
       })
       .subscribe((data: any) => {
+        console.log("Offices from API:", data);
         data.forEach((office: any) => {
           this.offices.push({
             id: office["id"],
             name: office["name"],
 			      address: office["address"]
           });
-        });
-      });
+        })
+        this.filterOffices();
+      },
+      (error: any) => {
+        console.error("Error fetching offices:", error);
+        alert("Ошибка при получении данных");
+      }
+      );
   }
   
   filterOffices() {
-	if (this.role === 'ADMIN') {
+	if (this.authService.data.user.role === 'ADMIN') {
 	  this.filteredOffices = [...this.offices];
 	} else {
 	  this.filteredOffices = this.offices.filter((office) => {
+      console.log("Groups from API:", this.groups);
 		return this.groups.some((group) => group.office === office.name);
 	  });
 	}
   }
   
   delOffice(id: number) {
-    let params = new HttpParams().set("type", "deloffice").set("id", id);
-    this.http.get(this.baseUrl + "/api/offices", {params}).subscribe((data) => {
+    let params = new HttpParams().set("id", id);
+    this.http.delete(this.baseUrl + `/api/office`, {params}).subscribe((data) => {
       Object.keys(data).forEach((key, index) => {
         if (Object.values(data)[0] == "ok") {
           this.offices = this.offices.filter((office) => office.id !== id);
@@ -174,8 +182,8 @@ officeslist() {
 
 
   delRoom(id: number) {
-    let params = new HttpParams().set("type", "delroom").set("id", id);
-    this.http.get(this.baseUrl + "/api/offices", {params}).subscribe((data) => {
+    let params = new HttpParams().set("id", id);
+    this.http.delete(this.baseUrl + `/api/rooms`, {params}).subscribe((data) => {
       Object.keys(data).forEach((key, index) => {
         if (Object.values(data)[0] == "ok") {
           this.rooms = this.rooms.filter((room) => room.id !== id);

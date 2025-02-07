@@ -27,12 +27,12 @@ showOfficeForm: boolean = false;
 isreg = 0;
 
 get role(): any {
-  return this.authService.user.role;
+  return this.authService.data?.user.role;
 }
 offices: Array<{id: number; name: string; address: string  } > = [];
 rooms: Array<{id: number; name: string; office: string; }> = [];
 groups: Array<{id: number; name: string; office: string;} > = [];
-users: Array<{id: number; name: string; group: string; groupname: string; } > = [];
+users: Array<{id: number; name: string; group: string; fullname: string; } > = [];
 filteredOffices: Array<{ id: number; name: string }> = [];
 selectedOfficeId: number | null = null; // ID редактируемого офиса
 
@@ -51,26 +51,26 @@ groupForm:
 any = {
 grname: '',
 }
-adduserForm:
+addUserForm:
 any = {
 grid: 0,
 }
-addgroupForm:
+addGroupForm:
 any = {
 grof: 0,
 }
-addroomForm:
+addRoomForm:
 any = {
 roof: 0,
 }
 
 
 constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
-	if (authService.user) {
+	if (authService.data) {
 		this.isreg = 1;
-		this.officeslist();
-		this.groupslist();
-		this.userslist();
+		this.officesList();
+		this.groupsList();
+		this.usersList();
 	}
 	else
 	{
@@ -79,42 +79,40 @@ constructor(private route: ActivatedRoute, private router: Router, private http:
 };
 
 
-officeslist() {
-    this.http
-      .get(`${this.baseUrl}/api/offices`, {
-        headers: {
-          Authorization: `Bearer ${this.authService.user.token}`,
-        },
-      })
-      .subscribe((data: any) => {
-        data.forEach((office: any) => {
-          this.offices.push({
-            id: office["id"],
-            name: office["name"],
-			address: office["address"]
-          });
+officesList() {
+  this.http
+    .get(this.baseUrl + `/api/offices`, {
+      headers: {
+        Authorization: `Bearer ${this.authService.data.token}`,
+      },
+    })
+    .subscribe((data: any) => {
+      data.forEach((office: any) => {
+        this.offices.push({
+          id: office["id"],
+          name: office["name"],
+          address: office["address"]
         });
       });
-  }
+    });
+    this.filterOffices();
+}
 
 filterOffices() {
 	if (this.role === 'ADMIN') {
-	this.filteredOffices = [...this.offices]; // Все офисы для администратора
+	this.filteredOffices = [...this.offices];
 	} else {
-	// Логика фильтрации доступных офисов для сотрудника
 	this.filteredOffices = this.offices.filter((office) => {
-		// Добавьте условие фильтрации, если оно известно, например:
 		return this.groups.some((group) => group.office === office.name);
 	});
 	}
 }
 
-
-groupslist() {
+groupsList() {
     this.http
-      .get(this.baseUrl + "/api/employeeGroups", {
+      .get(this.baseUrl + `/api/employeeGroups`, {
         headers: {
-          Authorization: `Bearer ${this.authService.user.token}`,
+          Authorization: `Bearer ${this.authService.data.token}`,
         },
       })
       .subscribe((data: any) => {
@@ -128,149 +126,122 @@ groupslist() {
   }
 
 
-  userslist() {
+usersList() {
+  this.http
+    .get(this.baseUrl + `/api/employees`, {
+      headers: {
+        Authorization: `Bearer ${this.authService.data.token}`,
+      },
+    })
+    .subscribe((data: any) => {
+      this.users.push({
+        id: data["id"],
+        name: data["username"],
+        group: data["employeeGroupId"],
+        fullname: data["fullName"],
+      });
+    });
+}
+
+addUserToOffice() {
+  console.log(this.addUserForm.grid + " / " + this.selectedUser);
+  if (this.addUserForm.grid != "") {
+    var adduser_json = JSON.stringify({
+      group: this.addUserForm.grid,
+      add_user: this.selectedUser,
+    });
     this.http
-      .get(this.baseUrl + "/api/employees", {
+      .post(this.baseUrl + `/api/employees`, adduser_json, {
         headers: {
-          Authorization: `Bearer ${this.authService.user.token}`,
+          Authorization: `Bearer ${this.authService.data.token}`,
         },
       })
-      .subscribe((data: any) => {
-        this.users.push({
-          id: data["id"],
-          name: data["username"],
-          group: data["employeeGroupId"],
-          groupname: "fff",
-        });
-      });
-  }
-
-  addgroup() {
-    console.log(this.addgroupForm.ofid + " / " + this.selectedGroup);
-    if (this.addgroupForm.ofid != "") {
-      this.http
-        .post(
-          this.baseUrl +
-            `/api/offices/${this.addgroupForm.ofid}/employeeGroups/${this.selectedGroup}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${this.authService.user.token}`,
-            },
+      .subscribe(
+        (data) => {
+          if (data != null) {
+            Object.keys(data).forEach((key, index) => {
+              if (Object.values(data)[0] == "ok") {
+                alert("Пользователь прикреплен");
+              }
+            });
           }
-        )
-        .subscribe(
-          (data) => {
-            if (data != null) {
-              Object.keys(data).forEach((key, index) => {
-                if (Object.values(data)[0] == "ok") {
-                  alert("Группа прикреплена");
-                }
-              });
-            }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
+}
 
-  addUser() {
-    console.log(this.adduserForm.grid + " / " + this.selectedUser);
-    if (this.adduserForm.grid != "") {
-      var adduser_json = JSON.stringify({
-        group: this.adduserForm.grid,
-        add_user: this.selectedUser,
-      });
-      this.http
-        .post(this.baseUrl + "/api/employees", adduser_json, {
-          headers: {
-            Authorization: `Bearer ${this.authService.user.token}`,
-          },
-        })
-        .subscribe(
-          (data) => {
-            if (data != null) {
-              Object.keys(data).forEach((key, index) => {
-                if (Object.values(data)[0] == "ok") {
-                  alert("Пользователь прикреплен");
-                }
-              });
-            }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
-  }
-
-  addroom() {
-    if (this.roomForm.rname != "") {
-      var room_json = JSON.stringify({room_name: this.roomForm.rname});
-      this.http
-        .post(this.baseUrl + "/api/rooms", room_json, {
-          headers: {
-            Authorization: `Bearer ${this.authService.user.token}`,
-          },
-        })
-        .subscribe((data) => {
-          Object.keys(data).forEach((key, index) => {
-            if (Object.values(data)[0] != "") {
-              this.rooms.push({
-                id: Object.values(data)[0],
-                name: this.roomForm.rname,
-                office: "",
-              });
-              alert("Помещение успешно создано");
-            }
-          });
-        });
-    } else {
-      alert("Введите название помещения");
-    }
-  }
-
-
-  addGroup() {
-    if (this.groupForm.grname != "") {
-      var grp_json = JSON.stringify({group_name: this.groupForm.grname});
-      this.http
-        .post(this.baseUrl + "/api/groups", grp_json, {
-          headers: {
-            Authorization: `Bearer ${this.authService.user.token}`,
-          },
-        })
-        .subscribe((data) => {
-          Object.keys(data).forEach((key, index) => {
-            if (Object.values(data)[0] != "") {
-              this.groups.push({
-                id: Object.values(data)[0],
-                name: this.groupForm.grname,
-                office: "",
-              });
-              alert("Группа успешно создана");
-            }
-          });
-        });
-    } else {
-      alert("Введите название группы");
-    }
-  }
-
-  delGroup(id: number) {
-    let params = new HttpParams().set("type", "delgroup").set("id", id);
+addGroupToOffice() {
+  console.log(this.addGroupForm.ofid + " / " + this.selectedGroup);
+  if (this.addGroupForm.ofid != "") {
     this.http
-      .delete(this.baseUrl + "/api/employeeGroups", {params})
+      .post(
+        this.baseUrl +
+          `/api/offices/${this.addGroupForm.ofid}/employeeGroups/${this.selectedGroup}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.data.token}`,
+          },
+        }
+      )
+      .subscribe(
+        (data) => {
+          if (data != null) {
+            Object.keys(data).forEach((key, index) => {
+              if (Object.values(data)[0] == "ok") {
+                alert("Группа прикреплена");
+              }
+            });
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+}
+
+addGroup() {
+  if (this.groupForm.grname != "") {
+    var grp_json = JSON.stringify({group_name: this.groupForm.grname});
+    this.http
+      .post(this.baseUrl + `/api/employeeGroups`, grp_json, {
+        headers: {
+          Authorization: `Bearer ${this.authService.data.token}`,
+        },
+      })
       .subscribe((data) => {
         Object.keys(data).forEach((key, index) => {
-          if (Object.values(data)[0] == "ok") {
-            this.groups = this.groups.filter((group) => group.id !== id);
-            alert("Группа удалена");
+          if (Object.values(data)[0] != "") {
+            this.groups.push({
+              id: Object.values(data)[0],
+              name: this.groupForm.grname,
+              office: "",
+            });
+            alert("Группа успешно создана");
           }
         });
       });
-    return false;
+  } else {
+    alert("Введите название группы");
   }
+}
+
+delGroup(id: number) {
+  let params = new HttpParams().set("id", id);
+  this.http
+    .delete(this.baseUrl + `/api/employeeGroups`, {params})
+    .subscribe((data) => {
+      Object.keys(data).forEach((key, index) => {
+        if (Object.values(data)[0] == "ok") {
+          this.groups = this.groups.filter((group) => group.id !== id);
+          alert("Группа удалена");
+        }
+      });
+    });
+  return false;
+}
 }

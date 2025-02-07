@@ -1,14 +1,26 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  get user(): any {
-    return JSON.parse(localStorage.getItem("user") ?? "null");
+  private _data: any | null = null; // Внутреннее хранилище данных
+
+  get data(): any | null {
+    try {
+      console.log(localStorage.getItem("data"));
+      return JSON.parse(localStorage.getItem("data") ?? "null");
+    } catch (e) {
+      console.error("Error parsing user data:", e);
+      return null;
+    }
   }
 
-  set user(value: any) {
-    localStorage.setItem("user", JSON.stringify(value));
+  set data(value: any | null) {
+    if (value) {
+      localStorage.setItem("data", JSON.stringify(value));
+    } else {
+      localStorage.removeItem("data");
+    }
   }
 }
