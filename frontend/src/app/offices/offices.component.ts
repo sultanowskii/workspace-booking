@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { of } from "rxjs";
 
 
 @Component({
@@ -37,18 +38,18 @@ selectedOfficeId: number | null = null;
 groups: Array<{id: number; name: string; office: string;} > = [];
 officeForm:
 any = {
-oname: '',
-oaddress: '',
+name: '',
+address: '',
 }
 
 roomForm:
 any = {
-rname: '',
+name: '',
 }
 
 addRoomForm:
 any = {
-roof: 0,
+grof: 0,
 }
   
 
@@ -58,31 +59,22 @@ openOfficeForm() {
 
 closeOfficeForm() {
 	this.showOfficeForm = false;
-	this.officeForm.oname = '';
-	this.officeForm.oaddress = '';
+	this.officeForm.name = '';
+	this.officeForm.address = '';
 }
 
-closeEditOfficeForm() {
-	this.showOfficeForm = false;
-	this.officeForm.oname = '';
-	this.officeForm.oaddress = '';
-}
 
 addOffice() {
-    if (this.officeForm.oname != "") {
-      const off_json = {name: this.officeForm.oname, address: this.officeForm.oaddress};
+    if (this.officeForm.name != "") {
+      const off = {name: this.officeForm.name, address: this.officeForm.address};
       this.http
-        .post(this.baseUrl + `/api/offices`, off_json, {
+        .post(this.baseUrl + `/api/offices`, off, {
           headers: {
             Authorization: `Bearer ${this.authService.data.token}`,
           },
         })
         .subscribe((data) => {
-          Object.keys(data).forEach((key, index) => {
-            if (Object.values(data)[0] == "ok") {
               alert("Офис создан успешно");
-            }
-          });
         });
     } else {
       alert("Введите название офиса");
@@ -92,22 +84,21 @@ addOffice() {
 
 	openEditOfficeForm(office: { id: number, name: string }) {
 		this.selectedOfficeId = office.id;
-		this.officeForm.oname = office.name;
+		this.officeForm.name = office.name;
 		this.showOfficeForm = true;
 	}
 	
 	editOffice() {
-		if (this.officeForm.oname) {
-		const office_json = JSON.stringify({
-			officeName: this.officeForm.oname,
-			id: this.selectedOfficeId
-		});
-	
-		this.http.put(this.baseUrl + `/api/offices`, office_json).subscribe((data) => {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.data.token}`
+    });
+		if (this.officeForm.name) {
+		this.http.put(this.baseUrl + `/api/offices/${this.selectedOfficeId}`, {name: this.officeForm.name,
+      address: this.officeForm.address}, {headers}).subscribe((data: any) => {
 			if (data && Object.values(data)[0] === 'ok') {
 			const index = this.offices.findIndex(office => office.id === this.selectedOfficeId);
 			if (index !== -1) {
-				this.offices[index].name = this.officeForm.oname;
+				this.offices[index].name = this.officeForm.name;
 			}
 	
 			alert('Офис обновлен успешно');
@@ -168,14 +159,14 @@ officesList() {
   }
   
   delOffice(id: number) {
-    let params = new HttpParams().set("id", id);
-    this.http.delete(this.baseUrl + `/api/office`, {params}).subscribe((data) => {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.data.token}`
+    });
+    this.http.delete(this.baseUrl + `/api/offices/${id}`, {headers}).subscribe((data) => {
       Object.keys(data).forEach((key, index) => {
-        if (Object.values(data)[0] == "ok") {
           this.offices = this.offices.filter((office) => office.id !== id);
-          alert("Офис удален");
-        }
       });
+      alert("Офис удален");
     });
     return false;
   }
@@ -185,10 +176,8 @@ officesList() {
     let params = new HttpParams().set("id", id);
     this.http.delete(this.baseUrl + `/api/rooms`, {params}).subscribe((data) => {
       Object.keys(data).forEach((key, index) => {
-        if (Object.values(data)[0] == "ok") {
           this.rooms = this.rooms.filter((room) => room.id !== id);
           alert("Помещение удалено");
-        }
       });
     });
     return false;

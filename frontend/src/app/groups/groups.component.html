@@ -6,7 +6,6 @@
       <th>Название</th>
       <th>Офис</th>
       <th>Действия</th>
-      <th>Удаление</th>
     </tr>
   </thead>
   <tbody>
@@ -15,14 +14,29 @@
       <td>{{ group.name }}</td>
       <td>{{ group.office }}</td>
       <td>
-        <button (click)="this.selectedGroup = group.id">Прикрепить к офису</button>
+        <button (click)="this.selectedGroup = group.id">Прикрепить к офису</button><br /><br />
+        <button (click)="openEditGroupForm(group)">Редактировать</button>
+        <button (click)="delGroup(group.id)">Удалить</button>
       </td>
-      <td>
-        <a href="#" (click)="delGroup(group.id);" class="delete-link">x</a>
-      </td>
-    </tr>
   </tbody>
+  <button (click)="openGroupForm()">Создать</button>
 </table>
+
+<div *ngIf="this.authService.data.user.role === 'ADMIN' && showGroupForm && !selectedGroup" class="group-form">
+  <h4>Создать группу</h4>
+  Название:&nbsp;
+  <input id="name" type="text" [(ngModel)]="groupForm.name" placeholder="Введите название группы" /> <br/><br/>
+  <input type="button" value="Создать группу" (click)="addGroup()"><br/><br/>
+  <button type="button" (click)="closeGroupForm()">Отменить</button>
+</div>
+
+<div *ngIf="this.authService.data.user.role === 'ADMIN' && showGroupForm && selectedGroup" class="group-form">
+  <h4>Редактировать группу</h4>
+  Название:&nbsp;
+  <input id="name" type="text" [(ngModel)]="groupForm.name" placeholder="Введите название группы" /> <br/><br/>
+  <input type="button" value="Редактировать группу" (click)="addGroup()"><br/><br/>
+  <button type="button" (click)="closeGroupForm()">Отменить</button>
+</div>
 
 <h4>Список пользователей</h4>
 <table class="styled-table">
@@ -49,7 +63,7 @@
 <div [ngClass]="selectedUser == 0 ? 'wind2' : 'wind2_vis'" id="wind2">
   № Пользователя: <b>{{ this.selectedUser }}</b><br/><br/>
   <label for="start">Группа:</label>&nbsp;
-  <select [(ngModel)]="addUserForm.grid">
+  <select [(ngModel)]="addUserForm.grname">
     <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
   </select>
   <br/><br/>

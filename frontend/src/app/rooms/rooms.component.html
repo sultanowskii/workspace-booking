@@ -1,24 +1,25 @@
 <h4>Список помещений</h4>
 
-<label>Введите название офиса:</label>&nbsp;
-<input 
-  type="text" 
-  [(ngModel)]="officeSearch" 
-  (input)="filterOffices()" 
-  placeholder="Название офиса"
-/>
-
-<ul *ngIf="filteredOffices.value" class="dropdown">
-  <li 
-    *ngFor="let office of (filteredOffices.value)"
-    (click)="selectOffice(office)"
-    class="dropdown-item"
-    tabindex="0"
-    (keydown.enter)="selectOffice(office)"
-  >
-    {{ office.name }}
-  </li>
-</ul>
+<div>
+  <label>Введите название офиса:</label>&nbsp;
+  <input 
+    type="text" 
+    [(ngModel)]="officeSearch" 
+    (input)="filterOffices()" 
+    placeholder="Введите название офиса"
+  />
+  <ul *ngIf="filteredOffices.length > 0" class="dropdown">
+    <li 
+      *ngFor="let office of filteredOffices"
+      (click)="selectOffice(office)"
+      class="dropdown-item"
+      tabindex="0"
+      (keydown.enter)="selectOffice(office)"
+    >
+      {{ office.name }}
+    </li>
+  </ul>
+</div>
 
 <table class="styled-table">
   <thead>
@@ -38,18 +39,39 @@
       </td>
     </tr>
   </tbody>
+  <button (click)="openRoomForm()">Создать</button>
 </table>
 
-<div *ngIf="role === 'ADMIN'" class="room-form">
+<div *ngIf="role === 'ADMIN' && showRoomForm" class="room-form">
   <h4>{{ selectedRoomId ? 'Редактировать помещение' : 'Создать помещение' }}</h4>
   Название:&nbsp;
-  <input id="rname" type="text" [(ngModel)]="roomForm.rname" placeholder="Введите название помещения" /> <br/><br/>
-  Координаты стен:&nbsp;
-  <input id="x1" type="text" [(ngModel)]="roomForm.walls.x1" placeholder="Введите x1" /> <br/><br/>
-  <input id="x2" type="text" [(ngModel)]="roomForm.walls.x2" placeholder="Введите x2" /> <br/><br/>
-  <input id="y1" type="text" [(ngModel)]="roomForm.walls.y1" placeholder="Введите y1" /> <br/><br/>
-  <input id="y2" type="text" [(ngModel)]="roomForm.walls.y2" placeholder="Введите y2" /> <br/><br/>
-  <input type="button" value="{{ selectedRoomId ? 'Сохранить изменения' : 'Создать помещение' }}" (click)="selectedRoomId ? editRoom() : addRoom()"><br/><br/>
+  <input id="name" type="text" [(ngModel)]="roomForm.name" placeholder="Введите название помещения" /> <br/><br/>
+  <label for="wallsCount">Количество стен:</label>&nbsp;
+  <input
+    type="number"
+    id="wallsCount"
+    [(ngModel)]="wallsCount"
+    (change)="updateWalls()"
+    min="0"
+    placeholder="Введите количество стен"
+  />
+  <br /><br />
+
+  <div *ngFor="let wall of walls; let i = index">
+    <h5>Стена {{ i + 1 }}</h5>
+    <label for="x1-{{i}}">x1:</label>&nbsp;
+    <input id="x1-{{i}}" type="number" [(ngModel)]="wall.x1" placeholder="Введите x1" /><br /><br />
+
+    <label for="y1-{{i}}">y1:</label>&nbsp;
+    <input id="y1-{{i}}" type="number" [(ngModel)]="wall.y1" placeholder="Введите y1" /><br /><br />
+
+    <label for="x2-{{i}}">x2:</label>&nbsp;
+    <input id="x2-{{i}}" type="number" [(ngModel)]="wall.x2" placeholder="Введите x2" /><br /><br />
+
+    <label for="y2-{{i}}">y2:</label>&nbsp;
+    <input id="y2-{{i}}" type="number" [(ngModel)]="wall.y2" placeholder="Введите y2" /><br /><br />
+  </div>
+  <input type="button" value="Сохранить изменения" (click)="addRoom()"><br/><br/>
   <button type="button" (click)="closeRoomForm()">Отменить</button>
 </div>
 

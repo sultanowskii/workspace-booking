@@ -34,26 +34,28 @@ rooms: Array<{id: number; name: string; office: string; }> = [];
 groups: Array<{id: number; name: string; office: string;} > = [];
 users: Array<{id: number; name: string; group: string; fullname: string; } > = [];
 filteredOffices: Array<{ id: number; name: string }> = [];
-selectedOfficeId: number | null = null; // ID редактируемого офиса
+selectedOffice: number | null = null;
 
+showGroupForm: boolean = false;
 officeForm:
 any = {
-oname: '',
-oaddress: '',
+name: '',
+address: '',
 }
 
 roomForm:
 any = {
-rname: '',
+name: '',
 }
 
 groupForm:
 any = {
-grname: '',
+name: '',
+office: ''
 }
 addUserForm:
 any = {
-grid: 0,
+grname: '',
 }
 addGroupForm:
 any = {
@@ -78,7 +80,6 @@ constructor(private route: ActivatedRoute, private router: Router, private http:
 	}
 };
 
-
 officesList() {
   this.http
     .get(this.baseUrl + `/api/offices`, {
@@ -87,25 +88,32 @@ officesList() {
       },
     })
     .subscribe((data: any) => {
+      console.log("Offices from API:", data);
       data.forEach((office: any) => {
         this.offices.push({
           id: office["id"],
           name: office["name"],
           address: office["address"]
         });
-      });
-    });
-    this.filterOffices();
+      })
+      this.filterOffices();
+    },
+    (error: any) => {
+      console.error("Error fetching offices:", error);
+      alert("Ошибка при получении данных");
+    }
+    );
 }
 
 filterOffices() {
-	if (this.role === 'ADMIN') {
-	this.filteredOffices = [...this.offices];
-	} else {
-	this.filteredOffices = this.offices.filter((office) => {
-		return this.groups.some((group) => group.office === office.name);
-	});
-	}
+if (this.role === 'ADMIN') {
+  this.filteredOffices = [...this.offices];
+} else {
+  this.filteredOffices = this.offices.filter((office) => {
+    console.log("Groups from API:", this.groups);
+  return this.groups.some((group) => group.office === office.name);
+  });
+}
 }
 
 groupsList() {
@@ -126,43 +134,47 @@ groupsList() {
   }
 
 
-usersList() {
-  this.http
-    .get(this.baseUrl + `/api/employees`, {
-      headers: {
-        Authorization: `Bearer ${this.authService.data.token}`,
-      },
-    })
-    .subscribe((data: any) => {
-      this.users.push({
-        id: data["id"],
-        name: data["username"],
-        group: data["employeeGroupId"],
-        fullname: data["fullName"],
+  usersList() {
+    this.http
+      .get(this.baseUrl + `/api/employees`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.data.token}`,
+        },
+      })
+      .subscribe((data: any) => {
+        this.users = [];
+  
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            const user = data[key];
+            this.users.push({
+              id: user.id,
+              name: user.username,
+              group: user.employeeGroupId,
+              fullname: user.fullName,
+            });
+          }
+        }
       });
-    });
-}
+  }
 
 addUserToOffice() {
-  console.log(this.addUserForm.grid + " / " + this.selectedUser);
-  if (this.addUserForm.grid != "") {
-    var adduser_json = JSON.stringify({
-      group: this.addUserForm.grid,
-      add_user: this.selectedUser,
-    });
+  if (this.addUserForm.grname != "") {
+    const adduser = {
+      name: this.addUserForm.grname
+    };
     this.http
-      .post(this.baseUrl + `/api/employees`, adduser_json, {
+      .put(this.baseUrl + `/api/employeeGroups?${this.selectedUser}`, adduser, {
         headers: {
           Authorization: `Bearer ${this.authService.data.token}`,
         },
       })
       .subscribe(
         (data) => {
+          console.log(data);
           if (data != null) {
             Object.keys(data).forEach((key, index) => {
-              if (Object.values(data)[0] == "ok") {
                 alert("Пользователь прикреплен");
-              }
             });
           }
         },
@@ -180,7 +192,7 @@ addGroupToOffice() {
       .post(
         this.baseUrl +
           `/api/offices/${this.addGroupForm.ofid}/employeeGroups/${this.selectedGroup}`,
-        {},
+        {officeId: this.addGroupForm.ofid, employeeGroupId: this.selectedGroup},
         {
           headers: {
             Authorization: `Bearer ${this.authService.data.token}`,
@@ -191,9 +203,7 @@ addGroupToOffice() {
         (data) => {
           if (data != null) {
             Object.keys(data).forEach((key, index) => {
-              if (Object.values(data)[0] == "ok") {
                 alert("Группа прикреплена");
-              }
             });
           }
         },
@@ -205,10 +215,10 @@ addGroupToOffice() {
 }
 
 addGroup() {
-  if (this.groupForm.grname != "") {
-    var grp_json = JSON.stringify({group_name: this.groupForm.grname});
+  if (this.groupForm.name != "") {
+    const grp = {group_name: this.groupForm.name};
     this.http
-      .post(this.baseUrl + `/api/employeeGroups`, grp_json, {
+      .post(this.baseUrl + `/api/employeeGroups`, grp, {
         headers: {
           Authorization: `Bearer ${this.authService.data.token}`,
         },
@@ -218,7 +228,7 @@ addGroup() {
           if (Object.values(data)[0] != "") {
             this.groups.push({
               id: Object.values(data)[0],
-              name: this.groupForm.grname,
+              name: this.groupForm.name,
               office: "",
             });
             alert("Группа успешно создана");
@@ -230,16 +240,50 @@ addGroup() {
   }
 }
 
+openEditGroupForm(group: { id: number, name: string }) {
+  this.groupForm.name = group.name;
+  this.showGroupForm = true;
+}
+
+openGroupForm() {
+	this.showGroupForm = true;
+}
+
+closeGroupForm() {
+	this.showGroupForm = false;
+	this.groupForm.name = '';
+	this.groupForm.office = '';
+}
+
+
+editGroup() {
+  if (this.groupForm.name) {
+    const grp = {name: this.groupForm.name};
+
+  this.http.put(this.baseUrl + `/api/employeeGroups`, grp).subscribe((data) => {
+    if (data && Object.values(data)[0] === 'ok') {
+    const index = this.groups.findIndex(grp => grp.id === this.selectedGroup);
+    if (index !== -1) {
+      this.groups[index].name = this.groupForm.name;
+    }
+
+    alert('Группа обновлена успешно');
+    this.showGroupForm = false;
+    }
+  });
+  } else {
+  alert('Пожалуйста, заполните все поля');
+  }
+}
+
 delGroup(id: number) {
   let params = new HttpParams().set("id", id);
   this.http
     .delete(this.baseUrl + `/api/employeeGroups`, {params})
     .subscribe((data) => {
       Object.keys(data).forEach((key, index) => {
-        if (Object.values(data)[0] == "ok") {
           this.groups = this.groups.filter((group) => group.id !== id);
           alert("Группа удалена");
-        }
       });
     });
   return false;

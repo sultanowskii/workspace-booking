@@ -189,13 +189,13 @@ export class SchemeComponent {
   if (this.workplaceBookingForm.date !== "") {
     let date = this.workplaceBookingForm.date;
 
-    const book_json = JSON.stringify({
+    const book = {
       book_name: this.selectedWorkplace, 
       book_date: date,
       user: this.user
-    });
+    };
 
-    this.http.post(this.baseUrl+"/api/workplaceBookings", book_json).subscribe(data => {
+    this.http.post(this.baseUrl+"/api/workplaceBookings", book).subscribe(data => {
       if (data && Object.values(data)[0] > 0) {
         this.isWorkplaceBooked.push(this.selectedWorkplace);
         this.checkDate(date);
@@ -217,14 +217,14 @@ doMeetingRoomBooking() {
       time = this.meetingRoomBookingForm.datetime.split("T")[1];
     }
 
-    const book_json = JSON.stringify({
+    const book = {
       book_name: this.selectedMeetingRoom, 
       book_date: date, 
       book_time: time, 
       user: this.user
-    });
+    };
 
-    this.http.post(this.baseUrl+"/api/meetingRoomBookings", book_json).subscribe(data => {
+    this.http.post(this.baseUrl+"/api/meetingRoomBookings", book).subscribe(data => {
       if (data && Object.values(data)[0] > 0) {
         this.isMeetingRoomBooked.push(this.selectedMeetingRoom);
         this.checkDate(date);
@@ -246,41 +246,59 @@ doMeetingRoomBooking() {
     
 
   updateWorkplace() {
-      var tables_json = JSON.stringify(this.workplaces);
-      const body = {json: tables_json};
-      this.http.post(this.baseUrl, body).subscribe(data => {});
+      var tables = this.workplaces;
+      const body = {tables: tables};
+      this.http.put(this.baseUrl + '/api/workplace?workplaceid=${workplace}', body).subscribe(data => {});
   }
 
   updateMeetingRoom() {
-    var tables_json = JSON.stringify(this.meetingRooms);
-    const body = {json: tables_json};
-    this.http.post(this.baseUrl, body).subscribe(data => {});
+    var tables = this.meetingRooms;
+    const body = {tables: tables};
+    this.http.put(this.baseUrl + '/api/meetingRoom?meetingRoomid=${meetingRoom}', body).subscribe(data => {});
 }
 
   updateWalls() {
-      var walls_json = JSON.stringify(this.walls);
-      const body = {json: walls_json};
-      this.http.post(this.baseUrl, body).subscribe(data => {});
+      var walls = this.walls;
+      const body = {walls: walls};
+      this.http.put(this.baseUrl, body).subscribe(data => {});
   }
 
   officesList() {
-      this.http
-        .get(this.baseUrl + `/api/offices`, {
-          headers: {
-            Authorization: `Bearer ${this.authService.data.token}`,
-          },
-        })
-        .subscribe((data: any) => {
-          data.forEach((office: any) => {
-            this.offices.push({
-              id: office["id"],
-              name: office["name"],
-              address: office["address"]
-            });
+    this.http
+      .get(this.baseUrl + `/api/offices`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.data.token}`,
+        },
+      })
+      .subscribe((data: any) => {
+        console.log("Offices from API:", data);
+        data.forEach((office: any) => {
+          this.offices.push({
+            id: office["id"],
+            name: office["name"],
+			      address: office["address"]
           });
-        });
-    }
-
+        })
+        this.filterOffices();
+      },
+      (error: any) => {
+        console.error("Error fetching offices:", error);
+        alert("Ошибка при получении данных");
+      }
+      );
+  }
+  
+  filterOffices() {
+	if (this.authService.data.user.role === 'ADMIN') {
+	  this.filteredOffices = [...this.offices];
+	} else {
+	  this.filteredOffices = this.offices.filter((office) => {
+      console.log("Groups from API:", this.groups);
+		return this.groups.some((group) => group.office === office.name);
+	  });
+	}
+  }
+  
   roomsList() {
       this.http.get(this.baseUrl + `/api/rooms`).subscribe(data => {
           (Object.keys(data)).forEach((key, index) => {
@@ -417,16 +435,6 @@ getMeetingRoomBookings(): void {
     for (let hour = 9; hour < 18; hour++){
       const time = `${hour.toString().padStart(2, '0')}:00`
         this.availableTimes.push(time);
-    }
-  }
-
-  filterOffices() {
-    if (this.role === 'ADMIN') {
-    this.filteredOffices = [...this.offices];
-    } else {
-    this.filteredOffices = this.offices.filter((office) => {
-      return this.groups.some((group) => group.office === office.name);
-    });
     }
   }
   

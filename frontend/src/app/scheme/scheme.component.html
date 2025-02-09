@@ -1,4 +1,5 @@
-<div [class.hide]="isreg == 0"><br><br>
+<br /><br />
+<div [class.hide]="isreg == 0">
   <div class='admin-panel' [class.vis]="role == 'ADMIN'">
     <div *ngIf="role === 'ADMIN'" class="button-group">
       <button class="primary-button" (click)="openAddWorkplaceForm()">Добавить рабочее место</button>
@@ -91,11 +92,24 @@
   </div>
 
   <div [class.hide]="isreg == 0">
-    <div class="filter-section">
+    <div>
       <label>Введите название офиса:</label>&nbsp;
-      <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
+      <input 
+        type="text" 
+        [(ngModel)]="officeSearch" 
+        (input)="filterOffices()" 
+        placeholder="Введите название офиса"
+      />
       <ul *ngIf="filteredOffices.length > 0" class="dropdown">
-        <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0" (keydown.enter)="selectOffice(office)">{{ office.name }}</li>
+        <li 
+          *ngFor="let office of filteredOffices"
+          (click)="selectOffice(office)"
+          class="dropdown-item"
+          tabindex="0"
+          (keydown.enter)="selectOffice(office)"
+        >
+          {{ office.name }}
+        </li>
       </ul>
     </div>
 

@@ -43,6 +43,32 @@
 
   <br />
 
+  <div>
+    <label>Введите название помещения:</label>&nbsp;
+    <input 
+      type="text" 
+      [(ngModel)]="roomSearch" 
+      (input)="filterRooms()" 
+      placeholder="Введите название помещения"
+    />
+    <ul *ngIf="filteredRooms.length > 0" class="dropdown">
+      <li 
+        *ngFor="let room of filteredRooms"
+        (click)="selectRoom(room)"
+        class="dropdown-item"
+        tabindex="0"
+        (keydown.enter)="selectRoom(room)"
+      >
+        {{ room.name }}
+      </li>
+    </ul>
+    <button (click)="getRoomOccupancy()">Посмотреть загруженность</button>
+  </div>
+  <div *ngIf="room">
+    <h3>Загруженность помещения: {{ room.name }}</h3>
+  </div>
+  <br />
+
   <h3 *ngIf="roomLoadPercentages.length">Загруженность доступных мне помещений на {{ bookingForm.date }}</h3>
 
   <table class="styled-table" *ngIf="roomLoadPercentages.length">
@@ -61,9 +87,6 @@
       </tr>
     </tbody>
   </table>
-
-  <p *ngIf="!roomLoadPercentages.length">Нет доступных данных о загруженности помещений.</p>
-
 </div>
 
 <div *ngIf="isreg == 0">

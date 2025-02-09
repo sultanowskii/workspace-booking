@@ -5,7 +5,7 @@
       <th>№</th>
       <th>Название</th>
       <th>Адрес</th>
-      <th *ngIf="role === 'ADMIN'">Действия</th>
+      <th *ngIf="this.authService.data.user.role === 'ADMIN'">Действия</th>
     </tr>
   </thead>
   <tbody>
@@ -13,23 +13,34 @@
       <td>{{ i + 1 }}</td>
       <td>{{ office.name }}</td>
       <td>{{ office.address }}</td>
-      <td *ngIf="role === 'ADMIN'">
+      <td *ngIf= "this.authService.data.user.role === 'ADMIN'">
         <button (click)="openEditOfficeForm(office)">Редактировать</button>
         <button (click)="delOffice(office.id)">Удалить</button>
       </td>
     </tr>
+    <button (click)="openOfficeForm()">Создать</button>
   </tbody>
 </table>
 
-<!-- <div *ngIf="role === 'ADMIN' && showOfficeForm" class="office-form"> -->
-  <h4>{{ selectedOfficeId ? 'Редактировать офис' : 'Создать офис' }}</h4>
+<div *ngIf="this.authService.data.user.role === 'ADMIN' && showOfficeForm && !selectedOfficeId" class="office-form">
+  <h4>Создать офис</h4>
   Название:&nbsp;
-  <input id="oname" type="text" [(ngModel)]="officeForm.oname" placeholder="Введите название офиса" /> <br/><br/>
+  <input id="name" type="text" [(ngModel)]="officeForm.name" placeholder="Введите название офиса" /> <br/><br/>
   Адрес:&nbsp;
-  <input id="oaddress" type="text" [(ngModel)]="officeForm.oaddress" placeholder="Введите адрес офиса" /> <br/><br/>
-  <input type="button" value="{{ selectedOfficeId ? 'Сохранить изменения' : 'Создать офис' }}" (click)="selectedOfficeId ? editOffice() : addOffice()"><br/><br/>
+  <input id="address" type="text" [(ngModel)]="officeForm.address" placeholder="Введите адрес офиса" /> <br/><br/>
+  <input type="button" value="Создать офис" (click)="addOffice()"><br/><br/>
   <button type="button" (click)="closeOfficeForm()">Отменить</button>
-<!-- </div> -->
+</div>
+
+<div *ngIf="this.authService.data.user.role === 'ADMIN' && showOfficeForm && selectedOfficeId" class="office-form">
+  <h4>Редактировать офис</h4>
+  Название:&nbsp;
+  <input id="name" type="text" [(ngModel)]="officeForm.name" placeholder="Введите название офиса" /> <br/><br/>
+  Адрес:&nbsp;
+  <input id="address" type="text" [(ngModel)]="officeForm.address" placeholder="Введите адрес офиса" /> <br/><br/>
+  <input type="button" value="Сохранить изменения" (click)="editOffice()"><br/><br/>
+  <button type="button" (click)="closeOfficeForm()">Отменить</button>
+</div>
 
 <div [class.hide]="isreg==1">
   <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
