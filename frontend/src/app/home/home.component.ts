@@ -1,9 +1,9 @@
-import { Component, inject} from "@angular/core";
-import { HttpClient, HttpClientModule, HttpErrorResponse} from "@angular/common/http";
+import { Component, inject } from "@angular/core";
+import { HttpClient, HttpClientModule, HttpErrorResponse } from "@angular/common/http";
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
-import {FormsModule} from '@angular/forms';
-import {ActivatedRoute, Router} from "@angular/router";
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { catchError, of, switchMap } from "rxjs";
 
@@ -53,38 +53,38 @@ export class HomeComponent {
     ) {
       console.log(this.loginForm.role)
       this.http
-  .post(this.baseUrl + `/auth/signup`, {
-    username: this.loginForm.login,
-    password: this.loginForm.password,
-    role: this.loginForm.role
-  })
-  .pipe(
-    switchMap((data: any) => {
-        this.authService.data = data;
-        console.log('User created:', this.authService.data);
-        if (this.loginForm.role === 'ADMIN') {
-          return this.http.post(this.baseUrl + `/api/employees/${ data.user.id }/grant-admin`, {});
-        }
-        return of(void 0);
-      }
-    ),
-    catchError((err: any) => {
-        console.error("Error granting admin privileges:", err)
-        return of(void 0)
-      }
-    )
-  )
-  .subscribe((data: any) => {
-    console.log('Admin privileges granted to user:', data.user.id);
-    this.authService.data.user.role = 'ADMIN';
-    this.doauth = 1;
-    location.reload();
-  });
+        .post(this.baseUrl + `/auth/signup`, {
+          username: this.loginForm.login,
+          password: this.loginForm.password,
+          role: this.loginForm.role
+        })
+        .pipe(
+          switchMap((data: any) => {
+            this.authService.data = data;
+            console.log('User created:', this.authService.data);
+            if (this.loginForm.role === 'ADMIN') {
+              return this.http.post(this.baseUrl + `/api/employees/${data.user.id}/grant-admin`, {});
+            }
+            return of(void 0);
+          }
+          ),
+          catchError((err: any) => {
+            console.error("Error granting admin privileges:", err)
+            return of(void 0)
+          }
+          )
+        )
+        .subscribe((data: any) => {
+          console.log('Admin privileges granted to user:', data.user.id);
+          this.authService.data.user.role = 'ADMIN';
+          this.doauth = 1;
+          location.reload();
+        });
     } else {
       alert("Ошибка заполнения формы");
     }
   }
-  
+
   signIn() {
     console.log("signin")
     this.http

@@ -1,32 +1,32 @@
-import { Directive, Component, inject, model, signal, importProvidersFrom } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpClientModule, HttpParams} from "@angular/common/http";
+import { Directive, Component, inject, model, signal, importProvidersFrom, ElementRef, AfterViewInit, ViewChild } from "@angular/core";
+import { HttpClient, HttpHeaders, HttpClientModule, HttpParams } from "@angular/common/http";
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
-import {FormsModule} from '@angular/forms';
-import {ActivatedRoute, Router} from "@angular/router";
-import {CdkDragDrop, CdkDragEnd, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from "@angular/router";
+import { CdkDragDrop, CdkDragEnd, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { table } from "console";
 import { AuthService } from "../services/auth.service";
 
 @Component({
-    selector: "scheme-app",
-    templateUrl: './scheme.component.html',
-    styleUrls: ['./scheme.component.scss'],
-    standalone: true,
-    imports: [FormsModule,
-        HttpClientModule,
-        CommonModule,
-        CdkDropList, CdkDrag],
+  selector: "scheme-app",
+  templateUrl: './scheme.component.html',
+  styleUrls: ['./scheme.component.scss'],
+  standalone: true,
+  imports: [FormsModule,
+    HttpClientModule,
+    CommonModule,
+    CdkDropList, CdkDrag],
 })
 
 export class SchemeComponent {
-  offices: Array<{id: number; name: string; address: string}> = [];
-  rooms: Array<{id: number; name: string; office: string}> = [];
-  workplaces:  Array<{id: number; name: string; visibility: string; mon: number; position: {x: number, y: number}; length: number; width: number; room: string, book: string;} > = [];
-  meetingRooms:  Array<{id: number; name: string; visibility: string; mon: number; position: {x: number, y: number}; length: number; width: number; room: string, book: string;} > = [];
-  workplaceBookings: Array<{id: number; name: string; date: string; user: string;} > = [];
-  meetingRoomBookings: Array<{id: number; name: string; date: string; user: string;} > = [];
-  walls: Array<{visibility: string; position: {x1: number, y1: number, x2: number, y2: number}; room: string;} > = [];
+  offices: Array<{ id: number; name: string; address: string }> = [];
+  rooms: Array<{ id: number; name: string; office: string }> = [];
+  workplaces: Array<{ id: number; name: string; visibility: string; mon: number; position: { x: number, y: number }; length: number; width: number; room: string, book: string; }> = [];
+  meetingRooms: Array<{ id: number; name: string; visibility: string; position: { x: number, y: number }; length: number; width: number; room: string, book: string; }> = [];
+  workplaceBookings: Array<{ id: number; name: string; date: string; user: string; }> = [];
+  meetingRoomBookings: Array<{ id: number; name: string; date: string; user: string; }> = [];
+  walls: Array<{ visibility: string; position: { x1: number, y1: number, x2: number, y2: number }; room: string; }> = [];
 
   private baseUrl = environment.baseUrl;
   role = '';
@@ -39,13 +39,14 @@ export class SchemeComponent {
   filteredRooms: Array<{ id: number; name: string; office: string }> = [];
   filteredOffices = [...this.offices];
   officeSearch = '';
-  groups: Array<{id: number; name: string; office: string;} > = [];
+  groups: Array<{ id: number; name: string; office: string; }> = [];
   isWorkplaceBooked: string[] = [];
   isMeetingRoomBooked: string[] = [];
-  userRooms: Array<{ id: number; name: string; office: string }> = []; 
+  userRooms: Array<{ id: number; name: string; office: string }> = [];
+  room: { id: number; name: string; office: string } | null = null;
   isAddWorkplaceFormOpen = false;
   isAddMeetingRoomFormOpen = false;
-
+  roomSearch: string = '';
   newWorkplace = {
     name: '',
     x: '',
@@ -59,216 +60,265 @@ export class SchemeComponent {
     x: '',
     y: '',
     length: '',
-    width: '',
-    mon: 0
+    width: ''
   };
   officeForm:
-  any = {
-  office: '',
-  }
+    any = {
+      office: '',
+    }
   roomForm:
-  any = {
-  room: '',
-  }
-  meetingRoomBookingForm: any = {date: null, selectedTimes:[]};
-  workplaceBookingForm: any = {date: null};
+    any = {
+      room: '',
+    }
+  selectedRoom: any;
+  meetingRoomBookingForm: any = { date: null, selectedTimes: [] };
+  workplaceBookingForm: any = { date: null };
   availableDates: Date[] = [];
   availableTimes: string[] = [];
-    isMyBookingsFormOpen = false;
-  
-    myBookings: any[] = [];
-  
-    closeMyBookingsForm() {
-      this.isMyBookingsFormOpen = false;
-    }
-  
+  isMyBookingsFormOpen = false;
+  filteredWorkplaces: Array<{ id: number; name: string; visibility: string; mon: number; position: { x: number, y: number }; length: number; width: number; room: string, book: string; }> = [];
+  filteredMeetingRooms: Array<{ id: number; name: string; visibility: string; position: { x: number, y: number }; length: number; width: number; room: string, book: string; }> = [];
+
+  myBookings: any[] = [];
+
+  closeMyBookingsForm() {
+    this.isMyBookingsFormOpen = false;
+  }
+
   addWorkplace() {
-      this.workplaces.push({
-          id: this.workplaceForm.id,
-          name: this.workplaceForm.name,
-          visibility: 'visible',
-          mon: Number(this.workplaceForm.mon),
-          position: {x: Number(this.workplaceForm.x), y:Number(this.workplaceForm.y)},
-          width:this.workplaceForm.width,
-          length:this.workplaceForm.length,
-          room: this.workplaceForm.room,
-          book: '',
-      });
-      this.updateWorkplace();
+    this.workplaces.push({
+      id: this.workplaceForm.id,
+      name: this.workplaceForm.name,
+      visibility: 'visible',
+      mon: Number(this.workplaceForm.mon),
+      position: { x: Number(this.workplaceForm.x), y: Number(this.workplaceForm.y) },
+      width: this.workplaceForm.width,
+      length: this.workplaceForm.length,
+      room: this.workplaceForm.room,
+      book: '',
+    });
+    // this.updateWorkplace();
   }
 
   addMeetingRoom() {
     this.meetingRooms.push({
-        id: this.meetingRoomForm.id,
-        name: this.meetingRoomForm.name,
-        visibility: 'visible',
-        mon: Number(this.meetingRoomForm.mon),
-        position: {x: Number(this.meetingRoomForm.x), y:Number(this.meetingRoomForm.y)},
-        width:this.meetingRoomForm.width,
-        length:this.meetingRoomForm.length,
-        room: this.meetingRoomForm.room,
-        book: '',
+      id: this.meetingRoomForm.id,
+      name: this.meetingRoomForm.name,
+      visibility: 'visible',
+      position: { x: Number(this.meetingRoomForm.x), y: Number(this.meetingRoomForm.y) },
+      width: this.meetingRoomForm.width,
+      length: this.meetingRoomForm.length,
+      room: this.meetingRoomForm.room,
+      book: '',
     });
-    this.updateMeetingRoom();
-}
+    // this.updateMeetingRoom();
+  }
 
   addWall() {
-      this.walls.push({
-          visibility: 'visible',
-          position: {x1: Number(this.wallsForm.x1), y1:Number(this.wallsForm.y1), x2:Number(this.wallsForm.x2), y2:(this.wallsForm.y2)},
-          room: this.wallsForm.room,
-      });
-      this.updateWalls();
+    this.walls.push({
+      visibility: 'visible',
+      position: { x1: Number(this.wallsForm.x1), y1: Number(this.wallsForm.y1), x2: Number(this.wallsForm.x2), y2: (this.wallsForm.y2) },
+      room: this.wallsForm.room,
+    });
   }
 
   newPosition(x: number, x2: number, y: number, y2: number) {
-      let new_x = x + x2;
-      let new_y = y + y2;
-      return {"x": new_x, "y": new_y};
+    let new_x = x + x2;
+    let new_y = y + y2;
+    return { "x": new_x, "y": new_y };
   }
   workplaceForm: any = {
-      x: 0,
-      y: 0,
-      mon: 0,
-      name: '',
-      length: 0,
-      width: 0
+    x: 0,
+    y: 0,
+    mon: 0,
+    name: '',
+    length: 0,
+    width: 0
   }
 
   meetingRoomForm: any = {
-      x: 0,
-      y: 0,
-      mon: 0,
-      name: ''
+    x: 0,
+    y: 0,
+    name: ''
   }
   wallsForm: any = {
-      x1: 0,
-      y1: 0,
-      x2: 0, 
-      y2: 0,
-      room: ''
+    x1: 0,
+    y1: 0,
+    x2: 0,
+    y2: 0,
+    room: ''
   }
 
-  isreg = 0;
+  doauth = 0;
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
-  if (authService.data) {
-      this.isreg = 1;
+    if (authService.data) {
+      this.doauth = 1;
       this.officesList();
       this.groupsList();
-      this.workplaceList();
-      this.meetingRoomList();
-      this.getWorkplaceBookings();
-      this.getMeetingRoomBookings();
       this.generateAvailableDates();
       this.generateAvailableTimes();
-      this.workplaceBookingForm.date = this.availableDates[0];
-          } else {
-              console.log('not reged');
-          }
-      };
-  
+    } else {
+      console.log('not reged');
+    }
+  };
+
   groupsList() {
-      this.http
-        .get(this.baseUrl + `/api/employeeGroups`, {
-          headers: {
-            Authorization: `Bearer ${this.authService.data.token}`,
-          },
-        })
-        .subscribe((data: any) => {
-          data.forEach((group: any) => {
-            this.groups.push({
-              id: group["id"],
-              name: group["name"],
-            } as any);
-          });
+    this.http
+      .get(this.baseUrl + `/api/employeeGroups`, {
+        headers: this.getAuthHeaders()
+      })
+      .subscribe((data: any) => {
+        data.forEach((group: any) => {
+          this.groups.push({
+            id: group["id"],
+            name: group["name"],
+          } as any);
         });
-        }
+      });
+  }
 
   doWorkplaceBooking() {
-  if (this.workplaceBookingForm.date !== "") {
-    let date = this.workplaceBookingForm.date;
+    if (this.workplaceBookingForm.date !== "") {
+      let date = this.workplaceBookingForm.date;
 
-    const book = {
-      book_name: this.selectedWorkplace, 
-      book_date: date,
-      user: this.user
-    };
+      const book = {
+        book_name: this.selectedWorkplace,
+        book_date: date,
+        user: this.user
+      };
 
-    this.http.post(this.baseUrl+"/api/workplaceBookings", book).subscribe(data => {
-      if (data && Object.values(data)[0] > 0) {
-        this.isWorkplaceBooked.push(this.selectedWorkplace);
-        this.checkDate(date);
-        alert("Бронирование успешно!");
-      }
-    }, error => {
-      console.log(error);
-      alert("Ошибка при бронировании.");
-    });
-  }
-}
-
-doMeetingRoomBooking() {
-  if (this.meetingRoomBookingForm.date !== "" || this.meetingRoomBookingForm.datetime !== "") {
-    let date = this.meetingRoomBookingForm.date;
-    let time = "00:00";
-    if (this.meetingRoomBookingForm.datetime !== "") {
-      date = this.meetingRoomBookingForm.datetime.split("T")[0];
-      time = this.meetingRoomBookingForm.datetime.split("T")[1];
+      this.http.post(this.baseUrl + "/api/workplaceBookings", book, { headers: this.getAuthHeaders() }).subscribe(data => {
+        if (data && Object.values(data)[0] > 0) {
+          this.isWorkplaceBooked.push(this.selectedWorkplace);
+          this.updateAvailableDates(date);
+          alert("Бронирование успешно!");
+        }
+      }, error => {
+        console.log(error);
+        alert("Ошибка при бронировании.");
+      });
     }
-
-    const book = {
-      book_name: this.selectedMeetingRoom, 
-      book_date: date, 
-      book_time: time, 
-      user: this.user
-    };
-
-    this.http.post(this.baseUrl+"/api/meetingRoomBookings", book).subscribe(data => {
-      if (data && Object.values(data)[0] > 0) {
-        this.isMeetingRoomBooked.push(this.selectedMeetingRoom);
-        this.checkDate(date);
-        alert("Бронирование успешно!");
-      }
-    }, error => {
-      console.log(error);
-      alert("Ошибка при бронировании.");
-    });
   }
-}
+
+  doMeetingRoomBooking() {
+    if (this.meetingRoomBookingForm.date !== "" || this.meetingRoomBookingForm.datetime !== "") {
+      let date = this.meetingRoomBookingForm.date;
+      let time = "00:00";
+      if (this.meetingRoomBookingForm.datetime !== "") {
+        date = this.meetingRoomBookingForm.datetime.split("T")[0];
+        time = this.meetingRoomBookingForm.datetime.split("T")[1];
+      }
+
+      const book = {
+        book_name: this.selectedMeetingRoom,
+        book_date: date,
+        book_time: time,
+        user: this.user
+      };
+
+      this.http.post(this.baseUrl + "/api/meetingRoomBookings", book, { headers: this.getAuthHeaders() }).subscribe(data => {
+        if (data && Object.values(data)[0] > 0) {
+          this.isMeetingRoomBooked.push(this.selectedMeetingRoom);
+          this.updateAvailableDates(date);
+          alert("Бронирование успешно!");
+        }
+      }, error => {
+        console.log(error);
+        alert("Ошибка при бронировании.");
+      });
+    }
+  }
+
+  updateAvailableDates(selectedDate: Date) {
+    if (!this.availableDates.includes(selectedDate)) {
+      this.availableDates.push(selectedDate);
+    }
+  }
 
   updateFilteredRooms(): void {
-      this.filteredRooms = this.rooms.filter(room => 
-        room.office === this.officeForm.office
-      );
-      this.userRooms = this.filteredRooms;
+    this.filteredRooms = this.rooms.filter(room =>
+      room.office === this.officeForm.office
+    );
+    this.userRooms = this.filteredRooms;
+  }
+
+  saveWorkplace() {
+    if (this.newWorkplace.name && this.newWorkplace.x && this.newWorkplace.y) {
+      const payload = {
+        roomId: this.selectedRoom,
+        numberOfMonitors: this.newWorkplace.mon,
+        x: Number(this.newWorkplace.x),
+        y: Number(this.newWorkplace.y),
+        width: Number(this.newWorkplace.width),
+        height: Number(this.newWorkplace.length)
+      };
+
+      this.http.post(`${this.baseUrl}/api/workplaces`, payload, { headers: this.getAuthHeaders() })
+        .subscribe(
+          () => {
+            console.log('Сохранено новое рабочее место:', this.newWorkplace);
+            this.closeAddWorkplaceForm();
+
+            this.newWorkplace = {
+              name: '',
+              x: '',
+              y: '',
+              length: '',
+              width: '',
+              mon: 0
+            };
+          },
+          error => console.error('Ошибка при сохранении рабочего места:', error)
+        );
     }
-    
-
-  updateWorkplace() {
-      var tables = this.workplaces;
-      const body = {tables: tables};
-      this.http.put(this.baseUrl + '/api/workplace?workplaceid=${workplace}', body).subscribe(data => {});
   }
 
-  updateMeetingRoom() {
-    var tables = this.meetingRooms;
-    const body = {tables: tables};
-    this.http.put(this.baseUrl + '/api/meetingRoom?meetingRoomid=${meetingRoom}', body).subscribe(data => {});
-}
+  saveMeetingRoom() {
+    if (this.newMeetingRoom.name && this.newMeetingRoom.x && this.newMeetingRoom.y) {
+      const payload = {
+        roomId: this.selectedRoom,
+        name: this.newMeetingRoom.name,
+        x: Number(this.newMeetingRoom.x),
+        y: Number(this.newMeetingRoom.y),
+        width: Number(this.newMeetingRoom.width),
+        height: Number(this.newMeetingRoom.length)
+      };
 
-  updateWalls() {
-      var walls = this.walls;
-      const body = {walls: walls};
-      this.http.put(this.baseUrl, body).subscribe(data => {});
+      this.http.post(`${this.baseUrl}/api/meetingRooms`, payload, { headers: this.getAuthHeaders() })
+        .subscribe(
+          () => {
+            console.log('Сохранена новая переговорная:', this.newMeetingRoom);
+            this.closeAddMeetingRoomForm();
+
+            this.newMeetingRoom = {
+              name: '',
+              x: '',
+              y: '',
+              length: '',
+              width: ''
+            };
+          },
+          error => console.error('Ошибка при сохранении переговорной комнаты:', error)
+        );
+    }
   }
+
+
+  //   updateWorkplace() {
+  //       const params = {numberOfMonitors: , x: , y: , width: , height: };
+  //       this.http.put(this.baseUrl + `/api/workplace?workplaceid=${}`, {headers: this.getAuthHeaders()}, {params}).subscribe(data => {});
+  //   }
+
+  //   updateMeetingRoom() {
+  //     const params = {name: , x: , y: , width: , height: };
+  //     this.http.put(this.baseUrl + `/api/meetingRooms?meetingRoomid=${}`, {headers: this.getAuthHeaders()}, {params}).subscribe(data => {});
+  // }
 
   officesList() {
     this.http
       .get(this.baseUrl + `/api/offices`, {
-        headers: {
-          Authorization: `Bearer ${this.authService.data.token}`,
-        },
+        headers: this.getAuthHeaders()
       })
       .subscribe((data: any) => {
         console.log("Offices from API:", data);
@@ -276,245 +326,274 @@ doMeetingRoomBooking() {
           this.offices.push({
             id: office["id"],
             name: office["name"],
-			      address: office["address"]
+            address: office["address"]
           });
         })
         this.filterOffices();
       },
-      (error: any) => {
-        console.error("Error fetching offices:", error);
-        alert("Ошибка при получении данных");
-      }
+        (error: any) => {
+          console.error("Error fetching offices:", error);
+          alert("Ошибка при получении данных");
+        }
       );
   }
-  
+
   filterOffices() {
-	if (this.authService.data.user.role === 'ADMIN') {
-	  this.filteredOffices = [...this.offices];
-	} else {
-	  this.filteredOffices = this.offices.filter((office) => {
-      console.log("Groups from API:", this.groups);
-		return this.groups.some((group) => group.office === office.name);
-	  });
-	}
+    if (this.authService.data.user.role === 'ADMIN') {
+      this.filteredOffices = [...this.offices];
+    } else {
+      this.filteredOffices = this.offices.filter((office) => {
+        console.log("Groups from API:", this.groups);
+        return this.groups.some((group) => group.office === office.name);
+      });
+    }
+
   }
-  
-  roomsList() {
-      this.http.get(this.baseUrl + `/api/rooms`).subscribe(data => {
-          (Object.keys(data)).forEach((key, index) => {
-              this.rooms.push({
-                  id: Object.values(data)[index]["id"],
-                  name: Object.values(data)[index]["name"],
-                  office: Object.values(data)[index]["office"]
-              });
+
+  roomsList(officeId: number) {
+    const params = new HttpParams().set('officeId', officeId);
+    this.http.get(this.baseUrl + '/api/rooms', { headers: this.getAuthHeaders(), params: params })
+      .subscribe(data => {
+        console.log("Data:" + data);
+        (Object.keys(data)).forEach((key, index) => {
+          this.rooms.push({
+            id: Object.values(data)[index]["id"],
+            name: Object.values(data)[index]["name"],
+            office: Object.values(data)[index]["officeId"],
           });
+        });
       });
   }
 
-unbookWorkplace(workplace: number) {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.authService.data.token}`
-  });
-  this.http.delete(this.baseUrl + `/api/workplaceBookings?workplaceId=${workplace}`, {headers}).subscribe(data => {
-    this.workplaces = this.workplaces.map(item => 
-      item.id === workplace ? { ...item, book: '' } : item
-    );
-    if (Object.values(data)[0] === 'ok') {
-      alert("Бронирование отменено");
-    }
-  }, error => {
-    console.log(error);
-    alert("Ошибка при отмене бронирования.");
-  });
-}
+  selectRoom(selectedRoom: any) {
+    this.selectedRoom = selectedRoom;
+    this.workplaceList(selectedRoom);
+    this.meetingRoomList(selectedRoom);
+    this.getWorkplaceBookings();
+    this.getMeetingRoomBookings();
+  }
 
-unbookMeetingRoom(meetingRoom: number) {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.authService.data.token}`
-  });
-  this.http.delete(this.baseUrl + `/api/workplaceBookings?meetingRoomId=${meetingRoom}`, {headers}).subscribe(data => {
-    this.meetingRooms = this.meetingRooms.map(item => 
-      item.id === meetingRoom ? { ...item, book: '' } : item
-    );
-    if (Object.values(data)[0] === 'ok') {
-      alert("Бронирование отменено");
-    }
-  }, error => {
-    console.log(error);
-    alert("Ошибка при отмене бронирования.");
-  });
-}
+  selectOffice(office: { id: number; name: string }): void {
+    this.officeForm.office = office.id;
+    this.officeSearch = office.name;
+    this.filteredOffices = [];
+    this.roomsList(office.id);
+  }
 
-
-  workplaceList() {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.data.token}`
+  unbookWorkplace(workplace: number) {
+    this.http.delete(this.baseUrl + `/api/workplaceBookings?workplaceId=${workplace}`, { headers: this.getAuthHeaders() }).subscribe(data => {
+      this.workplaces = this.workplaces.map(item =>
+        item.id === workplace ? { ...item, book: '' } : item
+      );
+      if (Object.values(data)[0] === 'ok') {
+        alert("Бронирование отменено");
+      }
+    }, error => {
+      console.log(error);
+      alert("Ошибка при отмене бронирования.");
     });
-  this.http.get(this.baseUrl + `/api/workplaces`, {headers}).subscribe(data => {
-    this.workplaces = Object.values(data).map((table: any) => ({
-      id: table.id,
-      name: table.name,
-      visibility: table.visibility,
-      mon: table.mon,
-      type: table.type,
-      position: { x: table.position.x, y: table.position.y },
-      width: table.width,
-      length: table.length,
-      room: table.room,
-      book: '' 
-    }));
-    this.getWorkplaceBookings();
-  });
-}
+  }
 
-meetingRoomList() {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.authService.data.token}`
-  });
-  this.http.get(this.baseUrl + `/api/meetingRooms`, {headers}).subscribe(data => {
-    this.meetingRooms = Object.values(data).map((table: any) => ({
-      id: table.id,
-      name: table.name,
-      visibility: table.visibility,
-      mon: table.mon,
-      type: table.type,
-      position: { x: table.position.x, y: table.position.y },
-      width: table.width,
-      length: table.length,
-      room: table.room,
-      book: '' 
-    }));
-    this.getWorkplaceBookings();
-  });
-}
+  unbookMeetingRoom(meetingRoom: number) {
+    this.http.delete(this.baseUrl + `/api/meetingRoomBookings?meetingRoomId=${meetingRoom}`, { headers: this.getAuthHeaders() }).subscribe(data => {
+      this.meetingRooms = this.meetingRooms.map(item =>
+        item.id === meetingRoom ? { ...item, book: '' } : item
+      );
+      if (Object.values(data)[0] === 'ok') {
+        alert("Бронирование отменено");
+      }
+    }, error => {
+      console.log(error);
+      alert("Ошибка при отмене бронирования.");
+    });
+  }
+
+
+  updateWorkspaceAndRooms() {
+    if (this.selectedRoom) {
+      this.filteredWorkplaces = this.workplaces.filter(w => w.room === this.selectedRoom);
+      this.filteredMeetingRooms = this.meetingRooms.filter(r => r.room === this.selectedRoom);
+    }
+  }
+
+  workplaceList(selectedRoom: any) {
+    this.http.get(this.baseUrl + `/api/workplaces`, { headers: this.getAuthHeaders(), params: { roomId: selectedRoom } }).subscribe(data => {
+      this.workplaces = Object.values(data).map((table: any) => ({
+        id: table.id,
+        name: table.name,
+        visibility: table.visibility,
+        mon: table.mon,
+        type: table.type,
+        position: { x: table.position.x, y: table.position.y },
+        width: table.width,
+        length: table.length,
+        room: table.room,
+        book: ''
+      }));
+      this.getWorkplaceBookings();
+    });
+  }
+
+  meetingRoomList(selectedRoom: any) {
+    this.http.get(this.baseUrl + `/api/meetingRooms`, { headers: this.getAuthHeaders(), params: { roomId: selectedRoom } }).subscribe(data => {
+      this.meetingRooms = Object.values(data).map((table: any) => ({
+        id: table.id,
+        name: table.name,
+        visibility: table.visibility,
+        type: table.type,
+        position: { x: table.position.x, y: table.position.y },
+        width: table.width,
+        length: table.length,
+        room: table.room,
+        book: ''
+      }));
+      this.getWorkplaceBookings();
+    });
+  }
 
   getWorkplaceBookings(): void {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.data.token}`
+    this.http.get(this.baseUrl + `/api/workplaceBookings`, { headers: this.getAuthHeaders() }).subscribe(data => {
+      const userBooks = Object.values(data).filter((item: any) => item.user === this.user);
+      userBooks.forEach((book: any) => {
+        this.isWorkplaceBooked.push(book.name);
+      });
+      this.workplaces = this.workplaces.map(item => {
+        const bookedItem = userBooks.find(newItem => newItem.name === item.name);
+        return bookedItem ? { ...item, book: '1' } : item;
+      });
     });
-  this.http.get(this.baseUrl + `/api/workplaceBookings`, {headers}).subscribe(data => {
-    const userBooks = Object.values(data).filter((item: any) => item.user === this.user);
-    userBooks.forEach((book: any) => {
-      this.isWorkplaceBooked.push(book.name);
-    });
-    this.workplaces = this.workplaces.map(item => {
-      const bookedItem = userBooks.find(newItem => newItem.name === item.name);
-      return bookedItem ? { ...item, book: '1' } : item;
-    });
-  });
-}
-
-getMeetingRoomBookings(): void {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.authService.data.token}`
-  });
-  this.http.get(this.baseUrl + `/api/meetingRoomBookings`, {headers}).subscribe(data => {
-    const userBooks = Object.values(data).filter((item: any) => item.user === this.user);
-    userBooks.forEach((book: any) => {
-      this.isMeetingRoomBooked.push(book.name);
-    });
-    this.meetingRooms = this.meetingRooms.map(item => {
-      const bookedItem = userBooks.find(newItem => newItem.name === item.name);
-      return bookedItem ? { ...item, book: '1' } : item;
-    });
-  });
-}
-
-  generateAvailableDates(){
-      this.availableDates = [];
-      const today = new Date();
-      for (let i = 0; i < 5; i++){
-          const nextDay = new Date(today);
-          nextDay.setDate(today.getDate() + i);
-          this.availableDates.push(nextDay);
-      }
   }
 
-  generateAvailableTimes(){
+  getMeetingRoomBookings(): void {
+    this.http.get(this.baseUrl + `/api/meetingRoomBookings`, { headers: this.getAuthHeaders() }).subscribe(data => {
+      const userBooks = Object.values(data).filter((item: any) => item.user === this.user);
+      userBooks.forEach((book: any) => {
+        this.isMeetingRoomBooked.push(book.name);
+      });
+      this.meetingRooms = this.meetingRooms.map(item => {
+        const bookedItem = userBooks.find(newItem => newItem.name === item.name);
+        return bookedItem ? { ...item, book: '1' } : item;
+      });
+    });
+  }
+
+  generateAvailableDates() {
+    this.availableDates = [];
+    const today = new Date();
+    for (let i = 0; i < 5; i++) {
+      const nextDay = new Date(today);
+      nextDay.setDate(today.getDate() + i);
+      this.availableDates.push(nextDay);
+    }
+  }
+
+  generateAvailableTimes() {
     this.availableTimes = [];
-    for (let hour = 9; hour < 18; hour++){
+    for (let hour = 0; hour < 24; hour++) {
       const time = `${hour.toString().padStart(2, '0')}:00`
-        this.availableTimes.push(time);
+      this.availableTimes.push(time);
     }
   }
-  
 
-selectOffice(office: any) {
-  this.officeForm.office = office;
-  this.filteredOffices = [];
-  this.officeSearch = '';
-    if (office.rooms){
-        this.workplaceForm.room = office.rooms[0].name;  ///?
-        this.roomForm.room = this.workplaceForm.room
-    }
-}
+  dragEndedNewWorkplace(event: any, i: number) {
+    const newPos = event.source.getFreeDragPosition();
+    this.workplaces[i].position = newPos;
 
-onRoomChange(){
-  this.roomForm.room = this.workplaceForm.room ///?
-}
+    const updatePayload = {
+      x: newPos.x,
+      y: newPos.y,
+    };
 
-  checkDate(date: Date) {
-  console.log('Selected date:', date);
-}
-
-  dragEndedNewWorkplace(event: any, i:number){
-      this.workplaces[i].position = event.source.getFreeDragPosition();
+    this.http.put(`${this.baseUrl}/api/workplaces/${this.workplaces[i].id}`, updatePayload, { headers: this.getAuthHeaders() })
+      .subscribe({
+        next: () => {
+          console.log('Позиция рабочего места успешно обновлена');
+        },
+        error: (err) => {
+          console.error('Ошибка обновления позиции рабочего места', err);
+        }
+      });
   }
 
-  dragEndedNewMeetingRoom(event: any, i:number){
-    this.meetingRooms[i].position = event.source.getFreeDragPosition();
-}
 
-delWorkplace(i: number){
-  this.workplaces.splice(i, 1);
-}
-delMeetingRoom(i: number){
-  this.meetingRooms.splice(i, 1);
-}
+  dragEndedNewMeetingRoom(event: any, i: number) {
+    const newPos = event.source.getFreeDragPosition();
+    this.meetingRooms[i].position = newPos;
+    const updatePayload = {
+      x: newPos.x,
+      y: newPos.y,
+    };
 
-openWorkplaceBookingModal(table:any){
+    this.http.put(`${this.baseUrl}/api/meetingRooms/${this.meetingRooms[i].id}`, updatePayload, { headers: this.getAuthHeaders() })
+      .subscribe({
+        next: () => {
+          console.log('Позиция переговорной комнаты успешно обновлена');
+        },
+        error: (err) => {
+          console.error('Ошибка обновления позиции переговорной комнаты', err);
+        }
+      });
+  }
+
+  getAuthHeaders() {
+    return new HttpHeaders({ 'Authorization': `Bearer ${this.authService.data.token}` });
+  }
+
+  ngOnChanges() {
+    this.updateWorkspaceAndRooms();
+  }
+
+  delWorkplace(id: number) {
+    this.http.delete(this.baseUrl + `/api/workplaces/${id}`, { headers: this.getAuthHeaders() }).subscribe((data) => {
+      Object.keys(data).forEach((key, index) => {
+        this.workplaces = this.workplaces.filter((workplace) => workplace.id !== id);
+      });
+      alert("Рабочее место удалено");
+    });
+    return false;
+  }
+
+  delMeetingRoom(id: number) {
+    this.http.delete(this.baseUrl + `/api/meetingRooms/${id}`, { headers: this.getAuthHeaders() }).subscribe((data) => {
+      Object.keys(data).forEach((key, index) => {
+        this.meetingRooms = this.meetingRooms.filter((meetingRoom) => meetingRoom.id !== id);
+      });
+      alert("Переговорная удалена");
+    });
+    return false;
+  }
+
+  openWorkplaceBookingModal(table: any) {
     this.selectedWorkplace = table;
     this.isWorkplaceBookingModalOpen = true;
     console.log('table: ', table);
-}
+  }
 
-closeWorkplaceBookingModal(){
+  closeWorkplaceBookingModal() {
     this.isWorkplaceBookingModalOpen = false;
     this.selectedWorkplace = null;
     this.workplaceBookingForm.date = [];
-}
-
-openMeetingRoomBookingModal(table:any){
-  this.selectedMeetingRoom = table;
-  this.isMeetingRoomBookingModalOpen = true;
-  console.log('table: ', table);
-}
-
-closeMeetingRoomBookingModal(){
-  this.isMeetingRoomBookingModalOpen = false;
-  this.selectedMeetingRoom = null;
-  this.meetingRoomBookingForm.date = [];
-  this.meetingRoomBookingForm.selectedTime = [];
-}
-
-  onTimeChange(time:string, event:any) {
-  if (event.target.checked) {
-    this.meetingRoomBookingForm.selectedTimes.push(time);
-  } else {
-    this.meetingRoomBookingForm.selectedTimes = this.meetingRoomBookingForm.selectedTimes.filter((t: string) => t !== time);
-  }
-}
-
-  bookWorkplace(){
-    console.log('Забронировано:', this.selectedWorkplace, ' на дату: ', this.workplaceBookingForm.date);
-      this.selectedWorkplace.book = '1';
-      this.closeWorkplaceBookingModal()
   }
 
-  bookMeetingRoom(){
-    console.log('Забронировано:', this.selectedMeetingRoom, ' на дату: ', this.meetingRoomBookingForm.date, ' время: ', this.meetingRoomBookingForm.selectedTimes);
-      this.selectedMeetingRoom.book = '1';
-      this.closeMeetingRoomBookingModal()
+  openMeetingRoomBookingModal(table: any) {
+    this.selectedMeetingRoom = table;
+    this.isMeetingRoomBookingModalOpen = true;
+    console.log('table: ', table);
+  }
+
+  closeMeetingRoomBookingModal() {
+    this.isMeetingRoomBookingModalOpen = false;
+    this.selectedMeetingRoom = null;
+    this.meetingRoomBookingForm.date = [];
+    this.meetingRoomBookingForm.selectedTime = [];
+  }
+
+  onTimeChange(time: string, event: any) {
+    if (event.target.checked) {
+      this.meetingRoomBookingForm.selectedTimes.push(time);
+    } else {
+      this.meetingRoomBookingForm.selectedTimes = this.meetingRoomBookingForm.selectedTimes.filter((t: string) => t !== time);
+    }
   }
 
   openAddWorkplaceForm() {
@@ -532,36 +611,4 @@ closeMeetingRoomBookingModal(){
   closeAddMeetingRoomForm() {
     this.isAddMeetingRoomFormOpen = false;
   }
-
-  saveWorkplace() {
-    if (this.newWorkplace.name && this.newWorkplace.x && this.newWorkplace.y) {
-      console.log('Сохранено новое рабочее место:', this.newWorkplace);
-      this.closeAddWorkplaceForm();
-      
-      this.newWorkplace = {
-        name: '',
-        x: '',
-        y: '',
-        length: '',
-        width: '',
-        mon: 0
-      };
-    }
-  }
-
-  saveMeetingRoom() {
-    if (this.newMeetingRoom.name && this.newMeetingRoom.x && this.newMeetingRoom.y) {
-      console.log('Сохранена новая переговорная:', this.newMeetingRoom);
-      this.closeAddMeetingRoomForm();
-      
-      this.newMeetingRoom = {
-        name: '',
-        x: '',
-        y: '',
-        length: '',
-        width: '',
-        mon: 0
-      };
-    }
-  }
-}
+}  

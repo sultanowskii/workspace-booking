@@ -13,7 +13,7 @@
       <td>{{ i + 1 }}</td>
       <td>{{ office.name }}</td>
       <td>{{ office.address }}</td>
-      <td *ngIf= "this.authService.data.user.role === 'ADMIN'">
+      <td *ngIf="this.authService.data.user.role === 'ADMIN'">
         <button (click)="openEditOfficeForm(office)">Редактировать</button>
         <button (click)="delOffice(office.id)">Удалить</button>
       </td>
@@ -25,20 +25,20 @@
 <div *ngIf="this.authService.data.user.role === 'ADMIN' && showOfficeForm && !selectedOfficeId" class="office-form">
   <h4>Создать офис</h4>
   Название:&nbsp;
-  <input id="name" type="text" [(ngModel)]="officeForm.name" placeholder="Введите название офиса" /> <br/><br/>
+  <input id="name" type="text" [(ngModel)]="officeForm.name" placeholder="Введите название офиса" /> <br /><br />
   Адрес:&nbsp;
-  <input id="address" type="text" [(ngModel)]="officeForm.address" placeholder="Введите адрес офиса" /> <br/><br/>
-  <input type="button" value="Создать офис" (click)="addOffice()"><br/><br/>
+  <input id="address" type="text" [(ngModel)]="officeForm.address" placeholder="Введите адрес офиса" /> <br /><br />
+  <input type="button" value="Создать офис" (click)="addOffice()"><br /><br />
   <button type="button" (click)="closeOfficeForm()">Отменить</button>
 </div>
 
 <div *ngIf="this.authService.data.user.role === 'ADMIN' && showOfficeForm && selectedOfficeId" class="office-form">
   <h4>Редактировать офис</h4>
   Название:&nbsp;
-  <input id="name" type="text" [(ngModel)]="officeForm.name" placeholder="Введите название офиса" /> <br/><br/>
+  <input id="name" type="text" [(ngModel)]="officeForm.name" placeholder="Введите название офиса" /> <br /><br />
   Адрес:&nbsp;
-  <input id="address" type="text" [(ngModel)]="officeForm.address" placeholder="Введите адрес офиса" /> <br/><br/>
-  <input type="button" value="Сохранить изменения" (click)="editOffice()"><br/><br/>
+  <input id="address" type="text" [(ngModel)]="officeForm.address" placeholder="Введите адрес офиса" /> <br /><br />
+  <input type="button" value="Сохранить изменения" (click)="editOffice()"><br /><br />
   <button type="button" (click)="closeOfficeForm()">Отменить</button>
 </div>
 

@@ -2,20 +2,10 @@
 <div *ngIf="isreg == 1">
   <div>
     <label>Введите название офиса:</label>&nbsp;
-    <input 
-      type="text" 
-      [(ngModel)]="officeSearch" 
-      (input)="filterOffices()" 
-      placeholder="Введите название офиса"
-    />
+    <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
     <ul *ngIf="filteredOffices.length > 0" class="dropdown">
-      <li 
-        *ngFor="let office of filteredOffices"
-        (click)="selectOffice(office)"
-        class="dropdown-item"
-        tabindex="0"
-        (keydown.enter)="selectOffice(office)"
-      >
+      <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
+        (keydown.enter)="selectOffice(office)">
         {{ office.name }}
       </li>
     </ul>
@@ -25,13 +15,8 @@
 
   <div *ngIf="officeForm.office">
     <label for="start">Выберите дату:</label>
-    <input 
-      type="date" 
-      id="start" 
-      name="trip-start" 
-      (change)="checkDate(bookingForm.date)" 
-      [(ngModel)]="bookingForm.date" 
-    />
+    <input type="date" id="start" name="trip-start" (change)="checkDate(bookingForm.date)"
+      [(ngModel)]="bookingForm.date" />
   </div>
 
   <br />
@@ -44,21 +29,11 @@
   <br />
 
   <div>
-    <label>Введите название помещения:</label>&nbsp;
-    <input 
-      type="text" 
-      [(ngModel)]="roomSearch" 
-      (input)="filterRooms()" 
-      placeholder="Введите название помещения"
-    />
+    <label>Введите название помещения:</label>
+    <input type="text" [(ngModel)]="roomSearch" (input)="filterRooms()" placeholder="Введите название помещения" />
     <ul *ngIf="filteredRooms.length > 0" class="dropdown">
-      <li 
-        *ngFor="let room of filteredRooms"
-        (click)="selectRoom(room)"
-        class="dropdown-item"
-        tabindex="0"
-        (keydown.enter)="selectRoom(room)"
-      >
+      <li *ngFor="let room of filteredRooms" (click)="selectRoom(room)" class="dropdown-item" tabindex="0"
+        (keydown.enter)="selectRoom(room)">
         {{ room.name }}
       </li>
     </ul>

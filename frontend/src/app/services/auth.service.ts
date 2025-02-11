@@ -4,11 +4,10 @@ import { Injectable } from "@angular/core";
   providedIn: "root",
 })
 export class AuthService {
-  private _data: any | null = null; // Внутреннее хранилище данных
+  private _data: any | null = null;
 
   get data(): any | null {
     try {
-      console.log(localStorage.getItem("data"));
       return JSON.parse(localStorage.getItem("data") ?? "null");
     } catch (e) {
       console.error("Error parsing user data:", e);

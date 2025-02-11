@@ -1,9 +1,11 @@
 .hide {
   display: none;
 }
+
 .show {
   display: block;
 }
+
 table.styled-table {
   width: 100%;
   border-collapse: collapse;
@@ -12,7 +14,8 @@ table.styled-table {
   text-align: left;
 }
 
-table.styled-table th, table.styled-table td {
+table.styled-table th,
+table.styled-table td {
   padding: 12px;
   border: 1px solid #ddd;
 }
@@ -53,7 +56,8 @@ button:hover {
   text-decoration: underline;
 }
 
-.wind2, .wind2_vis {
+.wind2,
+.wind2_vis {
   position: absolute;
   width: 300px;
   left: 35%;

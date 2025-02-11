@@ -2,20 +2,10 @@
 
 <div>
   <label>Введите название офиса:</label>&nbsp;
-  <input 
-    type="text" 
-    [(ngModel)]="officeSearch" 
-    (input)="filterOffices()" 
-    placeholder="Введите название офиса"
-  />
+  <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
   <ul *ngIf="filteredOffices.length > 0" class="dropdown">
-    <li 
-      *ngFor="let office of filteredOffices"
-      (click)="selectOffice(office)"
-      class="dropdown-item"
-      tabindex="0"
-      (keydown.enter)="selectOffice(office)"
-    >
+    <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
+      (keydown.enter)="selectOffice(office)">
       {{ office.name }}
     </li>
   </ul>
@@ -45,16 +35,10 @@
 <div *ngIf="role === 'ADMIN' && showRoomForm" class="room-form">
   <h4>{{ selectedRoomId ? 'Редактировать помещение' : 'Создать помещение' }}</h4>
   Название:&nbsp;
-  <input id="name" type="text" [(ngModel)]="roomForm.name" placeholder="Введите название помещения" /> <br/><br/>
+  <input id="name" type="text" [(ngModel)]="roomForm.name" placeholder="Введите название помещения" /> <br /><br />
   <label for="wallsCount">Количество стен:</label>&nbsp;
-  <input
-    type="number"
-    id="wallsCount"
-    [(ngModel)]="wallsCount"
-    (change)="updateWalls()"
-    min="0"
-    placeholder="Введите количество стен"
-  />
+  <input type="number" id="wallsCount" [(ngModel)]="wallsCount" (change)="updateWalls()" min="0"
+    placeholder="Введите количество стен" />
   <br /><br />
 
   <div *ngFor="let wall of walls; let i = index">
@@ -71,11 +55,10 @@
     <label for="y2-{{i}}">y2:</label>&nbsp;
     <input id="y2-{{i}}" type="number" [(ngModel)]="wall.y2" placeholder="Введите y2" /><br /><br />
   </div>
-  <input type="button" value="Сохранить изменения" (click)="addRoom()"><br/><br/>
+  <input type="button" value="Сохранить изменения" (click)="selectedRoomId ? editRoom() : addRoom()"><br /><br />
   <button type="button" (click)="closeRoomForm()">Отменить</button>
 </div>
 
 <div [class.hide]="isreg==1">
   <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
 </div>
-

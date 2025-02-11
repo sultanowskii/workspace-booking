@@ -22,19 +22,19 @@
   <button (click)="openGroupForm()">Создать</button>
 </table>
 
-<div *ngIf="this.authService.data.user.role === 'ADMIN' && showGroupForm && !selectedGroup" class="group-form">
+<div *ngIf="this.authService.data.user.role === 'ADMIN' && showGroupForm && !selectedGroupId" class="group-form">
   <h4>Создать группу</h4>
   Название:&nbsp;
-  <input id="name" type="text" [(ngModel)]="groupForm.name" placeholder="Введите название группы" /> <br/><br/>
-  <input type="button" value="Создать группу" (click)="addGroup()"><br/><br/>
+  <input id="name" type="text" [(ngModel)]="groupForm.name" placeholder="Введите название группы" /> <br /><br />
+  <input type="button" value="Создать группу" (click)="addGroup()"><br /><br />
   <button type="button" (click)="closeGroupForm()">Отменить</button>
 </div>
 
-<div *ngIf="this.authService.data.user.role === 'ADMIN' && showGroupForm && selectedGroup" class="group-form">
+<div *ngIf="this.authService.data.user.role === 'ADMIN' && showGroupForm && selectedGroupId" class="group-form">
   <h4>Редактировать группу</h4>
   Название:&nbsp;
-  <input id="name" type="text" [(ngModel)]="groupForm.name" placeholder="Введите название группы" /> <br/><br/>
-  <input type="button" value="Редактировать группу" (click)="addGroup()"><br/><br/>
+  <input id="name" type="text" [(ngModel)]="groupForm.name" placeholder="Введите название группы" /> <br /><br />
+  <input type="button" value="Редактировать группу" (click)="editGroup()"><br /><br />
   <button type="button" (click)="closeGroupForm()">Отменить</button>
 </div>
 
@@ -61,23 +61,24 @@
 </table>
 
 <div [ngClass]="selectedUser == 0 ? 'wind2' : 'wind2_vis'" id="wind2">
-  № Пользователя: <b>{{ this.selectedUser }}</b><br/><br/>
+  № Пользователя: <b>{{ this.selectedUser }}</b><br /><br />
   <label for="start">Группа:</label>&nbsp;
   <select [(ngModel)]="addUserForm.grname">
     <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
   </select>
-  <br/><br/>
+  <br /><br />
   <button type="button" (click)="addUserToOffice()">Прикрепить к группе</button>&nbsp;&nbsp;
   <button type="button" (click)="selectedUser=0">Закрыть</button>
 </div>
 
 <div [ngClass]="selectedGroup == 0 ? 'wind2' : 'wind2_vis'" id="wind2">
-  № группы: <b>{{ this.selectedGroup }}</b><br/><br/>
+  № группы: <b>{{ this.selectedGroup }}</b><br /><br />
   <label for="start">Офис:</label>&nbsp;
   <select [(ngModel)]="addGroupForm.ofid">
-    <option *ngFor="let office of (role === 'ADMIN' ? offices : filteredOffices)" [value]="office.id">{{ office.name }}</option>
+    <option *ngFor="let office of (role === 'ADMIN' ? offices : filteredOffices)" [value]="office.id">{{ office.name }}
+    </option>
   </select>
-  <br/><br/>
+  <br /><br />
   <button type="button" (click)="addGroupToOffice()">Прикрепить к офису</button>&nbsp;&nbsp;
   <button type="button" (click)="selectedGroup=0">Закрыть</button>
 </div>

@@ -1,19 +1,43 @@
 .hide {
   display: none;
 }
+
 .show {
   display: block;
 }
 
 .hid {
 
-visibility: hidden;
+  visibility: hidden;
 
 }
+
 .vis {
 
-visibility: visible;
+  visibility: visible;
 
+}
+
+.workspace,
+.meeting-room {
+  position: absolute;
+  padding: 12px;
+  background-color: #a6c8ff;
+  border: 1px solid #3a6ea5;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.meeting-room {
+  background-color: #ffdd57;
+}
+
+.office-canvas {
+  border: 1px solid #ccc;
+  display: block;
+  margin-top: 10px;
 }
 
 .parent {
@@ -21,12 +45,14 @@ visibility: visible;
   top: 0;
   left: 0;
 }
+
 .image1 {
   position: relative;
   top: 0;
   left: 0;
   border: 1px red solid;
 }
+
 .image2 {
   position: absolute;
   top: 30px;
@@ -35,34 +61,35 @@ visibility: visible;
 }
 
 .wind2 {
-       position: absolute;
-    width:300px;
-    left: 35%;
-      top: 300px;
-    border:solid #4699C3 4px;
-    text-align: left;
+  position: absolute;
+  width: 300px;
+  left: 35%;
+  top: 300px;
+  border: solid #4699C3 4px;
+  text-align: left;
   display: none;
-      z-index: 10;
-    overflow: hidden;
-    background-color:#fff;
-    color:#000;
+  z-index: 10;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
 
-    padding:10px;
+  padding: 10px;
 }
-.wind2_vis {
-       position: absolute;
-    width:300px;
-    left: 35%;
-      top: 300px;
-    border:solid #4699C3 4px;
-    text-align: left;
-  display: block;
-      z-index: 10;
-    overflow: hidden;
-    background-color:#fff;
-    color:#000;
 
-    padding:10px;
+.wind2_vis {
+  position: absolute;
+  width: 300px;
+  left: 35%;
+  top: 300px;
+  border: solid #4699C3 4px;
+  text-align: left;
+  display: block;
+  z-index: 10;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+
+  padding: 10px;
 }
 
 
@@ -85,6 +112,7 @@ visibility: visible;
   border-radius: 4px;
   overflow: hidden;
 }
+
 //TODO
 .example-box {
   padding: 20px 10px;
@@ -100,6 +128,7 @@ visibility: visible;
   min-width: 115px;
   position: absolute;
 }
+
 //TODO
 .example-box-booked {
   padding: 20px 10px;
@@ -120,8 +149,8 @@ visibility: visible;
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-              0 8px 10px 1px rgba(0, 0, 0, 0.14),
-              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {
@@ -131,4 +160,3 @@ visibility: visible;
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-

@@ -28,7 +28,7 @@ export class WorkloadComponent {
   bookingForm: any = { date: '' };
   roomSearch: string = '';
   isreg = 0;
-  
+
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
     if (authService.data) {
@@ -39,17 +39,17 @@ export class WorkloadComponent {
 
   filterRooms() {
     const searchValue = this.roomSearch?.toLowerCase() || '';
-      this.filteredRooms = this.rooms.filter(room =>
+    this.filteredRooms = this.rooms.filter(room =>
       room.name.toLowerCase().startsWith(searchValue)
-      );
-    }
-  
+    );
+  }
+
   filterOffices() {
     const searchValue = this.officeSearch?.toLowerCase() || '';
-      this.filteredOffices = this.offices.filter(office =>
+    this.filteredOffices = this.offices.filter(office =>
       office.name.toLowerCase().startsWith(searchValue)
-      );
-    }
+    );
+  }
 
   getOffices() {
     this.http.get(this.baseUrl + `/api/offices`, {
@@ -115,88 +115,88 @@ export class WorkloadComponent {
   }
 
 
-//   const foundRoom = this.rooms.find(room => room.name === this.roomNameSearch);
+  //   const foundRoom = this.rooms.find(room => room.name === this.roomNameSearch);
 
-//   getRoomOccupancy() {
-//     if (!this.room) {
-//       console.warn('No room selected.');
-//       return;
-//     }
-//     if (foundRoom) {
-//       this.room = foundRoom;
-//     }
-//     const headers = new HttpHeaders({
-//       'Authorization': `Bearer ${this.authService.data.token}`
-//     });
+  //   getRoomOccupancy() {
+  //     if (!this.room) {
+  //       console.warn('No room selected.');
+  //       return;
+  //     }
+  //     if (foundRoom) {
+  //       this.room = foundRoom;
+  //     }
+  //     const headers = new HttpHeaders({
+  //       'Authorization': `Bearer ${this.authService.data.token}`
+  //     });
 
-//     let params = new HttpParams();
-//     params = params.set('officeId', this.officeForm.office);
-//     params = params.set('date', this.bookingForm.date);
+  //     let params = new HttpParams();
+  //     params = params.set('officeId', this.officeForm.office);
+  //     params = params.set('date', this.bookingForm.date);
 
-//     this.http.get(`${this.baseUrl}/api/occupancy/rooms/${this.room.id}`, {
-//         headers: headers,
-//         params: params
-//       })
-//       .subscribe({
-//         next: (data: any) => {
-//           this.roomLoadPercentages = data.map((room: any) => ({
-//             office: room.officeName,
-//             room: room.name,
-//             load: room.loadPercentage
-//           }));
-//         },
-//         error: (error) => {
-//           console.error('Error fetching room occupancy:', error);
-//         }
-//       });
-//   }
-// }
-// getRoomOccupancyByName() {
-//   if (!this.roomSearch) {
-//     console.warn('Введите название помещения.');
-//     return;
-//   }
-// const foundRoom = this.rooms.find(room => room.name === this.roomSearch);
+  //     this.http.get(`${this.baseUrl}/api/occupancy/rooms/${this.room.id}`, {
+  //         headers: headers,
+  //         params: params
+  //       })
+  //       .subscribe({
+  //         next: (data: any) => {
+  //           this.roomLoadPercentages = data.map((room: any) => ({
+  //             office: room.officeName,
+  //             room: room.name,
+  //             load: room.loadPercentage
+  //           }));
+  //         },
+  //         error: (error) => {
+  //           console.error('Error fetching room occupancy:', error);
+  //         }
+  //       });
+  //   }
+  // }
+  // getRoomOccupancyByName() {
+  //   if (!this.roomSearch) {
+  //     console.warn('Введите название помещения.');
+  //     return;
+  //   }
+  // const foundRoom = this.rooms.find(room => room.name === this.roomSearch);
 
-//   if (foundRoom) {
-//     this.room = foundRoom;
-//     this.getRoomOccupancy();
-//   } else {
-//     console.warn(`Помещение "${this.roomSearch}" не найдено.`);
-//     this.room = null;
-//   }
-// }
+  //   if (foundRoom) {
+  //     this.room = foundRoom;
+  //     this.getRoomOccupancy();
+  //   } else {
+  //     console.warn(`Помещение "${this.roomSearch}" не найдено.`);
+  //     this.room = null;
+  //   }
+  // }
 
-getRoomOccupancy() {
-  if (!this.room) {
-    console.warn('No room selected.');
-    return;
-  }
+  getRoomOccupancy() {
+    if (!this.room) {
+      console.warn('No room selected.');
+      return;
+    }
 
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.authService.data.token}`
-  });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.data.token}`
+    });
 
-  let params = new HttpParams();
-  params = params.set('officeId', this.officeForm.office);
-  params = params.set('date', this.bookingForm.date);
+    let params = new HttpParams();
+    params = params.set('officeId', this.officeForm.office);
+    params = params.set('date', this.bookingForm.date);
 
-  this.http.get(`${this.baseUrl}/api/occupancy/rooms/${this.room.id}`, {
+    this.http.get(`${this.baseUrl}/api/occupancy/rooms/${this.room.id}`, {
       headers: headers,
       params: params
     })
-    .subscribe({
-      next: (data: any) => {
-        this.roomLoadPercentages = data.map((room: any) => ({
-          office: room.officeName,
-          room: room.name,
-          load: room.loadPercentage
-        }));
-      },
-      error: (error) => {
-        console.error('Error fetching room occupancy:', error);
-      }
-    });
-}
+      .subscribe({
+        next: (data: any) => {
+          this.roomLoadPercentages = data.map((room: any) => ({
+            office: room.officeName,
+            room: room.name,
+            load: room.loadPercentage
+          }));
+        },
+        error: (error) => {
+          console.error('Error fetching room occupancy:', error);
+        }
+      });
+  }
 }
 
