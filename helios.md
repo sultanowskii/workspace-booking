@@ -49,11 +49,17 @@ cp example.env .env
 vim .env # устанавливаем необходимые параметры, выбираем какой-нибудь порт
 ```
 
+Забрасываем `set-env.sh` для удобства:
+
+```bash
+scp set-env.sh helios:/some/path
+```
+
 ## Сборка проекта (локалка)
 
 ```bash
 gradle build
-# По итогу, на helios app.jar и .env должны оказаться в одной директории
+# По итогу, на helios app.jar, set-env.sh и .env должны оказаться в одной директории
 scp app/build/libs/app.jar helios:/some/path
 ```
 
@@ -64,6 +70,7 @@ scp app/build/libs/app.jar helios:/some/path
 ssh s367553@helios.cs.ifmo.ru -p 2222 -L 8082:helios.cs.ifmo.ru:48080
 # на гелиосе
 cd /some/path
+source set-env.sh
 java -jar app.jar
 ```
 
