@@ -134,6 +134,10 @@ BEGIN
     FROM workplace
     WHERE workplace.room_id = target_room_id;
 
+    IF total_workplace_count = 0::DOUBLE PRECISION THEN
+        RETURN 0;
+    END IF;
+
     RETURN occupied_workplace_count / total_workplace_count;
 END;
 ' LANGUAGE plpgsql;
