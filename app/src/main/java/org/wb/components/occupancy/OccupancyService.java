@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wb.components.error.exception.NotFoundException;
 import org.wb.components.office.OfficeRepository;
 import org.wb.components.room.RoomRepository;
 import org.wb.gen.model.OfficeOccupancy;
@@ -34,6 +35,9 @@ public class OccupancyService {
             date = LocalDate.now();
         }
         var result = roomRepo.getRoomOccupancy(roomId, date);
+        if (result == null) {
+            throw new NotFoundException("Room with id=" + roomId + " not found");
+        }
         return new RoomOccupancy()
                 .id(result.getId())
                 .name(result.getName())
@@ -45,6 +49,9 @@ public class OccupancyService {
             date = LocalDate.now();
         }
         var result = roomRepo.getRoomOccupancies(officeId, date);
+        if (result == null) {
+            throw new NotFoundException("Office with id=" + officeId + " not found");
+        }
         return result
                 .stream()
                 .map(o -> {
