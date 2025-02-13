@@ -33,7 +33,7 @@ get:
           schema:
             type: array
             items:
-              $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+              $ref: ../../schemas/employeeGroups/EmployeeGroupWithAllowedOffices.yaml
 post:
   operationId: createEmployeeGroup
   summary: Create employee group
@@ -49,7 +49,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+            $ref: ../../schemas/employeeGroups/EmployeeGroupWithAllowedOffices.yaml
     "400":
       $ref: ../../schemas/common/errors/InvalidRequest.yaml
     "403":

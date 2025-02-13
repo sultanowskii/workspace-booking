@@ -36,7 +36,14 @@ public abstract class EntityService<T extends Entity, TDto, TListDto, TCreateDto
         return userService.getCurrentUser().isAdmin();
     }
 
-    protected Specification<T> additionalSpec() {
+    protected Specification<T> additionalListSpec() {
+        return (root, query, builder) -> {
+            // always true
+            return builder.conjunction();
+        };
+    }
+
+    protected Specification<T> additionalGetSpec() {
         return (root, query, builder) -> {
             // always true
             return builder.conjunction();
@@ -48,7 +55,7 @@ public abstract class EntityService<T extends Entity, TDto, TListDto, TCreateDto
         if (!isListAllowed()) {
             throw new PermissionDeniedException("You can't get " + entityName() + " list");
         }
-        var result = repo.findAll(additionalSpec().and(specification), paginator.getSort());
+        var result = repo.findAll(additionalListSpec().and(specification), paginator.getSort());
 
         var paged = new SmartPage<>(result, paginator);
 
@@ -73,7 +80,7 @@ public abstract class EntityService<T extends Entity, TDto, TListDto, TCreateDto
     }
 
     public TDto get(long id) {
-        var entity = getRaw(id);
+        var entity = getRawWithAdditionalSpec(id);
         if (!isReadAllowed(entity)) {
             throw new PermissionDeniedException("You can't access this " + entityName());
         }
@@ -96,6 +103,14 @@ public abstract class EntityService<T extends Entity, TDto, TListDto, TCreateDto
     public T getRaw(long id) {
         return repo
                 .findById(id)
+                .orElseThrow(() -> new NotFoundException(entityName() + " with id=" + id + " not found"));
+    }
+
+    public T getRawWithAdditionalSpec(long id) {
+        return repo
+                .findOne(additionalGetSpec().and((root, query, builder) -> {
+                    return builder.equal(root.get("id"), id);
+                }))
                 .orElseThrow(() -> new NotFoundException(entityName() + " with id=" + id + " not found"));
     }
 

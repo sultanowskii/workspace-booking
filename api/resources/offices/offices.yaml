@@ -34,7 +34,7 @@ get:
           schema:
             type: array
             items:
-              $ref: ../../schemas/offices/Office.yaml
+              $ref: ../../schemas/offices/OfficeWithEmployeeGroups.yaml
 post:
   summary: Create office
   operationId: createOffice
@@ -50,6 +50,6 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../../schemas/offices/Office.yaml
+            $ref: ../../schemas/offices/OfficeWithEmployeeGroups.yaml
     "400":
       $ref: ../../schemas/common/errors/InvalidRequest.yaml

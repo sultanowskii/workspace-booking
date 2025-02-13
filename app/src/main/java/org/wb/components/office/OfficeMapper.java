@@ -12,7 +12,7 @@ import org.wb.gen.model.OfficeCreateUpdate;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class OfficeMapper
         implements
-        EntityMapper<Office, org.wb.gen.model.Office, org.wb.gen.model.Office, OfficeCreateUpdate, OfficeCreateUpdate> {
+        EntityMapper<Office, org.wb.gen.model.OfficeWithEmployeeGroups, org.wb.gen.model.OfficeWithEmployeeGroups, OfficeCreateUpdate, OfficeCreateUpdate> {
     @Override
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "employeeGroups", ignore = true)

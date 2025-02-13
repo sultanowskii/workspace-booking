@@ -60,7 +60,7 @@ public class EmployeeService
     }
 
     @Override
-    protected Specification<Employee> additionalSpec() {
+    protected Specification<Employee> additionalListSpec() {
         return (root, query, builder) -> {
             // https://stackoverflow.com/a/64823302
             //

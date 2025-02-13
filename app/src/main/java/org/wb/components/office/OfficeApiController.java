@@ -2,8 +2,8 @@ package org.wb.components.office;
 
 import org.wb.components.common.paging.Paginator;
 import org.wb.gen.api.OfficesApi;
-import org.wb.gen.model.Office;
 import org.wb.gen.model.OfficeCreateUpdate;
+import org.wb.gen.model.OfficeWithEmployeeGroups;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -28,7 +28,7 @@ public class OfficeApiController implements OfficesApi {
     private OfficeService service;
 
     @Override
-    public ResponseEntity<List<Office>> getOffices(
+    public ResponseEntity<List<OfficeWithEmployeeGroups>> getOffices(
             @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
             @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
             @Parameter(name = "employeeGroupId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeGroupId", required = false) Long employeeGroupId,
@@ -43,19 +43,20 @@ public class OfficeApiController implements OfficesApi {
     }
 
     @Override
-    public ResponseEntity<Office> createOffice(@Valid OfficeCreateUpdate officeCreateUpdate) {
+    public ResponseEntity<OfficeWithEmployeeGroups> createOffice(@Valid OfficeCreateUpdate officeCreateUpdate) {
         var result = service.create(officeCreateUpdate);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @Override
-    public ResponseEntity<Office> getOffice(Long id) {
+    public ResponseEntity<OfficeWithEmployeeGroups> getOffice(Long id) {
         var result = service.get(id);
         return ResponseEntity.ok(result);
     }
 
     @Override
-    public ResponseEntity<Office> updateOffice(Long id, @Valid OfficeCreateUpdate officeCreateUpdate) {
+    public ResponseEntity<OfficeWithEmployeeGroups> updateOffice(Long id,
+            @Valid OfficeCreateUpdate officeCreateUpdate) {
         var result = service.update(id, officeCreateUpdate);
         return ResponseEntity.ok(result);
     }

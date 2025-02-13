@@ -6,8 +6,8 @@
 package org.wb.gen.api;
 
 import org.wb.gen.model.Error;
-import org.wb.gen.model.Office;
 import org.wb.gen.model.OfficeCreateUpdate;
+import org.wb.gen.model.OfficeWithEmployeeGroups;
 import org.springframework.data.domain.Pageable;
 import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Operation;
@@ -80,7 +80,7 @@ public interface OfficesApi {
         summary = "Create office",
         responses = {
             @ApiResponse(responseCode = "201", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Office.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = OfficeWithEmployeeGroups.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -97,7 +97,7 @@ public interface OfficesApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Office> createOffice(
+    ResponseEntity<OfficeWithEmployeeGroups> createOffice(
         @Parameter(name = "OfficeCreateUpdate", description = "", required = true) @Valid @RequestBody OfficeCreateUpdate officeCreateUpdate
     );
 
@@ -145,7 +145,7 @@ public interface OfficesApi {
         summary = "Get office",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Office.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = OfficeWithEmployeeGroups.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -161,7 +161,7 @@ public interface OfficesApi {
         produces = { "application/json" }
     )
     
-    ResponseEntity<Office> getOffice(
+    ResponseEntity<OfficeWithEmployeeGroups> getOffice(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
@@ -181,7 +181,7 @@ public interface OfficesApi {
         description = "Get list of offices. Supported sort/search fields: `name`, `address` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Office.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = OfficeWithEmployeeGroups.class)))
             })
         },
         security = {
@@ -194,7 +194,7 @@ public interface OfficesApi {
         produces = { "application/json" }
     )
     
-    ResponseEntity<List<Office>> getOffices(
+    ResponseEntity<List<OfficeWithEmployeeGroups>> getOffices(
         @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
         @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
         @Parameter(name = "employeeGroupId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "employeeGroupId", required = false) Long employeeGroupId,
@@ -249,7 +249,7 @@ public interface OfficesApi {
         summary = "Update office",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Office.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = OfficeWithEmployeeGroups.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -269,7 +269,7 @@ public interface OfficesApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Office> updateOffice(
+    ResponseEntity<OfficeWithEmployeeGroups> updateOffice(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
         @Parameter(name = "OfficeCreateUpdate", description = "", required = true) @Valid @RequestBody OfficeCreateUpdate officeCreateUpdate
     );

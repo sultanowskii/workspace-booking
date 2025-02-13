@@ -1,0 +1,19 @@
+name: Office
+description: Office
+type: object
+properties:
+  id:
+    description: ID
+    type: integer
+    format: int64
+  name:
+    description: Name
+    type: string
+  address:
+    description: Address
+    type: string
+  employeeGroups:
+    description: Employee groups
+    type: array
+    items:
+      $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml

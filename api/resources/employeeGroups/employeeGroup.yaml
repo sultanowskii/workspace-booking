@@ -14,7 +14,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+            $ref: ../../schemas/employeeGroups/EmployeeGroupWithAllowedOffices.yaml
     "404":
       $ref: ../../schemas/common/errors/ResourceNotFound.yaml
 put:
@@ -39,7 +39,7 @@ put:
       content:
         application/json:
           schema:
-            $ref: ../../schemas/employeeGroups/EmployeeGroup.yaml
+            $ref: ../../schemas/employeeGroups/EmployeeGroupWithAllowedOffices.yaml
     "400":
       $ref: ../../schemas/common/errors/InvalidRequest.yaml
     "403":

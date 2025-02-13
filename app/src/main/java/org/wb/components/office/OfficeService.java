@@ -1,6 +1,7 @@
 package org.wb.components.office;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.wb.components.common.EntityService;
 import org.wb.components.employeegroup.EmployeeGroupService;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OfficeService
         extends
-        EntityService<Office, org.wb.gen.model.Office, org.wb.gen.model.Office, OfficeCreateUpdate, OfficeCreateUpdate> {
+        EntityService<Office, org.wb.gen.model.OfficeWithEmployeeGroups, org.wb.gen.model.OfficeWithEmployeeGroups, OfficeCreateUpdate, OfficeCreateUpdate> {
     @Autowired
     private EmployeeGroupService employeeGroupService;
 
@@ -38,6 +39,22 @@ public class OfficeService
     @Override
     protected boolean isDeleteAllowed(Office entity) {
         return isCurrentUserAdmin();
+    }
+
+    @Override
+    protected Specification<Office> additionalListSpec() {
+        return (root, query, builder) -> {
+            root.fetch("employeeGroups");
+            return builder.conjunction();
+        };
+    }
+
+    @Override
+    protected Specification<Office> additionalGetSpec() {
+        return (root, query, builder) -> {
+            root.fetch("employeeGroups");
+            return builder.conjunction();
+        };
     }
 
     @Override

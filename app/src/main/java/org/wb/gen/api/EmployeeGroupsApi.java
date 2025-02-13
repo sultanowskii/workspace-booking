@@ -5,8 +5,8 @@
  */
 package org.wb.gen.api;
 
-import org.wb.gen.model.EmployeeGroup;
 import org.wb.gen.model.EmployeeGroupCreateUpdate;
+import org.wb.gen.model.EmployeeGroupWithAllowedOffices;
 import org.wb.gen.model.Error;
 import org.springframework.data.domain.Pageable;
 import org.springdoc.core.annotations.ParameterObject;
@@ -48,7 +48,7 @@ public interface EmployeeGroupsApi {
         summary = "Create employee group",
         responses = {
             @ApiResponse(responseCode = "201", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroupWithAllowedOffices.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -68,7 +68,7 @@ public interface EmployeeGroupsApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<EmployeeGroup> createEmployeeGroup(
+    ResponseEntity<EmployeeGroupWithAllowedOffices> createEmployeeGroup(
         @Parameter(name = "EmployeeGroupCreateUpdate", description = "", required = true) @Valid @RequestBody EmployeeGroupCreateUpdate employeeGroupCreateUpdate
     );
 
@@ -120,7 +120,7 @@ public interface EmployeeGroupsApi {
         summary = "Get employee group",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroupWithAllowedOffices.class))
             }),
             @ApiResponse(responseCode = "404", description = "Resource Not Found", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -136,7 +136,7 @@ public interface EmployeeGroupsApi {
         produces = { "application/json" }
     )
     
-    ResponseEntity<EmployeeGroup> getEmployeeGroup(
+    ResponseEntity<EmployeeGroupWithAllowedOffices> getEmployeeGroup(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
@@ -156,7 +156,7 @@ public interface EmployeeGroupsApi {
         description = "Get list of employee groups. Supported sort/search fields: `name` ",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EmployeeGroup.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EmployeeGroupWithAllowedOffices.class)))
             })
         },
         security = {
@@ -169,7 +169,7 @@ public interface EmployeeGroupsApi {
         produces = { "application/json" }
     )
     
-    ResponseEntity<List<EmployeeGroup>> getEmployeeGroups(
+    ResponseEntity<List<EmployeeGroupWithAllowedOffices>> getEmployeeGroups(
         @Parameter(name = "searchFieldName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchFieldName", required = false) String searchFieldName,
         @Size(min = 1) @Parameter(name = "searchString", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "searchString", required = false) String searchString,
         @Parameter(name = "officeId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "officeId", required = false) Long officeId,
@@ -192,7 +192,7 @@ public interface EmployeeGroupsApi {
         summary = "Update employee group",
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroup.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeGroupWithAllowedOffices.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -215,7 +215,7 @@ public interface EmployeeGroupsApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<EmployeeGroup> updateEmployeeGroup(
+    ResponseEntity<EmployeeGroupWithAllowedOffices> updateEmployeeGroup(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id,
         @Parameter(name = "EmployeeGroupCreateUpdate", description = "", required = true) @Valid @RequestBody EmployeeGroupCreateUpdate employeeGroupCreateUpdate
     );

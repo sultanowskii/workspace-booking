@@ -11,7 +11,7 @@ import org.wb.gen.model.EmployeeGroupCreateUpdate;
 @Service
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class EmployeeGroupMapper implements
-        EntityMapper<EmployeeGroup, org.wb.gen.model.EmployeeGroup, org.wb.gen.model.EmployeeGroup, EmployeeGroupCreateUpdate, EmployeeGroupCreateUpdate> {
+        EntityMapper<EmployeeGroup, org.wb.gen.model.EmployeeGroupWithAllowedOffices, org.wb.gen.model.EmployeeGroupWithAllowedOffices, EmployeeGroupCreateUpdate, EmployeeGroupCreateUpdate> {
     @Override
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "allowedOffices", ignore = true)
