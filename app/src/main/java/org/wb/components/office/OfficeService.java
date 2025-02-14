@@ -7,6 +7,8 @@ import org.wb.components.common.EntityService;
 import org.wb.components.employeegroup.EmployeeGroupService;
 import org.wb.gen.model.OfficeCreateUpdate;
 
+import jakarta.persistence.criteria.JoinType;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -44,7 +46,7 @@ public class OfficeService
     @Override
     protected Specification<Office> additionalListSpec() {
         return (root, query, builder) -> {
-            root.fetch("employeeGroups");
+            root.fetch("employeeGroups", JoinType.LEFT);
             return builder.conjunction();
         };
     }
@@ -52,7 +54,7 @@ public class OfficeService
     @Override
     protected Specification<Office> additionalGetSpec() {
         return (root, query, builder) -> {
-            root.fetch("employeeGroups");
+            root.fetch("employeeGroups", JoinType.LEFT);
             return builder.conjunction();
         };
     }
