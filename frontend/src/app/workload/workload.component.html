@@ -3,7 +3,7 @@
   <div>
     <label>Введите название офиса:</label>&nbsp;
     <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
-    <ul *ngIf="filteredOffices.length > 0" class="dropdown">
+    <ul *ngIf="officeSearch && filteredOffices.length > 0" class="dropdown">
       <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
         (keydown.enter)="selectOffice(office)">
         {{ office.name }}
@@ -14,7 +14,7 @@
   <br />
 
   <div *ngIf="officeForm.office">
-    <label for="start">Выберите дату:</label>
+    <label for="start">Выберите дату:  </label>
     <input type="date" id="start" name="trip-start" (change)="checkDate(bookingForm.date)"
       [(ngModel)]="bookingForm.date" />
   </div>
@@ -28,35 +28,36 @@
 
   <br />
 
-  <div>
+  <div *ngIf="bookingForm.date">
     <label>Введите название помещения:</label>
     <input type="text" [(ngModel)]="roomSearch" (input)="filterRooms()" placeholder="Введите название помещения" />
-    <ul *ngIf="filteredRooms.length > 0" class="dropdown">
+    <ul *ngIf="roomSearch && filteredRooms.length > 0" class="dropdown">
       <li *ngFor="let room of filteredRooms" (click)="selectRoom(room)" class="dropdown-item" tabindex="0"
-        (keydown.enter)="selectRoom(room)">
+        (keydown.enter)="getRoomOccupancy()">
         {{ room.name }}
       </li>
     </ul>
-    <button (click)="getRoomOccupancy()">Посмотреть загруженность</button>
   </div>
+
   <div *ngIf="room">
-    <h3>Загруженность помещения: {{ room.name }}</h3>
+    <h3>Загруженность помещения:
+      {{ getRoomLoad() + '%'}}
+    </h3>
   </div>
+  
   <br />
 
-  <h3 *ngIf="roomLoadPercentages.length">Загруженность доступных мне помещений на {{ bookingForm.date }}</h3>
+  <h3 *ngIf="roomsLoadPercentages.length">Загруженность помещений на {{ bookingForm.date }}</h3>
 
-  <table class="styled-table" *ngIf="roomLoadPercentages.length">
+  <table class="styled-table" *ngIf="roomsLoadPercentages.length">
     <thead>
       <tr>
-        <th>Офис</th>
         <th>Помещение</th>
         <th>Загруженность</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let roomData of roomLoadPercentages">
-        <td>{{ roomData.office }}</td>
+      <tr *ngFor="let roomData of roomsLoadPercentages">
         <td>{{ roomData.room }}</td>
         <td>{{ roomData.load }}%</td>
       </tr>
@@ -64,6 +65,6 @@
   </table>
 </div>
 
-<div *ngIf="isreg == 0">
-  <p>Для просмотра данного раздела необходимо <a routerLink="/">авторизоваться</a></p>
+<div [class.hide]="isreg==1">
+  <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
 </div>

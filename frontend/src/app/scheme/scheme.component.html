@@ -1,9 +1,9 @@
-<br /><br />
-<div [class.hide]="doauth == 0">
+<div *ngIf="this.authService.data.user.role">
+  <br /><br />
   <div>
-    <label>Введите название офиса:</label>&nbsp;
-    <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
-    <ul *ngIf="filteredOffices.length > 0" class="dropdown">
+    <label>Введите название офиса:</label>
+    <input type="text" [(ngModel)]="officeSearch" (input)="filterOfficeName()" placeholder="Введите название офиса" />
+    <ul *ngIf="officeSearch && filteredOffices.length > 0" class="dropdown">
       <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
         (keydown.enter)="selectOffice(office)">
         {{ office.name }}
@@ -11,17 +11,17 @@
     </ul>
   </div>
 
-  <br />
-  <div *ngIf="officeForm.office">
-    <label for="roomSelect">Выберите помещение </label>
-    <select id="roomSelect" [(ngModel)]="selectedRoom">
-      <option *ngFor="let room of rooms" [value]="room.id">
+  <div *ngIf="selectedOffice">
+    <label>Введите название помещения:</label>
+    <input type="text" [(ngModel)]="roomSearch" (input)="filterRooms()" placeholder="Введите название помещения" />
+    <ul *ngIf="roomSearch && filteredRooms.length > 0" class="dropdown">
+      <li *ngFor="let room of filteredRooms" (click)="selectRoom(room)" class="dropdown-item" tabindex="0"
+        (keydown.enter)="selectRoom(room)">
         {{ room.name }}
-      </option>
-    </select>
-    {{selectRoom(selectedRoom)}}
+      </li>
+    </ul>
   </div>
-  <br />
+
   <div *ngIf="selectedRoom">
     <label for="start">Выберите дату </label>
     <select id="start" name="trip-start" [(ngModel)]="workplaceBookingForm.date"
@@ -31,13 +31,8 @@
   </div>
 </div>
 
-<canvas #officeCanvas width="800" height="600" class="office-canvas"></canvas>
-<br />
-
-
-<div [class.hide]="doauth == 0">
-  <div class='admin-panel' [class.vis]="this.authService.data.user.role == 'ADMIN'"
-    *ngIf="workplaceBookingForm.date != null && workplaceBookingForm.date !== ''">
+<div [class.hide]="isreg == 0">
+  <div class='admin-panel' [class.vis]="this.authService.data.user.role == 'ADMIN'" *ngIf="selectedRoom">
     <div *ngIf="this.authService.data.user.role === 'ADMIN'" class="button-group">
       <button class="primary-button" (click)="openAddWorkplaceForm()">Добавить рабочее место</button>
       <button class="primary-button" (click)="openAddMeetingRoomForm()">Добавить переговорную</button>
@@ -47,16 +42,13 @@
       <div class="modal-content">
         <h2>Добавить рабочее место</h2>
         <form (ngSubmit)="saveWorkplace()">
-          <label for="name">Название/№:</label><br />
-          <input id="name" type="text" [(ngModel)]="newWorkplace.name" name="name" required /><br /><br />
-
           <label for="x">Координата X:</label>
           <input id="x" type="text" size="3" [(ngModel)]="newWorkplace.x" name="x" required /><br /><br />
           <label for="y">Координата Y:</label>
           <input id="y" type="text" size="3" [(ngModel)]="newWorkplace.y" name="y" required /><br /><br />
 
-          <label for="length">Длина:</label><br />
-          <input id="length" type="text" size="3" [(ngModel)]="newWorkplace.length" name="length"
+          <label for="height">Длина:</label><br />
+          <input id="height" type="text" size="3" [(ngModel)]="newWorkplace.height" name="height"
             required /><br /><br />
 
           <label for="width">Ширина:</label><br />
@@ -83,8 +75,8 @@
           <label for="y">Координата Y:</label>
           <input id="y" type="text" size="3" [(ngModel)]="newMeetingRoom.y" name="y" required /><br /><br />
 
-          <label for="length">Длина:</label><br />
-          <input id="length" type="text" size="3" [(ngModel)]="newMeetingRoom.length" name="length"
+          <label for="height">Длина:</label><br />
+          <input id="height" type="text" size="3" [(ngModel)]="newMeetingRoom.height" name="height"
             required /><br /><br />
 
           <label for="width">Ширина:</label><br />
@@ -129,54 +121,84 @@
 
   <br />
 
-
-  <div *ngFor="let workplace of workplaces" class="workspace"
-    [ngStyle]="{'left.px': workplace.position.x, 'top.px': workplace.position.y}">
-    {{ workplace.name }}
+  <div *ngFor="let workplace of workplaces" class="workplace"
+    [ngStyle]="{'left.px': workplace.x, 'top.px': workplace.y}" (click)="openWorkplaceBookingModal(workplace)">
   </div>
+
   <div *ngFor="let meetingRoom of meetingRooms" class="meeting-room"
-    [ngStyle]="{'left.px': meetingRoom.position.x, 'top.px': meetingRoom.position.y}">
+    [ngStyle]="{'left.px': meetingRoom.x, 'top.px': meetingRoom.y}" (click)="openMeetingRoomBookingModal(meetingRoom)">
     {{ meetingRoom.name }}
   </div>
 
-  <div *ngFor="let workplace of workplaces; let i = index" class="workspace" cdkDrag
-    [ngStyle]="{'left.px': workplace.position?.x, 'top.px': workplace.position?.y}"
-    (cdkDragEnded)="dragEndedNewWorkplace($event, i)">
-    {{ workplace.name }}
+  <div *ngIf="isWorkplaceBookingModalOpen" class="modal">
+    <div class="modal-content">
+      <h2>Бронирование рабочего места</h2>
+      <p>Вы бронируете: {{ selectedWorkplace?.name || 'Рабочее место' }}</p>
+
+      <label for="workplaceDate">Выберите дату:</label>
+      <input type="date" id="workplaceDate" [(ngModel)]="workplaceBookingForm.date" required /><br /><br />
+
+      <button class="submit-button" (click)="doWorkplaceBooking()">Забронировать</button>
+      <button class="close" (click)="closeWorkplaceBookingModal()">Закрыть</button>
+    </div>
   </div>
 
-  <div *ngFor="let meetingRoom of meetingRooms; let i = index" class="meeting-room" cdkDrag
-    [ngStyle]="{'left.px': meetingRoom.position?.x, 'top.px': meetingRoom.position?.y}"
-    (cdkDragEnded)="dragEndedNewMeetingRoom($event, i)">
-    {{ meetingRoom.name }}
-  </div>
+  <div *ngIf="isMeetingRoomBookingModalOpen" class="modal">
+    <div class="modal-content">
+      <h2>Бронирование переговорной</h2>
+      <p>Вы бронируете: <strong>{{ selectedMeetingRoom?.name || 'Переговорную' }}</strong></p>
 
+      <label for="meetingRoomDescription">Введите описание:</label>
+      <input type="text" id="meetingRoomDescription" [(ngModel)]="meetingRoomBookingForm.description"
+        required /><br /><br />
 
-  <div class='workspace-section'>
-    <div cdkDrag *ngFor="let c of workplaces; index as i" [cdkDragFreeDragPosition]="c.position"
-      (cdkDragEnded)="dragEndedNewWorkplace($event, i)" (click)="openWorkplaceBookingModal(c)"
-      [cdkDragDisabled]="role !== 'ADMIN'"
-      [ngClass]="{'example-box-booked': c.book === '1', 'example-box': c.book !== '1'}">
-      {{ c.name }}<br />
-      <b>(Помещение: {{ c.room }})</b>
-      <div *ngIf="role === 'ADMIN'">
-        <a href="#" (click)="$event.preventDefault(); delWorkplace(i)" style="text-decoration: none; color: red;">x</a>
+      <label for="meetingRoomDate">Выберите дату:</label>
+      <input type="date" id="meetingRoomDate" [(ngModel)]="meetingRoomBookingForm.date" required /><br /><br />
+
+      <label for="meetingRoomStartTime">Выберите время начала:</label>
+      <input type="time" id="meetingRoomStartTime" [(ngModel)]="meetingRoomBookingForm.startTime"
+        required /><br /><br />
+
+      <label for="meetingRoomEndTime">Выберите время окончания:</label>
+      <input type="time" id="meetingRoomEndTime" [(ngModel)]="meetingRoomBookingForm.endTime" required /><br /><br />
+
+      <label for="meetingRoomParticipants">Выберите участников:</label>
+      <div class="participant-list">
+        <div *ngFor="let user of paginatedUsers" class="participant-item">
+          {{user.id}}
+          <input type="checkbox" id="user-{{ user.id }}"
+                 [value]="user.id"
+                 [checked]="meetingRoomBookingForm.participants.includes(user.id)" 
+                 (change)="toggleParticipant(user.id)" />
+          <label for="user-{{ user.id }}">{{ user.username }}</label>
+        </div>        
       </div>
-    </div>
-
-    <div cdkDrag *ngFor="let c of meetingRooms; index as i" [cdkDragFreeDragPosition]="c.position"
-      (cdkDragEnded)="dragEndedNewMeetingRoom($event, i)" (click)="openMeetingRoomBookingModal(c)"
-      [cdkDragDisabled]="role !== 'ADMIN'"
-      [ngClass]="{'example-box-booked': c.book === '1', 'example-box': c.book !== '1'}">
-      {{ c.name }}<br />
-      <b>(Помещение: {{ c.room }})</b>
-      <div *ngIf="role === 'ADMIN'">
-        <a href="#" (click)="$event.preventDefault(); delMeetingRoom(i)"
-          style="text-decoration: none; color: red;">x</a>
+      
+      <div class="pagination">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">Предыдущая</button>
+        <span>Страница {{ currentPage }} из {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Следующая</button>
       </div>
-    </div>
-
-    <div [class.hide]="doauth == 1">
-      <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
+      <br /><br />
+      <button class="submit-button" (click)="checkAndBookMeetingRoom()">Забронировать</button>
+      <button class="close" (click)="closeMeetingRoomBookingModal()">Закрыть</button>
     </div>
   </div>
+
+  <div *ngIf="this.authService.data.user.role === 'ADMIN'">
+    <div *ngFor="let workplace of workplaces; let i = index" class="workspace" cdkDrag
+      [ngStyle]="{'left.px': workplace.x, 'top.px': workplace.y}"
+      (cdkDragEnded)="dragEndedNewWorkplace($event, i, selectedRoom)">
+      {{ workplace.id }}
+    </div>
+
+    <div *ngFor="let meetingRoom of meetingRooms; let i = index" class="meeting-room" cdkDrag
+      [ngStyle]="{'left.px': meetingRoom.x, 'top.px': meetingRoom.y}"
+      (cdkDragEnded)="dragEndedNewMeetingRoom($event, i, selectedRoom)">
+      {{ meetingRoom.name }}
+    </div>
+  </div>
+  <div [class.hide]="isreg==1">
+    <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
+  </div>
+</div>

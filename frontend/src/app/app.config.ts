@@ -12,6 +12,7 @@ import { SchemeComponent } from "./scheme/scheme.component";
 import { WorkloadComponent } from "./workload/workload.component";
 import { OfficesComponent } from "./offices/offices.component";
 import { RoomsComponent } from "./rooms/rooms.component";
+import { UsersComponent } from "./users/users.component";
 import { GroupsComponent } from "./groups/groups.component";
 import { NotFoundComponent } from "./not-found.component";
 
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
   { path: "offices", component: OfficesComponent },
   { path: "rooms", component: RoomsComponent },
   { path: "groups", component: GroupsComponent },
+  { path: "users", component: UsersComponent },
   { path: "scheme", component: SchemeComponent },
   { path: "workload", component: WorkloadComponent },
   { path: "**", component: NotFoundComponent }

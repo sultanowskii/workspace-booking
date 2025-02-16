@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpClientModule, HttpParams } from "@angular/common/http";
+import { CommonModule } from "@angular/common";
 import { AuthService } from './services/auth.service';
 import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule],
+  imports: [RouterOutlet, HttpClientModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -31,8 +32,8 @@ export class AppComponent implements OnInit {
   };
 
   signOut() {
-    localStorage.removeItem("user");
-    window.location.reload();
+    localStorage.removeItem("data");
+    location.reload();
   }
 
 

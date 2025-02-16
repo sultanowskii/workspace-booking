@@ -19,7 +19,7 @@ export class GroupsComponent {
   private baseUrl = environment.baseUrl;
   selectedUser = 0;
   selectedGroup = 0;
-  selectedGroupId: number | null = null;
+  selectedGroupId = 0;
   selectedRoom = 0;
   showOfficeForm: boolean = false;
   isreg = 0;
@@ -27,13 +27,22 @@ export class GroupsComponent {
   get role(): any {
     return this.authService.data?.user.role;
   }
-  offices: Array<{ id: number; name: string; address: string }> = [];
-  rooms: Array<{ id: number; name: string; office: string; }> = [];
-  groups: Array<{ id: number; name: string; office: string; }> = [];
-  users: Array<{ id: number; name: string; group: string; fullname: string; }> = [];
+  offices: Array<{ id: number; name: string; address: string; employeeGroups:{if: number; name: string} }> = [];
+  rooms: Array<{id: number; name: string; office: string}> = [];
+  groups: Array<{
+    id: number; name: string; allowedOffices: {
+      id: number,
+      name: string,
+      address: string;
+    }[]
+  }> = [];
+  users: Array<{ id: number; group: string; fullname: string; }> = [];
   filteredOffices: Array<{ id: number; name: string }> = [];
-  selectedOffice: number | null = null;
-
+  selectedOffices: { [groupId: number]: number } = {};
+  currentPage = 1;
+  itemsPerPage = 5;
+  currentUserPage = 1;
+  usersPerPage = 5;
   showGroupForm: boolean = false;
   officeForm:
     any = {
@@ -51,13 +60,10 @@ export class GroupsComponent {
       name: '',
       office: ''
     }
+
   addUserForm:
     any = {
       grname: '',
-    }
-  addGroupForm:
-    any = {
-      grof: 0,
     }
   addRoomForm:
     any = {
@@ -70,7 +76,6 @@ export class GroupsComponent {
       this.isreg = 1;
       this.officesList();
       this.groupsList();
-      this.usersList();
     }
     else {
       console.log('not reged');
@@ -90,27 +95,16 @@ export class GroupsComponent {
           this.offices.push({
             id: office["id"],
             name: office["name"],
-            address: office["address"]
+            address: office["address"],
+            employeeGroups: office["employeeGroups"]
           });
         })
-        this.filterOffices();
       },
         (error: any) => {
           console.error("Error fetching offices:", error);
           alert("Ошибка при получении данных");
         }
       );
-  }
-
-  filterOffices() {
-    if (this.role === 'ADMIN') {
-      this.filteredOffices = [...this.offices];
-    } else {
-      this.filteredOffices = this.offices.filter((office) => {
-        console.log("Groups from API:", this.groups);
-        return this.groups.some((group) => group.office === office.name);
-      });
-    }
   }
 
   groupsList() {
@@ -126,84 +120,31 @@ export class GroupsComponent {
           this.groups.push({
             id: group["id"],
             name: group["name"],
-            office: group["office"]
+            allowedOffices: group["allowedOffices"]
           } as any);
         });
       });
-  }
+  };
 
-
-  usersList() {
-    this.http
-      .get(this.baseUrl + `/api/employees`, {
-        headers: {
-          Authorization: `Bearer ${this.authService.data.token}`,
-        },
-      })
-      .subscribe((data: any) => {
-        this.users = [];
-
-        for (const key in data) {
-          if (data.hasOwnProperty(key)) {
-            const user = data[key];
-            this.users.push({
-              id: user.id,
-              name: user.username,
-              group: user.employeeGroupId,
-              fullname: user.fullName,
-            });
-          }
-        }
-      });
-  }
-
-  addUserToOffice() {   ///нет такого запроса?
-    if (this.addUserForm.grname != "") {
-      const adduser = {
-        name: this.addUserForm.grname
-      };
-      this.http
-        .post(this.baseUrl + `/api/employeeGroups?${this.selectedUser}`, adduser, {
-          headers: {
-            Authorization: `Bearer ${this.authService.data.token}`,
-          },
-        })
-        .subscribe(
-          (data) => {
-            console.log(data);
-            if (data != null) {
-              Object.keys(data).forEach((key, index) => {
-                alert("Пользователь прикреплен");
-              });
-            }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
-  }
-
-  addGroupToOffice() {   
-    console.log(this.addGroupForm.ofid + " / " + this.selectedGroup);
-    if (this.addGroupForm.ofid != "") {
+  addGroupToOffice(groupId: number, selectedOffice: number) {
       this.http
         .post(
           this.baseUrl +
-          `/api/offices/${this.addGroupForm.ofid}/employeeGroups/${this.selectedGroup}`,
-          { officeId: this.addGroupForm.ofid, employeeGroupId: this.selectedGroup },
+          `/api/offices/${selectedOffice}/employeeGroups/${groupId}`,
+          { officeId: selectedOffice, employeeGroupId: groupId },
           {
-            headers: {
+            headers: new HttpHeaders({
               Authorization: `Bearer ${this.authService.data.token}`,
-            },
+            }),
           }
         )
         .subscribe(
           (data) => {
+            console.log(data);
             if (data != null) {
-              Object.keys(data).forEach((key, index) => {
-                alert("Группа прикреплена");
-              });
+              alert("Группа прикреплена");
+              this.groupForm.office = selectedOffice;
+              this.groupsList();
             }
           },
           (error) => {
@@ -211,27 +152,24 @@ export class GroupsComponent {
           }
         );
     }
-  }
-
-  delGroupFromOffice() {
-    console.log(this.addGroupForm.ofid + " / " + this.selectedGroup);
+  
+  delGroupFromOffice(groupId: number, selectedOffice: number) {
     this.http
       .delete(
         this.baseUrl +
-        `/api/offices/${this.addGroupForm.ofid}/employeeGroups/${this.selectedGroup}`,
+        `/api/offices/${selectedOffice}/employeeGroups/${groupId}`,
         {
-          params: { officeId: this.addGroupForm.ofid, employeeGroupId: this.selectedGroup },
-          headers: {
+          headers: new HttpHeaders({
             Authorization: `Bearer ${this.authService.data.token}`,
-          },
-        }
+          }),
+          params: { officeId: selectedOffice, employeeGroupId: groupId }
+        },
       )
       .subscribe(
         (data) => {
           if (data != null) {
-            Object.keys(data).forEach((key, index) => {
-              alert("Группа откреплена");
-            });
+            alert("Группа откреплена");
+            this.groupsList();
           }
         },
         (error) => {
@@ -260,6 +198,14 @@ export class GroupsComponent {
     }
   }
 
+  getOfficeName(officeId: number): string {
+    const office = this.offices.find(o => o.id === officeId);
+    return office ? office.name : 'Неизвестный офис';
+  }
+  getOfficeNames(offices: any[]): string {
+    return offices.map(office => office.name).join(', ');
+  }
+  
   openEditGroupForm(group: { id: number, name: string }) {
     this.groupForm.name = group.name;
     this.showGroupForm = true;
@@ -280,7 +226,6 @@ export class GroupsComponent {
   editGroup() {
     if (this.groupForm.name) {
       const grp = { name: this.groupForm.name };
-
       this.http.put(this.baseUrl + `/api/employeeGroups/${this.selectedGroupId}`, grp, {
         headers: {
           Authorization: `Bearer ${this.authService.data.token}`,
@@ -289,7 +234,7 @@ export class GroupsComponent {
         this.groupsList();
         alert('Группа обновлена успешно');
         this.showGroupForm = false;
-        this.selectedGroupId = null;
+        this.selectedGroupId = 0;
         this.groupForm = {};
       }
       );
@@ -310,5 +255,27 @@ export class GroupsComponent {
         alert("Группа удалена");
       });
     return false;
+  }
+
+
+  get paginatedGroups() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.groups.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get totalPages() {
+    return Math.ceil(this.groups.length / this.itemsPerPage);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
   }
 }

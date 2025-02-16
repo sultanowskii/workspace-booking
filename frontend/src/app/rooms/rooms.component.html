@@ -1,9 +1,7 @@
-<h4>Список помещений</h4>
-
-<div>
+<div *ngIf="this.authService.data.user.role">
   <label>Введите название офиса:</label>&nbsp;
   <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
-  <ul *ngIf="filteredOffices.length > 0" class="dropdown">
+  <ul *ngIf="officeSearch && filteredOffices.length > 0" class="dropdown">
     <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
       (keydown.enter)="selectOffice(office)">
       {{ office.name }}
@@ -11,26 +9,37 @@
   </ul>
 </div>
 
-<table class="styled-table">
-  <thead>
-    <tr>
-      <th>№</th>
-      <th>Название</th>
-      <th *ngIf="role === 'ADMIN'">Действия</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let room of rooms; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{ room.name }}</td>
-      <td *ngIf="role === 'ADMIN'">
-        <button (click)="openEditRoomForm(room)">Редактировать</button>
-        <button (click)="delRoom(room.id)">Удалить</button>
-      </td>
-    </tr>
-  </tbody>
-  <button (click)="openRoomForm()">Создать</button>
-</table>
+<div *ngIf="selectedOfficeId">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>№</th>
+        <th>Название</th>
+        <th *ngIf="role === 'ADMIN'">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let room of paginatedRooms; let i = index">
+        <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+        <td>{{ room.name }}</td>
+        <td *ngIf="role === 'ADMIN'">
+          <button class="button" (click)="openEditRoomForm(room)">Редактировать</button>
+          <button class="button delete-button" (click)="delRoom(room.id)">Удалить</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button class="button blue-button" (click)="prevPage()" [disabled]="currentPage === 1">Назад</button>
+    <span style="margin: 0 10px;">Страница {{ currentPage }} из {{ totalPages }}</span>
+    <button class="button blue-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Вперед</button>
+  </div>
+
+  <div class="create-button-container">
+    <button class="button blue-button" (click)="openRoomForm()">Создать</button>
+  </div>
+</div>
 
 <div *ngIf="role === 'ADMIN' && showRoomForm" class="room-form">
   <h4>{{ selectedRoomId ? 'Редактировать помещение' : 'Создать помещение' }}</h4>
@@ -55,8 +64,8 @@
     <label for="y2-{{i}}">y2:</label>&nbsp;
     <input id="y2-{{i}}" type="number" [(ngModel)]="wall.y2" placeholder="Введите y2" /><br /><br />
   </div>
-  <input type="button" value="Сохранить изменения" (click)="selectedRoomId ? editRoom() : addRoom()"><br /><br />
-  <button type="button" (click)="closeRoomForm()">Отменить</button>
+  <input class="button" type="button" value="Сохранить изменения" (click)="selectedRoomId ? editRoom() : addRoom()"><br /><br />
+  <button class="button delete-button" type="button" (click)="closeRoomForm()">Отменить</button>
 </div>
 
 <div [class.hide]="isreg==1">

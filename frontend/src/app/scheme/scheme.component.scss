@@ -18,6 +18,22 @@
 
 }
 
+.participant-list {
+  display: flex;  /* Или grid, или другие способы компоновки */
+  flex-direction: column; /* Располагает элементы в столбец */
+  gap: 5px; /* Расстояние между элементами */
+}
+
+.participant-item {
+  display: flex;
+  align-items: center; /* Выравнивает элементы по вертикали */
+}
+
+.participant-item label {
+  margin-left: 5px; /* Отступ между checkbox и текстом */
+  cursor: pointer; /* Курсор-указатель при наведении на label */
+}
+
 .workspace,
 .meeting-room {
   position: absolute;
@@ -32,12 +48,6 @@
 
 .meeting-room {
   background-color: #ffdd57;
-}
-
-.office-canvas {
-  border: 1px solid #ccc;
-  display: block;
-  margin-top: 10px;
 }
 
 .parent {

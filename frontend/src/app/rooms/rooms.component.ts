@@ -33,13 +33,19 @@ export class RoomsComponent {
 	selectedRoom = 0;
 	showRoomForm: boolean = false;
 	isreg = 0;
-	private selectedOfficeId: number | null = null;
+	selectedOfficeId: number | null = null;
 	get role(): any {
 		return this.authService.data.user.role;
 	}
 	offices: Array<{ id: number; name: string; address: string }> = [];
 	rooms: Array<{ id: number; name: string; office: string }> = [];
-	groups: Array<{ id: number; name: string; office: string; }> = [];
+	groups: Array<{
+		id: number; name: string; allowedOffices: {
+			id: number,
+			name: string,
+			address: string;
+		}[]
+	}> = [];
 	users: Array<{ id: number; name: string; group: string; groupname: string; }> = [];
 	selectedRoomId: number | null = null;
 	filteredOffices: Array<{ id: number; name: string; address: string }> = [];
@@ -63,6 +69,31 @@ export class RoomsComponent {
 				y2: 0
 			}]
 		}
+
+	currentPage = 1;
+	pageSize = 5;
+
+	get paginatedRooms() {
+		const startIndex = (this.currentPage - 1) * this.pageSize;
+		return this.rooms.slice(startIndex, startIndex + this.pageSize);
+	}
+
+	get totalPages() {
+		return Math.ceil(this.rooms.length / this.pageSize);
+	}
+
+	prevPage() {
+		if (this.currentPage > 1) {
+			this.currentPage--;
+		}
+	}
+
+	nextPage() {
+		if (this.currentPage < this.totalPages) {
+			this.currentPage++;
+		}
+	}
+
 
 	closeRoomForm() {
 		this.showRoomForm = false;
@@ -111,12 +142,33 @@ export class RoomsComponent {
 	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
 		if (authService.data) {
 			this.isreg = 1;
+			this.groupsList();
 			this.officesList();
 		}
 		else {
 			console.log('not reged');
 		}
 	};
+
+	groupsList() {
+		this.http
+			.get(this.baseUrl + `/api/employeeGroups`, {
+				headers: {
+					Authorization: `Bearer ${this.authService.data.token}`,
+				},
+			})
+			.subscribe((data: any) => {
+
+				this.groups = data.map((group: any) => ({
+					id: group.id,
+					name: group.name,
+					allowedOffices: group.allowedOffices || []
+				}));
+
+			}, (error: any) => {
+				console.error("Error fetching employee groups:", error);
+			});
+	}
 
 
 	officesList() {
@@ -144,10 +196,14 @@ export class RoomsComponent {
 			);
 		} else {
 			this.filteredOffices = this.offices.filter(office =>
-				this.groups.some(group => group.office === office.name) &&
-				office.name.toLowerCase().startsWith(searchValue)
+				this.groups.some(group =>
+					group.allowedOffices.some(allowedOffice =>
+						allowedOffice.name === office.name
+					)
+				) && office.name.toLowerCase().startsWith(searchValue)
 			);
 		}
+		console.log(this.filteredOffices);
 	}
 
 	selectOffice(office: { id: number; name: string, address: string }): void {

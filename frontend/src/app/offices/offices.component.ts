@@ -35,7 +35,13 @@ export class OfficesComponent {
   rooms: Array<{ id: number; name: string; office: string; }> = [];
   filteredOffices: Array<{ id: number; name: string; address: string }> = [];
   selectedOfficeId: number | null = null;
-  groups: Array<{ id: number; name: string; office: string; }> = [];
+  groups: Array<{
+    id: number; name: string; allowedOffices: {
+      id: number,
+      name: string,
+      address: string;
+    }[]
+  }> = [];
   officeForm:
     any = {
       name: '',
@@ -63,6 +69,30 @@ export class OfficesComponent {
     this.officeForm.address = '';
   }
 
+  currentPage = 1;
+  pageSize = 5;
+
+  get paginatedOffices() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredOffices.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get totalPages() {
+    return Math.ceil(this.filteredOffices.length / this.pageSize);
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
 
   addOffice() {
     if (this.officeForm.name != "") {
@@ -74,6 +104,7 @@ export class OfficesComponent {
           },
         })
         .subscribe((data) => {
+          this.officesList();
           alert("Офис создан успешно");
         });
     } else {
@@ -97,31 +128,47 @@ export class OfficesComponent {
         name: this.officeForm.name,
         address: this.officeForm.address
       }, { headers }).subscribe((data: any) => {
-        if (data && Object.values(data)[0] === 'ok') {
-          const index = this.offices.findIndex(office => office.id === this.selectedOfficeId);
-          if (index !== -1) {
-            this.offices[index].name = this.officeForm.name;
-          }
-          alert('Офис обновлен успешно');
-          this.showOfficeForm = false;
-        }
-        location.reload();
+        this.officesList();
+        alert('Офис обновлен успешно');
+        this.showOfficeForm = false;
+        this.selectedOfficeId = null;
       });
     } else {
       alert('Пожалуйста, заполните все поля');
     }
   }
 
-
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
     if (authService.data) {
       this.isreg = 1;
+      this.groupsList();
       this.officesList();
     }
     else {
       console.log('not reged');
     }
   };
+
+  groupsList() {
+    this.http
+      .get(this.baseUrl + `/api/employeeGroups`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.data.token}`,
+        },
+      })
+      .subscribe((data: any) => {
+  
+        this.groups = data.map((group: any) => ({
+          id: group.id,
+          name: group.name,
+          allowedOffices: group.allowedOffices || []
+        }));
+  
+      }, (error: any) => {
+        console.error("Error fetching employee groups:", error);
+      });
+  }
+  
 
   officesList() {
     this.http
@@ -132,6 +179,7 @@ export class OfficesComponent {
       })
       .subscribe((data: any) => {
         console.log("Offices from API:", data);
+        this.offices = [];
         data.forEach((office: any) => {
           this.offices.push({
             id: office["id"],
@@ -153,11 +201,18 @@ export class OfficesComponent {
       this.filteredOffices = [...this.offices];
     } else {
       this.filteredOffices = this.offices.filter((office) => {
-        console.log("Groups from API:", this.groups);
-        return this.groups.some((group) => group.office === office.name);
+        return this.groups.some((group) =>
+          group.allowedOffices.some((allowedOffice) => {
+            console.log(`Checking if ${allowedOffice.name} === ${office.name}`);
+            return allowedOffice.name === office.name;
+          })
+        );
       });
+  
+      console.log("Filtered offices:", this.filteredOffices);
     }
   }
+  
 
   delOffice(id: number) {
     const headers = new HttpHeaders({
@@ -167,21 +222,11 @@ export class OfficesComponent {
       Object.keys(data).forEach((key, index) => {
         this.offices = this.offices.filter((office) => office.id !== id);
       });
+      this.officesList();
       alert("Офис удален");
     });
     return false;
   }
 
-
-  delRoom(id: number) {
-    let params = new HttpParams().set("id", id);
-    this.http.delete(this.baseUrl + `/api/rooms`, { params }).subscribe((data) => {
-      Object.keys(data).forEach((key, index) => {
-        this.rooms = this.rooms.filter((room) => room.id !== id);
-        alert("Помещение удалено");
-      });
-    });
-    return false;
-  }
 }
 

@@ -1,5 +1,4 @@
-<h4>Список офисов</h4>
-<table class="styled-table">
+<table class="styled-table" *ngIf="authService.data?.user?.role">
   <thead>
     <tr>
       <th>№</th>
@@ -9,18 +8,27 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let office of filteredOffices; let i = index">
-      <td>{{ i + 1 }}</td>
+    <tr *ngFor="let office of paginatedOffices; let i = index">
+      <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
       <td>{{ office.name }}</td>
       <td>{{ office.address }}</td>
       <td *ngIf="this.authService.data.user.role === 'ADMIN'">
         <button (click)="openEditOfficeForm(office)">Редактировать</button>
-        <button (click)="delOffice(office.id)">Удалить</button>
+        <button class="delete-button" (click)="delOffice(office.id)">Удалить</button>
       </td>
     </tr>
-    <button (click)="openOfficeForm()">Создать</button>
   </tbody>
 </table>
+
+<div class="pagination" *ngIf="this.authService.data.user.role">
+  <button class="button blue-button" (click)="prevPage()" [disabled]="currentPage === 1">Назад</button>
+  <span style="margin: 0 10px;">Страница {{ currentPage }} из {{ totalPages }}</span>
+  <button class="button blue-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Вперед</button>
+</div>
+
+<div *ngIf="this.authService.data.user.role === 'ADMIN'" class="create-button-container">
+  <button class="blue-button" (click)="openOfficeForm()">Создать</button>
+</div>
 
 <div *ngIf="this.authService.data.user.role === 'ADMIN' && showOfficeForm && !selectedOfficeId" class="office-form">
   <h4>Создать офис</h4>
@@ -28,7 +36,7 @@
   <input id="name" type="text" [(ngModel)]="officeForm.name" placeholder="Введите название офиса" /> <br /><br />
   Адрес:&nbsp;
   <input id="address" type="text" [(ngModel)]="officeForm.address" placeholder="Введите адрес офиса" /> <br /><br />
-  <input type="button" value="Создать офис" (click)="addOffice()"><br /><br />
+  <input class="button" type="button" value="Создать офис" (click)="addOffice()"><br /><br />
   <button type="button" (click)="closeOfficeForm()">Отменить</button>
 </div>
 

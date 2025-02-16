@@ -6,6 +6,24 @@
   display: block;
 }
 
+.button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+.blue-button {
+  background-color: blue;
+  color: white;
+}
+.red-button {
+  background-color: red;
+  color: white;
+}
+.create-button-container {
+  text-align: right;
+  margin-top: 10px;
+}
 table.styled-table {
   width: 100%;
   border-collapse: collapse;
