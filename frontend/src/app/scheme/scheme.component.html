@@ -1,7 +1,7 @@
 <div *ngIf="this.authService.data.user.role">
   <br /><br />
   <div>
-    <label>Введите название офиса:</label>
+    <label>Введите название офиса: </label>
     <input type="text" [(ngModel)]="officeSearch" (input)="filterOfficeName()" placeholder="Введите название офиса" />
     <ul *ngIf="officeSearch && filteredOffices.length > 0" class="dropdown">
       <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
@@ -10,9 +10,9 @@
       </li>
     </ul>
   </div>
-
+  <br />
   <div *ngIf="selectedOffice">
-    <label>Введите название помещения:</label>
+    <label>Введите название помещения: </label>
     <input type="text" [(ngModel)]="roomSearch" (input)="filterRooms()" placeholder="Введите название помещения" />
     <ul *ngIf="roomSearch && filteredRooms.length > 0" class="dropdown">
       <li *ngFor="let room of filteredRooms" (click)="selectRoom(room)" class="dropdown-item" tabindex="0"
@@ -21,16 +21,16 @@
       </li>
     </ul>
   </div>
-
+  <br />
   <div *ngIf="selectedRoom">
-    <label for="start">Выберите дату </label>
+    <label for="start">Выберите дату: </label>
     <select id="start" name="trip-start" [(ngModel)]="workplaceBookingForm.date"
       (change)="updateAvailableDates(workplaceBookingForm.date)">
       <option *ngFor="let date of availableDates" [value]="date">{{ date | date: 'yyyy-MM-dd' }}</option>
     </select>
   </div>
 </div>
-
+<br />
 <div [class.hide]="isreg == 0">
   <div class='admin-panel' [class.vis]="this.authService.data.user.role == 'ADMIN'" *ngIf="selectedRoom">
     <div *ngIf="this.authService.data.user.role === 'ADMIN'" class="button-group">
@@ -89,7 +89,7 @@
     </div>
   </div>
 
-  <div *ngIf="isMyBookingsFormOpen" class="modal">
+  <!-- <div *ngIf="isMyBookingsFormOpen" class="modal">
     <div class="modal-content">
       <h2>Мои бронирования</h2>
       <table *ngIf="myBookings.length > 0">
@@ -117,19 +117,9 @@
       </div>
       <button class="close" (click)="closeMyBookingsForm()">Закрыть</button>
     </div>
-  </div>
+  </div> -->
 
   <br />
-
-  <div *ngFor="let workplace of workplaces" class="workplace"
-    [ngStyle]="{'left.px': workplace.x, 'top.px': workplace.y}" (click)="openWorkplaceBookingModal(workplace)">
-  </div>
-
-  <div *ngFor="let meetingRoom of meetingRooms" class="meeting-room"
-    [ngStyle]="{'left.px': meetingRoom.x, 'top.px': meetingRoom.y}" (click)="openMeetingRoomBookingModal(meetingRoom)">
-    {{ meetingRoom.name }}
-  </div>
-
   <div *ngIf="isWorkplaceBookingModalOpen" class="modal">
     <div class="modal-content">
       <h2>Бронирование рабочего места</h2>
@@ -185,20 +175,67 @@
     </div>
   </div>
 
-  <div *ngIf="this.authService.data.user.role === 'ADMIN'">
-    <div *ngFor="let workplace of workplaces; let i = index" class="workspace" cdkDrag
-      [ngStyle]="{'left.px': workplace.x, 'top.px': workplace.y}"
-      (cdkDragEnded)="dragEndedNewWorkplace($event, i, selectedRoom)">
-      {{ workplace.id }}
-    </div>
+  <div *ngIf="workplaceBookingForm.date">
+    <div *ngFor="let workplace of workplaces; let i = index"
+    class="workplace"
+    cdkDrag
+    [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+    (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
+    [ngStyle]="{
+      'left.px': workplace.x, 
+      'top.px': workplace.y,
+      'width.px': workplace.width, 
+      'height.px': workplace.height,
+      'background-color': getWorkplaceColor(workplace.id, workplaceBookingForm.date),
+      'border': '1px solid black',
+      'cursor': authService.data.user.role === 'ADMIN' ? 'move' : 'pointer'
+    }"
+    (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
+    {{ workplace.id }}
+  </div>  
+</div>
 
-    <div *ngFor="let meetingRoom of meetingRooms; let i = index" class="meeting-room" cdkDrag
-      [ngStyle]="{'left.px': meetingRoom.x, 'top.px': meetingRoom.y}"
-      (cdkDragEnded)="dragEndedNewMeetingRoom($event, i, selectedRoom)">
-      {{ meetingRoom.name }}
-    </div>
+<div *ngIf="!workplaceBookingForm.date">
+  <div *ngFor="let workplace of workplaces; let i = index"
+  class="workplace"
+  cdkDrag
+  [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+  (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
+  [ngStyle]="{
+    'left.px': workplace.x, 
+    'top.px': workplace.y,
+    'width.px': workplace.width, 
+    'height.px': workplace.height,
+    'border': '1px solid black',
+    'cursor': authService.data.user.role === 'ADMIN' ? 'move' : 'pointer'
+  }"
+  (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
+  {{ workplace.id }}
+</div>
+</div>
+
+<div *ngFor="let meetingRoom of meetingRooms; let i = index" 
+  class="meeting-room"
+  cdkDrag
+  [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+  (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewMeetingRoom($event, i, selectedRoom) : null"
+  [ngStyle]="{
+    'left.px': meetingRoom.x, 
+    'top.px': meetingRoom.y, 
+    'width.px': meetingRoom.width, 
+    'height.px': meetingRoom.height,
+    'border': '2px solid black',
+    'position': 'absolute',
+    'cursor': authService.data.user.role === 'ADMIN' ? 'move' : 'pointer'
+  }"  
+  (click)="authService.data.user.role === 'EMPLOYEE' ? openMeetingRoomBookingModal(meetingRoom) : null">
+  {{ meetingRoom.name }}
+</div>
+
+
+
   </div>
   <div [class.hide]="isreg==1">
     <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
   </div>
-</div>
+

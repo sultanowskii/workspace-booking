@@ -17,6 +17,7 @@ import { GroupsComponent } from "./groups/groups.component";
 import { NotFoundComponent } from "./not-found.component";
 
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 
 
 const appRoutes: Routes = [
@@ -32,6 +33,6 @@ const appRoutes: Routes = [
 
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(appRoutes), provideAnimations(), importProvidersFrom(MatNativeDateModule)]
+  providers: [provideRouter(appRoutes), provideAnimations(), importProvidersFrom(MatNativeDateModule), provideHttpClient()]
 
 };

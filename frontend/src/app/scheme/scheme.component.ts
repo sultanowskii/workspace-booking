@@ -1,4 +1,4 @@
-import { Directive, Component, inject, model, signal, importProvidersFrom, ElementRef, AfterViewInit, ViewChild } from "@angular/core";
+import { Directive, Component, inject, model, signal, importProvidersFrom, ElementRef, AfterViewInit, ViewChild, SimpleChanges } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpClientModule, HttpParams } from "@angular/common/http";
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CdkDragDrop, CdkDragEnd, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { table } from "console";
 import { AuthService } from "../services/auth.service";
+import { stat } from "fs";
+import { interval, Subscription } from "rxjs";
 
 @Component({
   selector: "scheme-app",
@@ -25,12 +27,13 @@ export class SchemeComponent {
   workplaces: Array<{ id: number; mon: number; x: number, y: number; width: number; height: number; room: number }> = [];
   meetingRooms: Array<{ id: number; name: string; x: number, y: number; width: number; height: number; room: number }> = [];
   workplaceBookings: Array<{ id: number; name: string; date: string; user: string; }> = [];
-  meetingRoomBookings: Array<{id: number; name: string; date: string; user: string; startTime: string; endTime: string; participants: number[]; description: string}> = [];
+  meetingRoomBookings: Array<{ id: number; name: string; date: string; user: string; startTime: string; endTime: string; participants: number[]; description: string }> = [];
   walls: Array<{ x1: number, y1: number, x2: number, y2: number; room: number; }> = [];
 
   private baseUrl = environment.baseUrl;
   role = '';
   userOffice = '';
+  lastData: string | null = null;
   selectedWorkplace: any;
   selectedMeetingRoom: any;
   selectedOffice = '';
@@ -48,7 +51,6 @@ export class SchemeComponent {
     }[]
   }> = [];
   users: Array<{ id: number; group: string; username: string; }> = [];
-  isWorkplaceBooked: string[] = [];
   isMeetingRoomBooked: string[] = [];
   userRooms: Array<{ id: number; name: string; office: string }> = [];
   room: { id: number; name: string; office: string } | null = null;
@@ -93,7 +95,7 @@ export class SchemeComponent {
   filteredWorkplaces: Array<{ id: number; mon: number; x: number, y: number; height: number; width: number; room: string, book: string; }> = [];
   filteredMeetingRooms: Array<{ id: number; name: string; x: number, y: number; height: number; width: number; room: string, book: string; }> = [];
 
-  myBookings: any[] = [];
+  myBookings: { id: number; employeeId: number; workplaceId: number; date: string; }[] = [];
 
   closeMyBookingsForm() {
     this.isMyBookingsFormOpen = false;
@@ -164,7 +166,7 @@ export class SchemeComponent {
     y2: 0,
     room: ''
   }
-
+  updateInterval!: Subscription;
   isreg = 0;
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
@@ -180,6 +182,14 @@ export class SchemeComponent {
     }
   };
 
+  ngOnInit(): void {
+    this.workplaceList(this.selectedRoom);
+    this.meetingRoomList(this.selectedRoom);
+    this.getWorkplaceBookings();
+    this.updateInterval = interval(15000).subscribe(() => {
+      this.getWorkplaceBookings();
+    });
+  }
 
   usersList() {
     this.http
@@ -236,7 +246,7 @@ export class SchemeComponent {
       .subscribe(
         (data: any) => {
           if (data && data.success) {
-            this.isWorkplaceBooked.push(this.selectedWorkplace.id);
+            this.myBookings.push(this.selectedWorkplace.id);
             this.updateAvailableDates(booking.date);
             alert("Бронирование успешно!");
             this.closeWorkplaceBookingModal();
@@ -249,6 +259,7 @@ export class SchemeComponent {
       );
   }
 
+  
   toggleParticipant(userId: number) {
     if (this.meetingRoomBookingForm.participants.includes(userId)) {
       this.meetingRoomBookingForm.participants = this.meetingRoomBookingForm.participants.filter((id: any) => id !== userId);
@@ -305,6 +316,30 @@ export class SchemeComponent {
     }
   }
 
+  isWorkplaceBooked(workplaceId: number, date: string): string {
+    const formattedDate = new Date(date).toISOString().split('T')[0];
+  
+    console.log('Проверка:', workplaceId, formattedDate);
+    console.log('Бронирования:', this.myBookings);
+  
+    const booking = this.myBookings.find(b => 
+      b.workplaceId === workplaceId && new Date(b.date).toISOString().split('T')[0] === formattedDate
+    );
+  
+    return booking
+      ? booking.employeeId === this.authService.data.user.id
+        ? 'bookedByUser'
+        : 'booked'
+      : 'available';
+  }
+  
+  getWorkplaceColor(workplaceId: number, date: string): string {
+    const status = this.isWorkplaceBooked(workplaceId, date);
+    console.log(status);
+    return status === 'bookedByUser' ? '#add8e6' :
+      status === 'booked' ? '#d3d3d3' : '#808080';
+  }
+
   updateFilteredRooms(): void {
     this.filteredRooms = this.rooms.filter(room =>
       room.office === this.officeForm.office
@@ -325,7 +360,7 @@ export class SchemeComponent {
       this.http.post(`${this.baseUrl}/api/workplaces`, payload, { headers: this.getAuthHeaders() })
         .subscribe(
           (data: any) => {
-            this.workplaces[-1].id = data.body.id;
+            this.workplaces[this.workplaces.length - 1].id = data.id;
             console.log('Сохранено новое рабочее место:', this.newWorkplace);
             this.closeAddWorkplaceForm();
             this.newWorkplace = {
@@ -372,13 +407,13 @@ export class SchemeComponent {
   }
 
   updateWorkplace() {
-    const params = { numberOfMonitors: this.workplaces[-1].mon, x: this.workplaces[-1].x, y: this.workplaces[-1].y, width: this.workplaces[-1].width, height: this.workplaces[-1].height };
-    this.http.put(this.baseUrl + `/api/workplace?workplaceid=${this.workplaces[-1].id}`, { headers: this.getAuthHeaders() }, { params }).subscribe(data => { });
+    const params = { numberOfMonitors: this.workplaces[this.workplaces.length - 1].mon, x: this.workplaces[this.workplaces.length - 1].x, y: this.workplaces[this.workplaces.length - 1].y, width: this.workplaces[this.workplaces.length - 1].width, height: this.workplaces[this.workplaces.length - 1].height };
+    this.http.put(this.baseUrl + `/api/workplace/${this.workplaces[this.workplaces.length - 1].id}`, { headers: this.getAuthHeaders() }, { params }).subscribe(data => { });
   }
 
   updateMeetingRoom() {
-    const params = { name: this.meetingRooms[-1].name, x: this.meetingRooms[-1].x, y: this.meetingRooms[-1].y, width: this.meetingRooms[-1].width, height: this.meetingRooms[-1].height };
-    this.http.put(this.baseUrl + `/api/meetingRooms?meetingRoomid=${this.meetingRooms[-1].id}`, { headers: this.getAuthHeaders() }, { params }).subscribe(data => { });
+    const params = { name: this.meetingRooms[this.meetingRooms.length - 1].name, x: this.meetingRooms[this.meetingRooms.length - 1].x, y: this.meetingRooms[this.meetingRooms.length - 1].y, width: this.meetingRooms[this.meetingRooms.length - 1].width, height: this.meetingRooms[this.meetingRooms.length - 1].height };
+    this.http.put(this.baseUrl + `/api/meetingRooms/${this.meetingRooms[this.meetingRooms.length - 1].id}`, { headers: this.getAuthHeaders() }, { params }).subscribe(data => { });
   }
 
   officesList() {
@@ -410,12 +445,12 @@ export class SchemeComponent {
       this.filteredOffices = [...this.offices];
     } else {
       this.filteredOffices = this.offices.filter((office) => {
-        return this.groups.some((group) =>
-          group.allowedOffices.some((allowedOffice) => {
+        return this.groups.some((group) => {
+          return group.allowedOffices.some((allowedOffice) => {
             console.log(`Checking if ${allowedOffice.name} === ${office.name}`);
             return allowedOffice.name === office.name;
-          })
-        );
+          });
+        });
       });
     }
   }
@@ -495,9 +530,18 @@ export class SchemeComponent {
   }
 
   workplaceList(selectedRoom: any) {
-    this.http.get(this.baseUrl + `/api/workplaces`, { headers: this.getAuthHeaders(), params: { roomId: selectedRoom.id } }).subscribe(data => {
-      this.workplaces = Object.values(data).map((table: any) => (
-        {
+    console.log(selectedRoom);
+    if (!selectedRoom || !selectedRoom.id) {
+      console.error('Selected room or roomId is undefined');
+      return;  // Прерываем выполнение функции, если roomId не существует
+    }
+    console.log(selectedRoom)
+    this.http.get(this.baseUrl + `/api/workplaces`, { 
+      headers: this.getAuthHeaders(),
+      params: { roomId: selectedRoom.id } 
+    }).subscribe({
+      next: (data) => {
+        this.workplaces = Object.values(data).map((table: any) => ({
           id: table.id,
           mon: table.numberOfMonitors,
           x: table.x,
@@ -505,42 +549,62 @@ export class SchemeComponent {
           width: table.width,
           height: table.height,
           room: table.roomId
-        })
-      );
-      this.getWorkplaceBookings();
+        }));
+        this.getWorkplaceBookings();
+      },
+      error: (err) => {
+        console.error('Error fetching workplace data', err);
+      }
     });
   }
+  
+meetingRoomList(selectedRoom: any) {
+  if (!selectedRoom || !selectedRoom.id) {
+    console.error('Selected room or roomId is undefined');
+    return;  // Прерываем выполнение функции, если roomId не существует
+  }
 
-  meetingRoomList(selectedRoom: any) {
-    this.http.get(this.baseUrl + `/api/meetingRooms`, { headers: this.getAuthHeaders(), params: { roomId: selectedRoom.id } }).subscribe(data => {
-      this.meetingRooms = Object.values(data).map((table: any) => ({
-        id: table.id,
-        name: table.name,
-        x: table.x,
-        y: table.y,
-        width: table.width,
-        height: table.height,
-        room: table.roomId
+  this.http.get(this.baseUrl + `/api/meetingRooms`, { 
+    headers: this.getAuthHeaders(),
+    params: { roomId: selectedRoom.id }
+  }).subscribe({
+    next: (data) => {
+      this.meetingRooms = Object.values(data).map((room: any) => ({
+        id: room.id,
+        name: room.name,
+        x: room.x,
+        y: room.y,
+        width: room.width,
+        height: room.height,
+        room: room.roomId
       }));
       this.getWorkplaceBookings();
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Error fetching meeting room data', err);
+    }
+  });
+}
 
+  
   getWorkplaceBookings(): void {
-    this.http.get(this.baseUrl + `/api/workplaceBookings`, { headers: this.getAuthHeaders() }).subscribe(data => {
-      const userBooks = Object.values(data).filter((item: any) => item.user === this.user);
-      userBooks.forEach((book: any) => {
-        this.isWorkplaceBooked.push(book.name);
+    this.http.get(this.baseUrl + `/api/workplaceBookings`, { headers: this.getAuthHeaders() })
+      .subscribe((data: any) => {
+        console.log('Полученные бронирования:', data);
+  
+        this.myBookings = data.map((book: any) => ({
+          id: book.id,
+          employeeId: book.employeeId,
+          workplaceId: book.workplaceId,
+          date: book.date
+        }));
+  
+        console.log('Обновленный myBookings:', this.myBookings);
       });
-      this.workplaces = this.workplaces.map(item => {
-        const bookedItem = userBooks.find(newItem => newItem.id === item.id);
-        return bookedItem ? { ...item, book: '1' } : item;
-      });
-    });
   }
-
+  
+  
   checkAndBookMeetingRoom() {
-    // Проверяем, что все поля заполнены
     if (
       !this.meetingRoomBookingForm.date ||
       !this.meetingRoomBookingForm.startTime ||
@@ -552,14 +616,12 @@ export class SchemeComponent {
       return;
     }
 
-    // Преобразуем startTime и endTime в формат Date
     const newBookingStart = new Date(`${this.meetingRoomBookingForm.date}T${this.meetingRoomBookingForm.startTime}`);
     const newBookingEnd = new Date(`${this.meetingRoomBookingForm.date}T${this.meetingRoomBookingForm.endTime}`);
 
-    // Проверяем, не пересекается ли бронирование
     const hasConflict = this.meetingRoomBookings.some(existingBooking => {
       if (existingBooking.name !== this.selectedMeetingRoom.name) {
-        return false; // Проверяем только ту же переговорку
+        return false;
       }
 
       const existingStart = new Date(`${existingBooking.date}T${existingBooking.startTime}`);
@@ -577,7 +639,6 @@ export class SchemeComponent {
       return;
     }
 
-    // Если время свободно, бронируем
     this.doMeetingRoomBooking();
   }
 
@@ -585,7 +646,7 @@ export class SchemeComponent {
   getMeetingRoomBookings(): void {
     this.http.get(this.baseUrl + `/api/meetingRoomBookings`, { headers: this.getAuthHeaders() })
       .subscribe((data: any) => {
-        this.meetingRoomBookings = data; // Сохраняем бронирования
+        this.meetingRoomBookings = data;
 
         const userBooks = data.filter((item: any) => item.employeeId === this.user);
         userBooks.forEach((book: any) => {
@@ -619,63 +680,106 @@ export class SchemeComponent {
     }
   }
 
-  dragEndedNewWorkplace(event: any, i: number, room: number) {
-    const newPos = event.source.getFreeDragPosition();
-    this.workplaces[i].x = newPos.x;
-    this.workplaces[i].y = newPos.y;
-
+  dragEndedNewWorkplace(event: CdkDragEnd, i: number, room: any) {
+    if (this.authService.data.user.role === 'EMPLOYEE') {
+      this.workplaceList(room);
+      return;
+    }
+  
+    const element = event.source.element.nativeElement;
+  
+    // Получаем окончательные координаты с использованием getBoundingClientRect()
+    const rect = element.getBoundingClientRect();
+    const newPosX = rect.left;
+    const newPosY = rect.top;
+  
+    // Логируем обновленные координаты
+    console.log('Final position for workplace', { x: newPosX, y: newPosY });
+  
+    // Обновляем координаты рабочего места
+    this.workplaces[i].x = newPosX;
+    this.workplaces[i].y = newPosY;
+  
     const updatePayload = {
-      x: newPos.x,
-      y: newPos.y,
+      x: newPosX,
+      y: newPosY,
       numberOfMonitors: this.workplaces[i].mon,
       width: this.workplaces[i].width,
       height: this.workplaces[i].height
     };
-
+  
+    // Логируем payload перед отправкой на сервер
+    console.log('Updating workplace with payload:', updatePayload);
+  
     this.http.put(`${this.baseUrl}/api/workplaces/${this.workplaces[i].id}`, updatePayload, { headers: this.getAuthHeaders() })
       .subscribe({
-        next: () => {
+        next: (response) => {
           console.log('Позиция рабочего места успешно обновлена');
+          // После обновления получаем актуальные данные
+          this.workplaceList(room);
         },
         error: (err) => {
           console.error('Ошибка обновления позиции рабочего места', err);
         }
       });
-    this.workplaceList(room);
   }
-
-
-  dragEndedNewMeetingRoom(event: any, i: number, room: number) {
-    const newPos = event.source.getFreeDragPosition();
-    this.meetingRooms[i].x = newPos.x;
-    this.meetingRooms[i].y = newPos.y;
+  
+  dragEndedNewMeetingRoom(event: CdkDragEnd, i: number, room: any) {
+    if (this.authService.data.user.role === 'EMPLOYEE') {
+      this.meetingRoomList(room);
+      return;
+    }
+  
+    const element = event.source.element.nativeElement;
+  
+    // Получаем окончательные координаты с использованием getBoundingClientRect()
+    const rect = element.getBoundingClientRect();
+    const newPosX = rect.left;
+    const newPosY = rect.top;
+  
+    // Логируем обновленные координаты
+    console.log('Final position for meeting room', { x: newPosX, y: newPosY });
+  
+    // Обновляем координаты переговорной комнаты
+    this.meetingRooms[i].x = newPosX;
+    this.meetingRooms[i].y = newPosY;
+  
     const updatePayload = {
-      x: newPos.x,
-      y: newPos.y,
+      x: newPosX,
+      y: newPosY,
       name: this.meetingRooms[i].name,
       width: this.meetingRooms[i].width,
       height: this.meetingRooms[i].height
     };
-
+  
+    // Логируем payload перед отправкой на сервер
+    console.log('Updating meeting room with payload:', updatePayload);
+  
     this.http.put(`${this.baseUrl}/api/meetingRooms/${this.meetingRooms[i].id}`, updatePayload, { headers: this.getAuthHeaders() })
       .subscribe({
-        next: () => {
+        next: (response) => {
           console.log('Позиция переговорной комнаты успешно обновлена');
+          // После обновления получаем актуальные данные
+          this.meetingRoomList(room);
         },
         error: (err) => {
           console.error('Ошибка обновления позиции переговорной комнаты', err);
         }
       });
-    this.meetingRoomList(room);
   }
+  
 
   getAuthHeaders() {
     return new HttpHeaders({ 'Authorization': `Bearer ${this.authService.data.token}` });
   }
 
-  ngOnChanges() {
-    this.updateWorkplace();
-    this.updateMeetingRoom()
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['workplaces']) {
+      this.updateWorkplace();
+    }
+    if (changes['meetingRooms']) {
+      this.updateMeetingRoom();
+    }
   }
 
   delWorkplace(id: number) {
@@ -763,4 +867,11 @@ export class SchemeComponent {
       this.currentPage--;
     }
   }
+
+  ngOnDestroy(): void {
+    if (this.updateInterval) {
+      this.updateInterval.unsubscribe();
+    }
+  }
+
 }  

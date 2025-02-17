@@ -27,8 +27,8 @@ export class GroupsComponent {
   get role(): any {
     return this.authService.data?.user.role;
   }
-  offices: Array<{ id: number; name: string; address: string; employeeGroups:{if: number; name: string} }> = [];
-  rooms: Array<{id: number; name: string; office: string}> = [];
+  offices: Array<{ id: number; name: string; address: string; employeeGroups: { if: number; name: string } }> = [];
+  rooms: Array<{ id: number; name: string; office: string }> = [];
   groups: Array<{
     id: number; name: string; allowedOffices: {
       id: number,
@@ -127,32 +127,30 @@ export class GroupsComponent {
   };
 
   addGroupToOffice(groupId: number, selectedOffice: number) {
-      this.http
-        .post(
-          this.baseUrl +
-          `/api/offices/${selectedOffice}/employeeGroups/${groupId}`,
-          { officeId: selectedOffice, employeeGroupId: groupId },
-          {
-            headers: new HttpHeaders({
-              Authorization: `Bearer ${this.authService.data.token}`,
-            }),
-          }
-        )
-        .subscribe(
-          (data) => {
-            console.log(data);
-            if (data != null) {
-              alert("Группа прикреплена");
-              this.groupForm.office = selectedOffice;
-              this.groupsList();
-            }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
-  
+    this.http
+      .post(
+        this.baseUrl +
+        `/api/offices/${selectedOffice}/employeeGroups/${groupId}`,
+        { officeId: selectedOffice, employeeGroupId: groupId },
+        {
+          headers: new HttpHeaders({
+            Authorization: `Bearer ${this.authService.data.token}`,
+          }),
+        }
+      )
+      .subscribe(
+        (data) => {
+          console.log(data);
+          alert("Группа прикреплена");
+          this.groupForm.office = selectedOffice;
+          this.groupsList();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
   delGroupFromOffice(groupId: number, selectedOffice: number) {
     this.http
       .delete(
@@ -167,10 +165,8 @@ export class GroupsComponent {
       )
       .subscribe(
         (data) => {
-          if (data != null) {
-            alert("Группа откреплена");
-            this.groupsList();
-          }
+          alert("Группа откреплена");
+          this.groupsList();
         },
         (error) => {
           console.log(error);
@@ -205,7 +201,7 @@ export class GroupsComponent {
   getOfficeNames(offices: any[]): string {
     return offices.map(office => office.name).join(', ');
   }
-  
+
   openEditGroupForm(group: { id: number, name: string }) {
     this.groupForm.name = group.name;
     this.showGroupForm = true;

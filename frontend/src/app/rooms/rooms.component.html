@@ -1,3 +1,4 @@
+<br /><br />
 <div *ngIf="this.authService.data.user.role">
   <label>Введите название офиса:</label>&nbsp;
   <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
