@@ -19,12 +19,11 @@
       [(ngModel)]="bookingForm.date" />
   </div>
 
-  <br />
 
-  <div *ngIf="officeForm.office && bookingForm.date">
+  <div *ngIf="officeForm.office && bookingForm.date" class="office-load-box">
     <h3>Загруженность офиса: {{ officeSearch }}</h3>
-    <p>{{ officeLoad || 0 }}%</p>
-  </div>
+    <p>{{ officeLoad }}%</p>
+  </div>  
 
   <br />
 
@@ -63,6 +62,11 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div *ngIf="roomsLoadPercentages.length" class="pagination">
+  <button class="blue-button" (click)="prevPage()" [disabled]="currentPage === 1"> Назад</button>
+  <span style="margin: 0 15px;">Страница {{ currentPage }} из {{ totalPages }}</span>
+  <button class="blue-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Вперёд</button>
 </div>
 
 <div [class.hide]="isreg==1">

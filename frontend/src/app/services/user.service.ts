@@ -26,6 +26,7 @@ export class UserService {
             })
             .subscribe((data: any) => {
                 console.log("Offices from API:", data);
+                this.offices = [];
                 data.forEach((office: any) => {
                     this.offices.push({
                         id: office["id"],
@@ -61,46 +62,24 @@ export class UserService {
     };
 
     usersList() {
-        if (this.authService.data.user.role === 'ADMIN') {
-            this.http
-                .get(this.baseUrl + `/api/employees`, {
-                    headers: {
-                        Authorization: `Bearer ${this.authService.data.token}`,
-                    },
-                })
-                .subscribe((data: any) => {
-                    this.users = [];
-                    for (const key in data) {
-                        this.users.push({
-                            id: data[key].id,
-                            group: data[key].employeeGroupId,
-                            username: data[key].username,
-                        });
-                    }
-                    this.users.sort((a, b) => a.id - b.id);
-                });
-        } else {
-            this.http
-                .get(this.baseUrl + `/api/employees`, {
-                    headers: {
-                        Authorization: `Bearer ${this.authService.data.token}`,
-                    },
-                })
-                .subscribe((data: any) => {
-                    this.users = [];
-                    data = data.filter((emp: any) => emp.username === this.authService.data.user.username);
-                    console.log(data);
-                    this.authService.data.user.group = data;
-                    for (const key in data) {
-                        this.users.push({
-                            id: data[key].id,
-                            group: data[key].employeeGroupId,
-                            username: data[key].username,
-                        });
-                    }
-                    this.users.sort((a, b) => a.id - b.id);
-                });
-        }
+        this.http
+            .get(this.baseUrl + `/api/employees`, {
+                headers: {
+                    Authorization: `Bearer ${this.authService.data.token}`,
+                },
+            })
+            .subscribe((data: any) => {
+                console.log(data);
+                this.users = [];
+                for (const key in data) {
+                    this.users.push({
+                        id: data[key].id,
+                        group: data[key].employeeGroupId,
+                        username: data[key].username,
+                    });
+                }
+                this.users.sort((a, b) => a.id - b.id);
+            });
     }
 
     addUserToGroup(userId: number, username: string, groupId: number) {
@@ -116,10 +95,9 @@ export class UserService {
             .subscribe(
                 (data) => {
                     console.log(data);
-                    if (data != null) {
                         alert("Пользователь прикреплен");
                         this.usersList();
-                    }
+                
                 },
                 (error) => {
                     console.log(error);

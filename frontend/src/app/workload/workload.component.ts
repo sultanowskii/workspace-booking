@@ -32,10 +32,21 @@ export class WorkloadComponent {
   roomSearch: string = '';
   selectedRoomLoad: number | null = null;
   isreg = 0;
+  groups: Array<{
+		id: number; name: string; allowedOffices: {
+			id: number,
+			name: string,
+			address: string;
+		}[]
+	}> = [];
+
+	users: Array<{ id: number; group: string; username: string; }> = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
     if (authService.data) {
       this.isreg = 1;
+      this.usersList();
+      this.groupsList();
       this.getOffices();
       this.route.paramMap.subscribe(params => {
         const officeIdFromRoute = params.get('officeId');
@@ -46,6 +57,47 @@ export class WorkloadComponent {
     }
   }
 
+  usersList() {
+		this.http
+			.get(this.baseUrl + `/api/employees`, {
+				headers: {
+					Authorization: `Bearer ${this.authService.data.token}`,
+				},
+			})
+			.subscribe((data: any) => {
+				this.users = [];
+				for (const key in data) {
+					this.users.push({
+						id: data[key].id,
+						group: data[key].employeeGroupId,
+						username: data[key].username,
+					});
+				}
+				this.users.sort((a, b) => a.id - b.id);
+			});
+	}
+	
+
+	groupsList() {
+		this.http
+			.get(this.baseUrl + `/api/employeeGroups`, {
+				headers: {
+					Authorization: `Bearer ${this.authService.data.token}`,
+				},
+			})
+			.subscribe((data: any) => {
+
+				this.groups = data.map((group: any) => ({
+					id: group.id,
+					name: group.name,
+					allowedOffices: group.allowedOffices || []
+				}));
+
+			}, (error: any) => {
+				console.error("Error fetching employee groups:", error);
+			});
+	}
+
   filterRooms() {
     this.roomsList();
     const searchValue = this.roomSearch?.toLowerCase() || '';
@@ -55,11 +107,38 @@ export class WorkloadComponent {
   }
 
   filterOffices() {
-    const searchValue = this.officeSearch?.toLowerCase() || '';
-    this.filteredOffices = this.offices.filter(office =>
-      office.name.toLowerCase().startsWith(searchValue)
-    );
-  }
+		const searchValue = this.officeSearch?.toLowerCase() || '';
+		if (this.authService.data.user.role === 'ADMIN') {
+			this.filteredOffices = this.offices.filter(office =>
+				office.name.toLowerCase().startsWith(searchValue)
+			);
+		} else {
+			if (this.groups && this.users) {
+				const currentUser = this.users.find(user => user.username === this.authService.data.user.username);
+				console.log(this.users);
+				if (currentUser) {
+					console.log("Current user's groupId:", currentUser.group);
+					const userGroup = this.groups.find(group => group.id.toString().match(currentUser.group));
+
+					if (userGroup) {
+						console.log("User's group:", userGroup);
+						this.filteredOffices = this.offices.filter(office =>
+							userGroup.allowedOffices.some(allowedOffice =>
+								allowedOffice.name === office.name
+							) && office.name.toLowerCase().startsWith(searchValue)
+						);
+					}else{
+						console.log('no group');
+					}
+					console.log(this.filteredOffices);
+				}else{
+					console.log('no user');
+				}
+			}else{
+				console.log('no groups or users');
+			}
+		}
+	}
 
   roomsList() {
     const headers = new HttpHeaders({
@@ -100,7 +179,6 @@ export class WorkloadComponent {
     this.officeSearch = office.name;
     this.filteredOffices = [];
     this.bookingForm.date = '';
-    this.getOfficeOccupancy(office.id);
   }
 
   selectRoom(room: { id: number; name: string; office: string }) {
@@ -115,16 +193,21 @@ export class WorkloadComponent {
       'Authorization': `Bearer ${this.authService.data.token}`
     });
 
-    this.http.get(`${this.baseUrl}/api/occupancy/offices/${officeId}`, { headers })
+    let params = new HttpParams();
+    params = params.set('date', this.bookingForm.date);
+
+    this.http.get(`${this.baseUrl}/api/occupancy/offices/${officeId}`, { headers,  params: params})
       .subscribe((data: any) => {
         console.log(data)
-        this.officeLoad = data.rate
+        this.officeLoad = data.rate*100
       });
   }
 
   checkDate(date: string): void {
     if (this.officeForm.office && date) {
       this.getAllRoomOccupancies();
+      
+    this.getOfficeOccupancy(this.officeForm.office);
     }
   }
 
@@ -147,7 +230,7 @@ export class WorkloadComponent {
         this.roomsLoadPercentages = data.map((room: any) => ({
           office: room.officeName,
           room: room.name,
-          load: room.rate
+          load: room.rate*100
         }));
       });
   }
@@ -195,10 +278,11 @@ export class WorkloadComponent {
           console.error('Error fetching room occupancy:', error);
         }
       });
+    this.filteredRooms = []
   }
   getRoomLoad(): number | null {
     const selectedRoom = this.roomLoadPercentages.find(r => r.room === this.roomSearch);
-    return selectedRoom ? selectedRoom.load : null;
+    return selectedRoom ? selectedRoom.load*100 : null;
   }
 
   get paginatedWorkloads() {

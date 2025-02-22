@@ -2,7 +2,7 @@
   <br /><br />
   <div>
     <label>Введите название офиса: </label>
-    <input type="text" [(ngModel)]="officeSearch" (input)="filterOfficeName()" placeholder="Введите название офиса" />
+    <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
     <ul *ngIf="officeSearch && filteredOffices.length > 0" class="dropdown">
       <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
         (keydown.enter)="selectOffice(office)">
@@ -22,7 +22,7 @@
     </ul>
   </div>
   <br />
-  <div *ngIf="selectedRoom">
+  <div *ngIf="selectedRoom && this.authService.data.user.role === 'EMPLOYEE'">
     <label for="start">Выберите дату: </label>
     <select id="start" name="trip-start" [(ngModel)]="workplaceBookingForm.date"
       (change)="updateAvailableDates(workplaceBookingForm.date)">
@@ -33,209 +33,327 @@
 <br />
 <div [class.hide]="isreg == 0">
   <div class='admin-panel' [class.vis]="this.authService.data.user.role == 'ADMIN'" *ngIf="selectedRoom">
-    <div *ngIf="this.authService.data.user.role === 'ADMIN'" class="button-group">
-      <button class="primary-button" (click)="openAddWorkplaceForm()">Добавить рабочее место</button>
-      <button class="primary-button" (click)="openAddMeetingRoomForm()">Добавить переговорную</button>
+    <div *ngIf="this.authService.data.user.role === 'ADMIN'">
+      <div *ngIf="selectedRoom">
+        <div class="button-group">
+          <button style="margin-right: 5px;" class="blue-button" (click)="openAddWorkplaceForm(false)">Добавить рабочее
+            место</button>
+          <button style="margin-right: 5px;" class="blue-button" (click)="openAddMeetingRoomForm(false)">Добавить
+            переговорную</button>
+          <button style="margin-right: 5px;" class="blue-button" (click)="loadData()">Импортировать данные</button>
+          <button style="margin-right: 5px;" class="blue-button" (click)="openAddWorkplaceForm(true)">Редактировать
+            рабочее место</button>
+          <button style="margin-right: 5px;" class="blue-button" (click)="openAddMeetingRoomForm(true)">Редактировать
+            переговорную</button>
+        </div>
+      </div>
     </div>
-
-    <div *ngIf="isAddWorkplaceFormOpen" class="modal">
+    <div *ngIf="isWorkplaceFormOpen" class="modal">
       <div class="modal-content">
-        <h2>Добавить рабочее место</h2>
-        <form (ngSubmit)="saveWorkplace()">
+        <h2 *ngIf="isEditingWorkplace">
+          Редактирование рабочего места номер
+          <input type="text" [(ngModel)]="editingWorkplaceId" (ngModelChange)="findWorkplaceById(+($event))" required />
+        </h2>
+        <h2 *ngIf="!isEditingWorkplace">Создание рабочего места</h2>
+
+        <div *ngIf="isEditingWorkplace && !isWorkplaceFound" class="error">
+          ❌ Рабочего места с таким номером не существует!
+        </div>
+
+        <form (ngSubmit)="isEditingWorkplace ? updateWorkplace() : saveWorkplace()"
+          *ngIf="!isEditingWorkplace || isWorkplaceFound">
           <label for="x">Координата X:</label>
-          <input id="x" type="text" size="3" [(ngModel)]="newWorkplace.x" name="x" required /><br /><br />
+          <input id="x" type="text" size="3" [(ngModel)]="currentWorkplace.x" name="x" required /><br />
           <label for="y">Координата Y:</label>
-          <input id="y" type="text" size="3" [(ngModel)]="newWorkplace.y" name="y" required /><br /><br />
+          <input id="y" type="text" size="3" [(ngModel)]="currentWorkplace.y" name="y" required /><br />
+          <label for="height">Длина:</label>
+          <input id="height" type="text" size="3" [(ngModel)]="currentWorkplace.height" name="height" required /><br />
+          <label for="width">Ширина:</label>
+          <input id="width" type="text" size="3" [(ngModel)]="currentWorkplace.width" name="width" required /><br />
+          <label for="mon">Количество мониторов:</label>
+          <input id="mon" type="text" size="3" [(ngModel)]="currentWorkplace.mon" name="mon" required /><br />
 
-          <label for="height">Длина:</label><br />
-          <input id="height" type="text" size="3" [(ngModel)]="newWorkplace.height" name="height"
-            required /><br /><br />
-
-          <label for="width">Ширина:</label><br />
-          <input id="width" type="text" size="3" [(ngModel)]="newWorkplace.width" name="width" required /><br /><br />
-
-          <label for="mon">Количество мониторов:</label><br />
-          <input id="mon" type="text" size="3" [(ngModel)]="newWorkplace.mon" name="mon" required /><br /><br />
-
-          <button type="submit" class="submit-button">Сохранить</button>
-          <button class="close" (click)="closeAddWorkplaceForm()">Закрыть</button>
+          <button type="submit" class="submit-button" [disabled]="isEditingWorkplace && !isWorkplaceFound">
+            {{ isEditingWorkplace ? 'Редактировать' : 'Создать' }}
+          </button>
+          <button *ngIf="isEditingWorkplace" class="delete-button"
+            (click)="delWorkplace(currentWorkplace.id)">Удалить</button>
+          <button class="close" (click)="closeWorkplaceForm()">Закрыть</button>
         </form>
       </div>
     </div>
 
-    <div *ngIf="isAddMeetingRoomFormOpen" class="modal">
+    <div *ngIf="isMeetingRoomFormOpen" class="modal">
       <div class="modal-content">
-        <h2>Добавить переговорную</h2>
-        <form (ngSubmit)="saveMeetingRoom()">
-          <label for="name">Название/№:</label><br />
-          <input id="name" type="text" [(ngModel)]="newMeetingRoom.name" name="name" required /><br /><br />
+        <h2 *ngIf="isEditingMeetingRoom">
+          Редактирование переговорной номер
+          <input type="text" [(ngModel)]="editingRoomId" (ngModelChange)="findMeetingRoomById(+($event))" required />
+        </h2>
+        <h2 *ngIf="!isEditingMeetingRoom">Создание переговорной</h2>
+        <div *ngIf="isEditingMeetingRoom && !isMeetingRoomFound" class="error">
+          ❌ Переговорной с таким номером не существует!
+        </div>
+        <form *ngIf="isEditingMeetingRoom && isMeetingRoomFound || !isEditingMeetingRoom"
+          (ngSubmit)="isEditingMeetingRoom ? updateMeetingRoom() : saveMeetingRoom()">
 
+          <label for="name">Название:</label>
+          <input id="name" type="text" [(ngModel)]="currentMeetingRoom.name" name="name" required /><br />
           <label for="x">Координата X:</label>
-          <input id="x" type="text" size="3" [(ngModel)]="newMeetingRoom.x" name="x" required /><br /><br />
+          <input id="x" type="text" size="3" [(ngModel)]="currentMeetingRoom.x" name="x" required /><br />
           <label for="y">Координата Y:</label>
-          <input id="y" type="text" size="3" [(ngModel)]="newMeetingRoom.y" name="y" required /><br /><br />
+          <input id="y" type="text" size="3" [(ngModel)]="currentMeetingRoom.y" name="y" required /><br />
+          <label for="height">Длина:</label>
+          <input id="height" type="text" size="3" [(ngModel)]="currentMeetingRoom.height" name="height"
+            required /><br />
+          <label for="width">Ширина:</label>
+          <input id="width" type="text" size="3" [(ngModel)]="currentMeetingRoom.width" name="width" required /><br />
 
-          <label for="height">Длина:</label><br />
-          <input id="height" type="text" size="3" [(ngModel)]="newMeetingRoom.height" name="height"
-            required /><br /><br />
-
-          <label for="width">Ширина:</label><br />
-          <input id="width" type="text" size="3" [(ngModel)]="newMeetingRoom.width" name="width" required /><br /><br />
-
-          <button type="submit" class="submit-button">Сохранить</button>
-          <button class="close" (click)="closeAddMeetingRoomForm()">Закрыть</button>
+          <button type="submit" class="submit-button" [disabled]="isEditingMeetingRoom && !isMeetingRoomFound">
+            {{ isEditingMeetingRoom ? 'Редактировать' : 'Создать' }}
+          </button>
+          <button *ngIf="isEditingMeetingRoom" class="delete-button"
+            (click)="delMeetingRoom(currentMeetingRoom.id)">Удалить</button>
+          <button class="close" (click)="closeMeetingRoomForm()">Закрыть</button>
         </form>
       </div>
     </div>
-  </div>
 
-  <!-- <div *ngIf="isMyBookingsFormOpen" class="modal">
-    <div class="modal-content">
-      <h2>Мои бронирования</h2>
-      <table *ngIf="myBookings.length > 0">
-        <thead>
-          <tr>
-            <th>Офис</th>
-            <th>Помещение</th>
-            <th>Название рабочего места</th>
-            <th>Дата</th>
-            <th>Время</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let booking of myBookings">
-            <td>{{ booking.office }}</td>
-            <td>{{ booking.room }}</td>
-            <td>{{ booking.tableName }}</td>
-            <td>{{ booking.date | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ booking.time }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div *ngIf="myBookings.length === 0">
-        <p>Нет бронирований</p>
-      </div>
-      <button class="close" (click)="closeMyBookingsForm()">Закрыть</button>
+
+    <div *ngIf="authService.data.user.role === 'EMPLOYEE' && selectedRoom">
+      <button class="button blue-button" (click)="openMyBookingsForm()">
+        Посмотреть мои бронирования
+      </button>
     </div>
-  </div> -->
+    <div *ngIf="isMyBookingsFormOpen">
+      <div (click)="closeMyBookingsForm()"></div>
 
-  <br />
-  <div *ngIf="isWorkplaceBookingModalOpen" class="modal">
-    <div class="modal-content">
-      <h2>Бронирование рабочего места</h2>
-      <p>Вы бронируете: {{ selectedWorkplace?.name || 'Рабочее место' }}</p>
+      <div class="modal">
+        <div class="modal-content">
+          <h2>Мои бронирования</h2>
 
-      <label for="workplaceDate">Выберите дату:</label>
-      <input type="date" id="workplaceDate" [(ngModel)]="workplaceBookingForm.date" required /><br /><br />
+          <table *ngIf="myBookings.length > 0">
+            <thead>
+              <tr>
+                <th>Номер рабочего места</th>
+                <th>Дата</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let booking of myBookings">
+                <td>{{ booking.workplaceId }}</td>
+                <td>{{ booking.date | date: 'yyyy-MM-dd' }}</td>
+                <td>
+                  <button style="margin-left: 15px; margin-right: 5px;" class="button blue-button"
+                    (click)="editBooking(booking)">Редактировать</button>
+                  <button style="margin-right: 5px;" class="button blue-button"
+                    (click)="deleteBooking(booking)">Удалить</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-      <button class="submit-button" (click)="doWorkplaceBooking()">Забронировать</button>
-      <button class="close" (click)="closeWorkplaceBookingModal()">Закрыть</button>
-    </div>
-  </div>
+          <table *ngIf="myMRBookings.length > 0">
+            <thead>
+              <tr>
+                <th>Номер переговорной</th>
+                <th>Дата</th>
+                <th>Время начала</th>
+                <th>Время окончания</th>
+                <th>Описание</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let booking of myMRBookings">
+                <td>{{ booking.meetingRoomId }}</td>
+                <td>{{ booking.date | date: 'yyyy-MM-dd' }}</td>
+                <td>{{ booking.startTime }}</td>
+                <td>{{ booking.endTime }}</td>
+                <td>{{ booking.description }}</td>
+                <td>
+                  <button style="margin-right: 5px;" class="button blue-button"
+                    (click)="editMRBooking(booking)">Редактировать</button>
+                  <button style="margin-top: 5px; margin-right: 5px;" class="button blue-button"
+                    (click)="deleteMRBooking(booking)">Удалить</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-  <div *ngIf="isMeetingRoomBookingModalOpen" class="modal">
-    <div class="modal-content">
-      <h2>Бронирование переговорной</h2>
-      <p>Вы бронируете: <strong>{{ selectedMeetingRoom?.name || 'Переговорную' }}</strong></p>
+          <div *ngIf="myBookings.length === 0 && myMRBookings.length === 0">
+            <p>Нет бронирований</p>
+          </div>
 
-      <label for="meetingRoomDescription">Введите описание:</label>
-      <input type="text" id="meetingRoomDescription" [(ngModel)]="meetingRoomBookingForm.description"
-        required /><br /><br />
-
-      <label for="meetingRoomDate">Выберите дату:</label>
-      <input type="date" id="meetingRoomDate" [(ngModel)]="meetingRoomBookingForm.date" required /><br /><br />
-
-      <label for="meetingRoomStartTime">Выберите время начала:</label>
-      <input type="time" id="meetingRoomStartTime" [(ngModel)]="meetingRoomBookingForm.startTime"
-        required /><br /><br />
-
-      <label for="meetingRoomEndTime">Выберите время окончания:</label>
-      <input type="time" id="meetingRoomEndTime" [(ngModel)]="meetingRoomBookingForm.endTime" required /><br /><br />
-
-      <label for="meetingRoomParticipants">Выберите участников:</label>
-      <div class="participant-list">
-        <div *ngFor="let user of paginatedUsers" class="participant-item">
-          {{user.id}}
-          <input type="checkbox" id="user-{{ user.id }}"
-                 [value]="user.id"
-                 [checked]="meetingRoomBookingForm.participants.includes(user.id)" 
-                 (change)="toggleParticipant(user.id)" />
-          <label for="user-{{ user.id }}">{{ user.username }}</label>
-        </div>        
+          <button class="button blue-button" (click)="closeMyBookingsForm()">Закрыть</button>
+        </div>
       </div>
-      
-      <div class="pagination">
-        <button (click)="prevPage()" [disabled]="currentPage === 1">Предыдущая</button>
-        <span>Страница {{ currentPage }} из {{ totalPages() }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Следующая</button>
-      </div>
-      <br /><br />
-      <button class="submit-button" (click)="checkAndBookMeetingRoom()">Забронировать</button>
-      <button class="close" (click)="closeMeetingRoomBookingModal()">Закрыть</button>
     </div>
-  </div>
+    <div *ngIf="selectedBooking" class="modal">
+      <div class="modal-content">
+        <h2>Редактировать бронирование</h2>
+        <label>Номер рабочего места:</label>
+        <input [(ngModel)]="selectedBooking.workplaceId" type="text" /><br /><br />
 
-  <div *ngIf="workplaceBookingForm.date">
-    <div *ngFor="let workplace of workplaces; let i = index"
-    class="workplace"
-    cdkDrag
-    [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
-    (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
-    [ngStyle]="{
-      'left.px': workplace.x, 
-      'top.px': workplace.y,
-      'width.px': workplace.width, 
-      'height.px': workplace.height,
-      'background-color': getWorkplaceColor(workplace.id, workplaceBookingForm.date),
-      'border': '1px solid black',
-      'cursor': authService.data.user.role === 'ADMIN' ? 'move' : 'pointer'
-    }"
-    (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
-    {{ workplace.id }}
-  </div>  
-</div>
+        <label>Дата:</label>
+        <input [(ngModel)]="selectedBooking.date" type="date" /><br /><br />
 
-<div *ngIf="!workplaceBookingForm.date">
-  <div *ngFor="let workplace of workplaces; let i = index"
-  class="workplace"
-  cdkDrag
-  [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
-  (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
-  [ngStyle]="{
-    'left.px': workplace.x, 
-    'top.px': workplace.y,
-    'width.px': workplace.width, 
-    'height.px': workplace.height,
-    'border': '1px solid black',
-    'cursor': authService.data.user.role === 'ADMIN' ? 'move' : 'pointer'
-  }"
-  (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
-  {{ workplace.id }}
-</div>
-</div>
+        <button style="margin-right: 5px;" class="button blue-button" (click)="saveBookingChanges()">Сохранить</button>
+        <button style="margin-right: 5px;" class="button blue-button" (click)="closeEditForm()">Отмена</button>
+      </div>
+    </div>
 
-<div *ngFor="let meetingRoom of meetingRooms; let i = index" 
-  class="meeting-room"
-  cdkDrag
-  [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
-  (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewMeetingRoom($event, i, selectedRoom) : null"
-  [ngStyle]="{
+    <div *ngIf="selectedMRBooking" class="modal">
+      <div class="modal-content">
+        <h2>Редактировать бронирование переговорной</h2>
+
+        <label>Номер переговорной:</label>
+        <input [(ngModel)]="selectedMRBooking.meetingRoomId" type="text" /><br /><br />
+
+        <label>Дата:</label>
+        <input [(ngModel)]="selectedMRBooking.date" type="date" /><br /><br />
+
+        <label>Время начала:</label>
+        <input [(ngModel)]="selectedMRBooking.startTime" type="time" /><br /><br />
+
+        <label>Время окончания:</label>
+        <input [(ngModel)]="selectedMRBooking.endTime" type="time" /><br /><br />
+
+        <label>Описание:</label>
+        <input [(ngModel)]="selectedMRBooking.description" type="text" /><br /><br />
+
+        <button style="margin-right: 5px;" class="blue-button" (click)="saveMRBookingChanges()">Сохранить</button>
+        <button style="margin-right: 5px;" class="blue-button" (click)="closeEditForm()">Отмена</button>
+      </div>
+    </div>
+
+
+    <br />
+    <div *ngIf="isWorkplaceBookingModalOpen" class="modal">
+      <div class="modal-content">
+        <h2>Бронирование рабочего места</h2>
+        <p>Вы бронируете: {{ selectedWorkplace?.name || 'Рабочее место' }}</p>
+
+        <label for="workplaceDate">Выберите дату:</label>
+        <input type="date" id="workplaceDate" [(ngModel)]="workplaceBookingForm.date" required /><br /><br />
+
+        <button class="submit-button" (click)="doWorkplaceBooking()">Забронировать</button>
+        <button class="close" (click)="closeWorkplaceBookingModal()">Закрыть</button>
+      </div>
+    </div>
+
+    <div *ngIf="isMeetingRoomBookingModalOpen" class="modal">
+      <div class="modal-content">
+        <h2>Бронирование переговорной</h2>
+        <p>Вы бронируете: <strong>{{ selectedMeetingRoom?.name || 'Переговорную' }}</strong></p>
+
+        <label for="meetingRoomDescription">Введите описание:</label>
+        <input type="text" id="meetingRoomDescription" [(ngModel)]="meetingRoomBookingForm.description"
+          required /><br /><br />
+
+        <label for="meetingRoomDate">Выберите дату:</label>
+        <input type="date" id="meetingRoomDate" [(ngModel)]="meetingRoomBookingForm.date" required /><br /><br />
+
+        <label for="meetingRoomStartTime">Выберите время начала:</label>
+        <input type="time" id="meetingRoomStartTime" [(ngModel)]="meetingRoomBookingForm.startTime"
+          required /><br /><br />
+
+        <label for="meetingRoomEndTime">Выберите время окончания:</label>
+        <input type="time" id="meetingRoomEndTime" [(ngModel)]="meetingRoomBookingForm.endTime" required /><br /><br />
+
+        <label for="meetingRoomParticipants">Выберите участников:</label>
+        <div class="participant-list">
+          <div *ngFor="let user of paginatedUsers" class="participant-item">
+            {{user.id}}
+            <input type="checkbox" id="user-{{ user.id }}" [value]="user.id"
+              [checked]="meetingRoomBookingForm.participants.includes(user.id)" (change)="toggleParticipant(user.id)" />
+            <label for="user-{{ user.id }}">{{ user.username }}</label>
+          </div>
+        </div>
+
+        <div class="pagination">
+          <button (click)="prevPage()" [disabled]="currentPage === 1">Предыдущая</button>
+          <span>Страница {{ currentPage }} из {{ totalPages() }}</span>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Следующая</button>
+        </div>
+        <br /><br />
+        <button class="submit-button" (click)="checkAndBookMeetingRoom()">Забронировать</button>
+        <button class="close" (click)="closeMeetingRoomBookingModal()">Закрыть</button>
+      </div>
+    </div>
+
+    <svg width="1300" height="500">
+      <line x1="0" y1="0" x2="0" y2="500" stroke="blue" stroke-width="2" />
+      <line x1="0" y1="0" x2="1300" y2="0" stroke="blue" stroke-width="2" />
+      <line x1="1300" y1="0" x2="1300" y2="500" stroke="blue" stroke-width="2" />
+      <line x1="0" y1="500" x2="1300" y2="500" stroke="blue" stroke-width="2" />
+    </svg>
+
+    <div *ngIf="workplaceBookingForm.date !== null">
+      <div *ngFor="let workplace of workplaces; let i = index" class="workplace" cdkDrag
+        [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+        (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
+        [ngStyle]="{
+         'position': 'absolute',
+         'top.px': workplace.y,
+         'left.px': workplace.x,
+         'width.px': workplace.width,
+         'height.px': workplace.height,
+         'background-color': getWorkplaceColor(workplace.id, workplaceBookingForm.date.toString()),
+         'border': '1px solid black'
+       }" (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
+        {{ workplace.id }}
+
+        <ng-container *ngIf="workplace.mon > 0">
+          <ng-container *ngFor="let n of [].constructor(workplace.mon > 2 ? 2 : workplace.mon); let j = index">
+            <img src="" class="monitor-icon" [ngStyle]="{'left.px': 5 + j * 20, 'top.px': -10}" />
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+
+    <div *ngIf="workplaceBookingForm.date === null">
+      <div *ngFor="let workplace of workplaces; let i = index" class="workplace" cdkDrag
+        [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+        (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
+        [ngStyle]="{
+         'left.px': workplace.x, 
+         'top.px': workplace.y,
+         'width.px': workplace.width, 
+         'height.px': workplace.height,
+         'border': '1px solid black',
+         'position': 'absolute'
+       }" (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
+
+        {{ workplace.id }}
+
+        <ng-container *ngIf="workplace.mon > 0">
+          <ng-container *ngFor="let n of [].constructor(workplace.mon > 2 ? 2 : workplace.mon); let j = index">
+            <img src="assets/monitor.png" class="monitor-icon" [ngStyle]="{'left.px': 5 + j * 20, 'top.px': -10}" />
+          </ng-container>
+        </ng-container>
+      </div>
+
+
+    </div>
+
+    <div *ngFor="let meetingRoom of meetingRooms; let i = index" class="meeting-room" cdkDrag
+      [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+      (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewMeetingRoom($event, i, selectedRoom) : null"
+      [ngStyle]="{
     'left.px': meetingRoom.x, 
     'top.px': meetingRoom.y, 
     'width.px': meetingRoom.width, 
     'height.px': meetingRoom.height,
     'border': '2px solid black',
-    'position': 'absolute',
-    'cursor': authService.data.user.role === 'ADMIN' ? 'move' : 'pointer'
-  }"  
-  (click)="authService.data.user.role === 'EMPLOYEE' ? openMeetingRoomBookingModal(meetingRoom) : null">
-  {{ meetingRoom.name }}
-</div>
-
-
-
+    'position': 'absolute'
+  }" (click)="authService.data.user.role === 'EMPLOYEE' ? openMeetingRoomBookingModal(meetingRoom) : null">
+      {{ meetingRoom.id }}
+      {{ meetingRoom.name }}
+    </div>
   </div>
+
   <div [class.hide]="isreg==1">
     <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
   </div>
-

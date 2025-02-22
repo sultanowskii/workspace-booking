@@ -29,9 +29,9 @@ export class UsersComponent {
     get role(): any {
         return this.authService.data?.user.role;
     }
-    offices: Array<{ id: number; name: string; address: string }> = [];
-    groups: Array<{ id: number; name: string; office: string[]; }> = [];
-    users: Array<{ id: number; group: string; username: string; }> = [];
+    // offices: Array<{ id: number; name: string; address: string }> = [];
+    // groups: Array<{ id: number; name: string; office: string[]; }> = [];
+    // users: Array<{ id: number; group: string; username: string; }> = [];
     currentUserPage = 1;
     usersPerPage = 5;
     showGroupForm: boolean = false;
@@ -66,12 +66,12 @@ export class UsersComponent {
 
     
     get totalUserPages(): number {
-        return Math.ceil(this.users.length / this.usersPerPage);
+        return Math.ceil(this.userService.users.length / this.usersPerPage);
     }
 
     get paginatedUsers() {
         const startIndex = (this.currentUserPage - 1) * this.usersPerPage;
-        return this.users.slice(startIndex, startIndex + this.usersPerPage);
+        return this.userService.users.slice(startIndex, startIndex + this.usersPerPage);
     }
 
     prevUserPage() {
@@ -85,4 +85,5 @@ export class UsersComponent {
             this.currentUserPage++;
         }
     }
+    
 }

@@ -22,11 +22,10 @@
         <select [(ngModel)]="selectedOffices[group.id]" >
           <option *ngFor="let office of offices" [value]="office.id">{{ office.name }}</option>
         </select>
-        <button (click)="addGroupToOffice(group.id, selectedOffices[group.id])">Прикрепить</button>
-        <button (click)="delGroupFromOffice(group.id, selectedOffices[group.id])">Открепить</button>
-        <br />
-        <button (click)="openEditGroupForm(group)">Редактировать</button>
-        <button (click)="delGroup(group.id)" class="red-button">Удалить</button>
+        <button style="margin-right: 5px; margin-top: 3px;" (click)="addGroupToOffice(group.id, selectedOffices[group.id])">Прикрепить</button>
+        <button style="margin-right: 5px;" (click)="delGroupFromOffice(group.id, selectedOffices[group.id])">Открепить</button>
+        <button style="margin-right: 5px;" (click)="openEditGroupForm(group)">Редактировать</button>
+        <button style="margin-right: 5px;" (click)="delGroup(group.id)" class="red-button">Удалить</button>
       </tr>
     </tbody>
   </table>

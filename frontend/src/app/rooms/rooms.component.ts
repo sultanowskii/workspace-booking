@@ -46,7 +46,8 @@ export class RoomsComponent {
 			address: string;
 		}[]
 	}> = [];
-	users: Array<{ id: number; name: string; group: string; groupname: string; }> = [];
+
+	users: Array<{ id: number; group: string; username: string; }> = [];
 	selectedRoomId: number | null = null;
 	filteredOffices: Array<{ id: number; name: string; address: string }> = [];
 	officeSearch = '';
@@ -142,6 +143,7 @@ export class RoomsComponent {
 	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
 		if (authService.data) {
 			this.isreg = 1;
+			this.usersList();
 			this.groupsList();
 			this.officesList();
 		}
@@ -149,6 +151,28 @@ export class RoomsComponent {
 			console.log('not reged');
 		}
 	};
+
+	
+	usersList() {
+		this.http
+			.get(this.baseUrl + `/api/employees`, {
+				headers: {
+					Authorization: `Bearer ${this.authService.data.token}`,
+				},
+			})
+			.subscribe((data: any) => {
+				this.users = [];
+				for (const key in data) {
+					this.users.push({
+						id: data[key].id,
+						group: data[key].employeeGroupId,
+						username: data[key].username,
+					});
+				}
+				this.users.sort((a, b) => a.id - b.id);
+			});
+	}
+	
 
 	groupsList() {
 		this.http
@@ -189,21 +213,36 @@ export class RoomsComponent {
 
 	filterOffices() {
 		const searchValue = this.officeSearch?.toLowerCase() || '';
-
 		if (this.authService.data.user.role === 'ADMIN') {
 			this.filteredOffices = this.offices.filter(office =>
 				office.name.toLowerCase().startsWith(searchValue)
 			);
 		} else {
-			this.filteredOffices = this.offices.filter(office =>
-				this.groups.some(group =>
-					group.allowedOffices.some(allowedOffice =>
-						allowedOffice.name === office.name
-					)
-				) && office.name.toLowerCase().startsWith(searchValue)
-			);
+			if (this.groups && this.users) {
+				const currentUser = this.users.find(user => user.username === this.authService.data.user.username);
+				console.log(this.users);
+				if (currentUser) {
+					console.log("Current user's groupId:", currentUser.group);
+					const userGroup = this.groups.find(group => group.id.toString().match(currentUser.group));
+
+					if (userGroup) {
+						console.log("User's group:", userGroup);
+						this.filteredOffices = this.offices.filter(office =>
+							userGroup.allowedOffices.some(allowedOffice =>
+								allowedOffice.name === office.name
+							) && office.name.toLowerCase().startsWith(searchValue)
+						);
+					}else{
+						console.log('no group');
+					}
+					console.log(this.filteredOffices);
+				}else{
+					console.log('no user');
+				}
+			}else{
+				console.log('no groups or users');
+			}
 		}
-		console.log(this.filteredOffices);
 	}
 
 	selectOffice(office: { id: number; name: string, address: string }): void {
@@ -214,7 +253,6 @@ export class RoomsComponent {
 		this.selectedOfficeId = office.id;
 		this.roomsList();
 	}
-
 
 	addRoom() {
 		if (this.roomForm.name != "") {

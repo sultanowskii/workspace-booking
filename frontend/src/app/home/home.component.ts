@@ -96,6 +96,8 @@ export class HomeComponent {
         this.authService.data = data;
         console.log(data);
         location.reload();
+      }, (error: any) => {
+        alert("Неверный логин или пароль")
       });
   }
 

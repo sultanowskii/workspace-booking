@@ -37,7 +37,7 @@
     <button class="button blue-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Вперед</button>
   </div>
 
-  <div class="create-button-container">
+  <div *ngIf="role === 'ADMIN'" class="create-button-container">
     <button class="button blue-button" (click)="openRoomForm()">Создать</button>
   </div>
 </div>

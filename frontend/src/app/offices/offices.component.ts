@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
-import { combineLatest, of, switchMap } from "rxjs";
+import { of } from "rxjs";
 import { UserService } from "../services/user.service";
 
 
@@ -31,10 +31,11 @@ export class OfficesComponent {
     const user = this.authService.data;
     return user ? user.role : null;
   }
-  users: Array<{ id: number; group: string; username: string; }> = [];
+
   offices: Array<{ id: number; name: string; address: string }> = [];
   rooms: Array<{ id: number; name: string; office: string; }> = [];
   filteredOffices: Array<{ id: number; name: string; address: string }> = [];
+  users: Array<{ id: number; group: string; username: string; }> = [];
   selectedOfficeId: number | null = null;
   groups: Array<{
     id: number; name: string; allowedOffices: {
@@ -59,6 +60,8 @@ export class OfficesComponent {
       grof: 0,
     }
 
+    searchName = '';
+  searchAddress = '';
 
   openOfficeForm() {
     this.showOfficeForm = true;
@@ -139,9 +142,10 @@ export class OfficesComponent {
     }
   }
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
+  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService, private userService: UserService) {
     if (authService.data) {
       this.isreg = 1;
+      this.usersList();
       this.groupsList();
       this.officesList();
     }
@@ -151,7 +155,6 @@ export class OfficesComponent {
   };
 
   groupsList() {
-    if (this.authService.data.user.role === 'ADMIN') {
       this.http
         .get(this.baseUrl + `/api/employeeGroups`, {
           headers: {
@@ -159,37 +162,15 @@ export class OfficesComponent {
           },
         })
         .subscribe((data: any) => {
-
-          console.log('groups ', data);
-          this.groups = data.map((group: any) => ({
-            id: group.id,
-            name: group.name,
-            allowedOffices: group.allowedOffices || []
-          }));
-
-        }, (error: any) => {
-          console.error("Error fetching employee groups:", error);
-        });
-    } else {
-      this.http
-        .get(this.baseUrl + `/api/employeeGroups/${this.userService.users[0].group}`, {
-          headers: {
-            Authorization: `Bearer ${this.authService.data.token}`,
-          },
-        })
-        .subscribe((data: any) => {
-        console.log('groups ', data);
         this.groups = data.map((group: any) => ({
           id: group.id,
           name: group.name,
           allowedOffices: group.allowedOffices || []
         }));
-
       }, (error: any) => {
         console.error("Error fetching employee groups:", error);
       });
     }
-  }
 
 
   officesList() {
@@ -221,22 +202,54 @@ export class OfficesComponent {
   filterOffices() {
     if (this.authService.data.user.role === 'ADMIN') {
       this.filteredOffices = [...this.offices];
-    } else if (this.groups) {
-      console.log(this.groups);
-      this.filteredOffices = this.offices.filter((office) => {
-        return this.groups.some((group) =>
-          group.allowedOffices.some((allowedOffice) => {
-            console.log(`Checking if ${allowedOffice.name} === ${office.name}`);
-            return allowedOffice.name === office.name;
-          })
-        );
-      });
-    } else {
-      this.filteredOffices = [];
+    } else if (this.groups && this.users) {
+      const currentUser = this.users.find(user => user.username === this.authService.data.user.username);
+  
+      if (currentUser) {
+        console.log("Current user's groupId:", currentUser.group);
+        const userGroup = this.groups.find(group => group.id.toString().match(currentUser.group));
+  
+        if (userGroup) {
+          console.log("User's group:", userGroup);
+  
+          this.filteredOffices = this.offices.filter(office =>
+            userGroup.allowedOffices.some(allowedOffice => {
+              return allowedOffice.name === office.name;
+            })
+          );
+        } else {
+          console.log("No group found for user");
+          this.filteredOffices = [];
+        }
+      } else {
+        console.log("User not found in the list");
+        this.filteredOffices = [];
+      }
+  
+      console.log("Filtered offices:", this.filteredOffices);
     }
-
-    console.log("Filtered offices:", this.filteredOffices);
   }
+  
+
+  usersList() {
+    this.http
+        .get(this.baseUrl + `/api/employees`, {
+            headers: {
+                Authorization: `Bearer ${this.authService.data.token}`,
+            },
+        })
+        .subscribe((data: any) => {
+            this.users = [];
+            for (const key in data) {
+                this.users.push({
+                    id: data[key].id,
+                    group: data[key].employeeGroupId,
+                    username: data[key].username,
+                });
+            }
+            this.users.sort((a, b) => a.id - b.id);
+        });
+}
 
 
   delOffice(id: number) {
