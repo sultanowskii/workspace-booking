@@ -46,25 +46,6 @@
   <h4>{{ selectedRoomId ? 'Редактировать помещение' : 'Создать помещение' }}</h4>
   Название:&nbsp;
   <input id="name" type="text" [(ngModel)]="roomForm.name" placeholder="Введите название помещения" /> <br /><br />
-  <label for="wallsCount">Количество стен:</label>&nbsp;
-  <input type="number" id="wallsCount" [(ngModel)]="wallsCount" (change)="updateWalls()" min="0"
-    placeholder="Введите количество стен" />
-  <br /><br />
-
-  <div *ngFor="let wall of walls; let i = index">
-    <h5>Стена {{ i + 1 }}</h5>
-    <label for="x1-{{i}}">x1:</label>&nbsp;
-    <input id="x1-{{i}}" type="number" [(ngModel)]="wall.x1" placeholder="Введите x1" /><br /><br />
-
-    <label for="y1-{{i}}">y1:</label>&nbsp;
-    <input id="y1-{{i}}" type="number" [(ngModel)]="wall.y1" placeholder="Введите y1" /><br /><br />
-
-    <label for="x2-{{i}}">x2:</label>&nbsp;
-    <input id="x2-{{i}}" type="number" [(ngModel)]="wall.x2" placeholder="Введите x2" /><br /><br />
-
-    <label for="y2-{{i}}">y2:</label>&nbsp;
-    <input id="y2-{{i}}" type="number" [(ngModel)]="wall.y2" placeholder="Введите y2" /><br /><br />
-  </div>
   <input class="button" type="button" value="Сохранить изменения" (click)="selectedRoomId ? editRoom() : addRoom()"><br /><br />
   <button class="button delete-button" type="button" (click)="closeRoomForm()">Отменить</button>
 </div>

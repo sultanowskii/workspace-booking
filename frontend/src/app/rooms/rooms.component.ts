@@ -11,12 +11,6 @@ import { AuthService } from "../services/auth.service";
 import { of } from "rxjs";
 import { off } from "process";
 
-interface Wall {
-	x1: number;
-	y1: number;
-	x2: number;
-	y2: number;
-}
 
 @Component({
 	selector: "rooms-app",
@@ -51,8 +45,6 @@ export class RoomsComponent {
 	selectedRoomId: number | null = null;
 	filteredOffices: Array<{ id: number; name: string; address: string }> = [];
 	officeSearch = '';
-	wallsCount: number = 0;
-	walls: Wall[] = [];
 	officeForm:
 		any = {
 			name: '',
@@ -62,13 +54,7 @@ export class RoomsComponent {
 	roomForm:
 		any = {
 			name: '',
-			office: '',
-			walls: [{
-				x1: 0,
-				y1: 0,
-				x2: 0,
-				y2: 0
-			}]
+			office: ''
 		}
 
 	currentPage = 1;
@@ -120,7 +106,7 @@ export class RoomsComponent {
 			});
 			this.http.put(this.baseUrl + `/api/rooms/${this.roomForm.id}`, {
 				name: this.roomForm.name,
-				walls: this.roomForm.walls
+				walls: [{x1: 0,y1: 0,x2: 0,y2: 0}]
 			},
 				{ headers })
 				.subscribe((data) => {
@@ -132,12 +118,6 @@ export class RoomsComponent {
 		} else {
 			alert('Пожалуйста, заполните все поля');
 		}
-	}
-
-	updateWalls() {
-		this.walls = Array(this.wallsCount)
-			.fill(null)
-			.map(() => ({ x1: 0, y1: 0, x2: 0, y2: 0 }));
 	}
 
 	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public authService: AuthService) {
@@ -152,7 +132,7 @@ export class RoomsComponent {
 		}
 	};
 
-	
+
 	usersList() {
 		this.http
 			.get(this.baseUrl + `/api/employees`, {
@@ -172,7 +152,7 @@ export class RoomsComponent {
 				this.users.sort((a, b) => a.id - b.id);
 			});
 	}
-	
+
 
 	groupsList() {
 		this.http
@@ -232,14 +212,14 @@ export class RoomsComponent {
 								allowedOffice.name === office.name
 							) && office.name.toLowerCase().startsWith(searchValue)
 						);
-					}else{
+					} else {
 						console.log('no group');
 					}
 					console.log(this.filteredOffices);
-				}else{
+				} else {
 					console.log('no user');
 				}
-			}else{
+			} else {
 				console.log('no groups or users');
 			}
 		}
@@ -263,8 +243,8 @@ export class RoomsComponent {
 				.post(this.baseUrl + `/api/rooms`,
 					{
 						name: this.roomForm.name,
-						walls: this.walls,
-						officeId: this.selectedOfficeId
+						officeId: this.selectedOfficeId,
+						walls: [{x1: 0,y1: 0,x2: 0,y2: 0}]
 					},
 					{ headers }
 				)

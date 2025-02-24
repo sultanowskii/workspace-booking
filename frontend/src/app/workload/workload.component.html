@@ -14,36 +14,35 @@
   <br />
 
   <div *ngIf="officeForm.office">
-    <label for="start">Выберите дату:  </label>
+    <label for="start">Выберите дату: </label>
     <input type="date" id="start" name="trip-start" (change)="checkDate(bookingForm.date)"
       [(ngModel)]="bookingForm.date" />
   </div>
 
 
-  <div *ngIf="officeForm.office && bookingForm.date" class="office-load-box">
+  <div *ngIf="officeForm.office && bookingForm.date" class="box">
     <h3>Загруженность офиса: {{ officeSearch }}</h3>
     <p>{{ officeLoad }}%</p>
-  </div>  
+  </div>
 
   <br />
 
-  <div *ngIf="bookingForm.date">
-    <label>Введите название помещения:</label>
-    <input type="text" [(ngModel)]="roomSearch" (input)="filterRooms()" placeholder="Введите название помещения" />
-    <ul *ngIf="roomSearch && filteredRooms.length > 0" class="dropdown">
-      <li *ngFor="let room of filteredRooms" (click)="selectRoom(room)" class="dropdown-item" tabindex="0"
-        (keydown.enter)="getRoomOccupancy()">
-        {{ room.name }}
-      </li>
-    </ul>
-  </div>
+  <div *ngIf="bookingForm.date" class="box">
+      <label>Введите название помещения:</label>
+      <input type="text" [(ngModel)]="roomSearch" (input)="filterRooms()" placeholder="Введите название помещения" />
+      <ul *ngIf="roomSearch && filteredRooms.length > 0" class="dropdown">
+        <li *ngFor="let room of filteredRooms" (click)="selectRoom(room)" class="dropdown-item" tabindex="0"
+          (keydown.enter)="getRoomOccupancy()">
+          {{ room.name }}
+        </li>
+      </ul>
 
-  <div *ngIf="room">
-    <h3>Загруженность помещения:
-      {{ getRoomLoad() + '%'}}
-    </h3>
+    <div *ngIf="room">
+      <h3>Загруженность помещения:
+        {{ getRoomLoad() + '%'}}
+      </h3>
+    </div>
   </div>
-  
   <br />
 
   <h3 *ngIf="roomsLoadPercentages.length">Загруженность помещений на {{ bookingForm.date }}</h3>

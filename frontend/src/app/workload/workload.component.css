@@ -40,7 +40,7 @@ table.styled-table thead tr {
   text-align: left;
 }
 
-.office-load-box {
+.box {
   border: 2px solid #04AA6D;
   padding: 10px;
   margin: 10px 0;

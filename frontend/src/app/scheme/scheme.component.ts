@@ -29,8 +29,6 @@ export class SchemeComponent {
   meetingRooms: Array<{ id: number; name: string; x: number, y: number; width: number; height: number; room: number }> = [];
   workplaceBookings: Array<{ id: number; name: string; date: string; user: string; }> = [];
   meetingRoomBookings: Array<{ id: number; name: string; date: string; user: string; startTime: string; endTime: string; participants: number[]; description: string }> = [];
-  walls: Array<{ x1: number, y1: number, x2: number, y2: number; room: number; }> = [];
-
   private baseUrl = environment.baseUrl;
   currentWorkplace = { id: 0, x: 0, y: 0, height: 0, width: 0, mon: 0 };
   currentMeetingRoom = { id: 0, name: '', x: 0, y: 0, height: 0, width: 0 };
@@ -144,16 +142,6 @@ export class SchemeComponent {
     this.isMyBookingsFormOpen = true;
   }
 
-  addWall() {
-    this.walls.push({
-      x1: Number(this.wallsForm.x1),
-      y1: Number(this.wallsForm.y1),
-      x2: Number(this.wallsForm.x2),
-      y2: Number(this.wallsForm.y2),
-      room: this.wallsForm.room,
-    });
-  }
-
   newPosition(x: number, x2: number) {
     let new_x = x + x2;
     return new_x;
@@ -176,13 +164,7 @@ export class SchemeComponent {
     height: 0,
     roomId: 0
   }
-  wallsForm: any = {
-    x1: 0,
-    y1: 0,
-    x2: 0,
-    y2: 0,
-    room: ''
-  }
+
   updateInterval!: Subscription;
   isreg = 0;
 

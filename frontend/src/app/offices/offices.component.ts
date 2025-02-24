@@ -99,7 +99,7 @@ export class OfficesComponent {
 
 
   addOffice() {
-    if (this.officeForm.name != "") {
+    if (this.officeForm.name != "" && this.officeForm.address != "") {
       const off = { name: this.officeForm.name, address: this.officeForm.address };
       this.http
         .post(this.baseUrl + `/api/offices`, off, {
@@ -112,7 +112,7 @@ export class OfficesComponent {
           alert("Офис создан успешно");
         });
     } else {
-      alert("Введите название офиса");
+      alert("Заполните все поля");
     }
   }
 
@@ -127,7 +127,7 @@ export class OfficesComponent {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.data.token}`
     });
-    if (this.officeForm.name) {
+    if (this.officeForm.name != "" && this.officeForm.address != "") {
       this.http.put(this.baseUrl + `/api/offices/${this.selectedOfficeId}`, {
         name: this.officeForm.name,
         address: this.officeForm.address
@@ -257,11 +257,9 @@ export class OfficesComponent {
       'Authorization': `Bearer ${this.authService.data.token}`
     });
     this.http.delete(this.baseUrl + `/api/offices/${id}`, { headers }).subscribe((data) => {
-      Object.keys(data).forEach((key, index) => {
         this.offices = this.offices.filter((office) => office.id !== id);
-      });
-      this.officesList();
-      alert("Офис удален");
+        alert("Офис удален");
+        this.officesList();
     });
     return false;
   }

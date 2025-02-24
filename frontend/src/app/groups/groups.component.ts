@@ -123,6 +123,7 @@ export class GroupsComponent {
             allowedOffices: group["allowedOffices"]
           } as any);
         });
+        this.groups.sort((a, b) => a.id - b.id);
       });
   };
 
@@ -186,7 +187,10 @@ export class GroupsComponent {
         .subscribe((data) => {
           this.groupsList();
           alert("Группа успешно создана");
-          this.groupForm = {};
+          this.groupForm = {
+            name: '',
+            office: ''
+          }
         });
 
     } else {
