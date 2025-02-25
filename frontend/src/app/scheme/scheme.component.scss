@@ -106,6 +106,16 @@ button {
   color: white;
 }
 
+.right-aligned-upload {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.right-aligned-upload input {
+  margin-right: 10px;
+}
+
 .submit-button, .close, .delete-button {
   width: 100%;
   margin-top: 1px;
@@ -203,7 +213,6 @@ button {
   overflow: hidden;
 }
 
-//TODO
 .example-box {
   padding: 20px 10px;
   border: solid 1px #ccc;
@@ -219,7 +228,6 @@ button {
   position: absolute;
 }
 
-//TODO
 .example-box-booked {
   padding: 20px 10px;
   border: solid 1px #ccc;

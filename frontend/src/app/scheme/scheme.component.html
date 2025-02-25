@@ -40,7 +40,6 @@
             место</button>
           <button style="margin-right: 5px;" class="blue-button" (click)="openAddMeetingRoomForm(false)">Добавить
             переговорную</button>
-          <button style="margin-right: 5px;" class="blue-button" (click)="loadData()">Импортировать данные</button>
           <button style="margin-right: 5px;" class="blue-button" (click)="openAddWorkplaceForm(true)">Редактировать
             рабочее место</button>
           <button style="margin-right: 5px;" class="blue-button" (click)="openAddMeetingRoomForm(true)">Редактировать
@@ -287,62 +286,89 @@
       <line x1="1300" y1="0" x2="1300" y2="500" stroke="blue" stroke-width="2" />
       <line x1="0" y1="500" x2="1300" y2="500" stroke="blue" stroke-width="2" />
     </svg>
-      <div *ngIf="workplaceBookingForm.date !== null">
-        <div *ngFor="let workplace of workplaces; let i = index" class="workplace" cdkDrag
-          [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
-          (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
-          [ngStyle]="{
-         'position': 'absolute',
-         'top.px': workplace.y,
-         'left.px': workplace.x,
-         'width.px': workplace.width,
-         'height.px': workplace.height,
-         'background-color': getWorkplaceColor(workplace.id, workplaceBookingForm.date.toString()),
-         'border': '1px solid black'
-       }" (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
-          {{ workplace.id }}
-          <ng-container *ngIf="workplace.mon > 0">
-            <ng-container *ngFor="let n of [].constructor(workplace.mon > 2 ? 2 : workplace.mon); let j = index">
-              <img src="assets/monitor.png" class="monitor-icon" [ngStyle]="{'left.px': 5 + j * 20, 'top.px': -10}" />
-            </ng-container>
-          </ng-container>
-        </div>
-      </div>
-      <div *ngIf="workplaceBookingForm.date === null">
-        <div *ngFor="let workplace of workplaces; let i = index" class="workplace" cdkDrag
-          [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
-          (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
-          [ngStyle]="{
-         'left.px': workplace.x, 
-         'top.px': workplace.y,
-         'width.px': workplace.width, 
-         'height.px': workplace.height,
-         'border': '1px solid black',
-         'position': 'absolute'
-       }" (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
+    <div *ngFor="let meetingRoom of meetingRooms; let i = index" class="meeting-room" cdkDrag
+      [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+      (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewMeetingRoom($event, i, selectedRoom) : null"
+      [ngStyle]="{
+      'left.px': meetingRoom.x,
+      'top.px': meetingRoom.y,
+      'width.px': meetingRoom.width,
+      'height.px': meetingRoom.height,
+      'border': '2px solid black',
+      'position': 'absolute',
+      'display': 'flex', 
+      'justify-content': 'center',
+      'align-items': 'center', 
+      'flex-direction': 'column'
+    }" (click)="authService.data.user.role === 'EMPLOYEE' ? openMeetingRoomBookingModal(meetingRoom) : null">
 
-          {{ workplace.id }}
-
-          <ng-container *ngIf="workplace.mon > 0">
-            <ng-container *ngFor="let n of [].constructor(workplace.mon > 2 ? 2 : workplace.mon); let j = index">
-              <img src="assets/monitor.png" class="monitor-icon" [ngStyle]="{'left.px': 5 + j * 20, 'top.px': -10}" />
-            </ng-container>
-          </ng-container>
-        </div>
-      </div>
-      <div *ngFor="let meetingRoom of meetingRooms; let i = index" class="meeting-room" cdkDrag
+    <span [ngStyle]="{ 'font-size.px': meetingRoom.width / 3 > 8 ? meetingRoom.width / 3 : 8 }">{{ meetingRoom.id }}</span>
+    <span [ngStyle]="{ 'font-size.px': meetingRoom.width / 2 > 6 ? meetingRoom.width / 2 : 6 }">{{ meetingRoom.name }}</span>
+  </div>
+    </div>
+    <div *ngIf="workplaceBookingForm.date === null">
+      <div *ngFor="let workplace of workplaces; let i = index" class="workplace" cdkDrag
         [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
-        (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewMeetingRoom($event, i, selectedRoom) : null"
+        (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
         [ngStyle]="{
-    'left.px': meetingRoom.x, 
-    'top.px': meetingRoom.y, 
-    'width.px': meetingRoom.width, 
-    'height.px': meetingRoom.height,
-    'border': '2px solid black',
-    'position': 'absolute'
-  }" (click)="authService.data.user.role === 'EMPLOYEE' ? openMeetingRoomBookingModal(meetingRoom) : null">
-        {{ meetingRoom.id }}
-        {{ meetingRoom.name }}
+             'left.px': workplace.x,
+             'top.px': workplace.y,
+             'width.px': workplace.width,
+             'height.px': workplace.height,
+             'border': '1px solid black',
+             'position': 'absolute',
+             'display': 'flex',
+             'justify-content': 'center',
+             'align-items': 'center',
+             'flex-direction': 'column'
+         }" (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
+      
+          <span [ngStyle]="{ 'font-size.px': workplace.width / 2 > 10 ? workplace.width / 2 : 10 }">{{ workplace.id }}</span>
+      
+        <ng-container *ngIf="workplace.mon > 0">
+          <div style="display: flex; justify-content: center;">
+            <ng-container *ngFor="let n of [].constructor(workplace.mon > 2 ? 2 : workplace.mon); let j = index">
+                <img src="assets/monitor.png" class="monitor-icon" [ngStyle]="{
+                'width.px': workplace.width / 2 > 10 ? workplace.width / 2 : 10,
+                'height.px': workplace.height / 2 > 10 ? workplace.height / 2 : 10,
+                'margin-left.px': j > 0 ? 5 : 0
+            }" />
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div *ngIf="workplaceBookingForm.date !== null">
+      <div *ngFor="let workplace of workplaces; let i = index" class="workplace" cdkDrag
+        [cdkDragDisabled]="authService.data.user.role !== 'ADMIN'"
+        (cdkDragEnded)="authService.data.user.role === 'ADMIN' ? dragEndedNewWorkplace($event, i, selectedRoom) : null"
+        [ngStyle]="{
+             'position': 'absolute',
+             'top.px': workplace.y,
+             'left.px': workplace.x,
+             'width.px': workplace.width,
+             'height.px': workplace.height,
+             'background-color': getWorkplaceColor(workplace.id, workplaceBookingForm.date.toString()),
+             'border': '1px solid black',
+             'display': 'flex',
+             'justify-content': 'center',
+             'align-items': 'center',
+             'flex-direction': 'column'
+           }" (click)="authService.data.user.role === 'EMPLOYEE' ? openWorkplaceBookingModal(workplace) : null">
+
+          <span [ngStyle]="{ 'font-size.px': workplace.width / 2 > 10 ? workplace.width / 2 : 10 }">{{ workplace.id }}</span>
+
+        <ng-container *ngIf="workplace.mon > 0">
+          <div style="display: flex; justify-content: center;">
+            <ng-container *ngFor="let n of [].constructor(workplace.mon > 2 ? 2 : workplace.mon); let j = index">
+              <img src="assets/monitor.png" class="monitor-icon" [ngStyle]="{
+                  'width.px': workplace.width / 2 > 10 ? workplace.width / 2 : 10,
+                  'height.px': workplace.height / 2 > 10 ? workplace.height / 2 : 10,
+                  'margin-left.px': j > 0 ? 5 : 0
+                }" />
+            </ng-container>
+          </div>
+        </ng-container>
       </div>
     </div>
 

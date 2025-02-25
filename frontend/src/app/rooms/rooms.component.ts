@@ -8,9 +8,6 @@ import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
-import { of } from "rxjs";
-import { off } from "process";
-
 
 @Component({
 	selector: "rooms-app",
@@ -40,7 +37,22 @@ export class RoomsComponent {
 			address: string;
 		}[]
 	}> = [];
-
+	private selectedFile: File | null = null;
+	workplaces: Array<{ id: number; mon: number; x: number, y: number; width: number; height: number; room: number }> = [];
+	meetingRooms: Array<{ id: number; name: string; x: number, y: number; width: number; height: number; room: number }> = [];
+	workplaceBookings: Array<{ id: number; name: string; date: string; user: string; }> = [];
+	meetingRoomBookings: Array<{ id: number; name: string; date: string; user: string; startTime: string; endTime: string; participants: number[]; description: string }> = [];
+	myBookings: { id: number; employeeId: number; workplaceId: number; date: string }[] = [];
+	bookings: { id: number; employeeId: number; workplaceId: number; date: string }[] = [];
+	myMRBookings: {
+		id: number,
+		description: string,
+		date: string,
+		startTime: string,
+		endTime: string,
+		meetingRoomId: number,
+		employeeId: number
+	}[] = [];
 	users: Array<{ id: number; group: string; username: string; }> = [];
 	selectedRoomId: number | null = null;
 	filteredOffices: Array<{ id: number; name: string; address: string }> = [];
@@ -106,7 +118,7 @@ export class RoomsComponent {
 			});
 			this.http.put(this.baseUrl + `/api/rooms/${this.roomForm.id}`, {
 				name: this.roomForm.name,
-				walls: [{x1: 0,y1: 0,x2: 0,y2: 0}]
+				walls: [{ x1: 0, y1: 0, x2: 0, y2: 0 }]
 			},
 				{ headers })
 				.subscribe((data) => {
@@ -244,7 +256,7 @@ export class RoomsComponent {
 					{
 						name: this.roomForm.name,
 						officeId: this.selectedOfficeId,
-						walls: [{x1: 0,y1: 0,x2: 0,y2: 0}]
+						walls: [{ x1: 0, y1: 0, x2: 0, y2: 0 }]
 					},
 					{ headers }
 				)
@@ -289,5 +301,214 @@ export class RoomsComponent {
 					});
 				});
 			});
+			this.rooms.sort((a, b) => a.id - b.id);
 	}
+
+	getAuthHeaders() {
+		return new HttpHeaders({ 'Authorization': `Bearer ${this.authService.data.token}` });
+	}
+	
+	importRoom(file: File) {
+		const reader = new FileReader();
+	
+		reader.onload = (event: any) => {
+			try {
+				const jsonString = event.target.result as string;
+				let data = JSON.parse(jsonString);
+	
+				const processCoordinates = (items: any[]): any[] => {
+					if (Array.isArray(items)) {
+						return items.map(item => {
+							if (typeof item === 'object' && item !== null && item.hasOwnProperty('x') && item.hasOwnProperty('y') && (item.x < 50 || item.y < 270)) {
+								return {
+									...item,
+									x: item.x + 50,
+									y: item.y + 300
+								};
+							}
+							return item;
+						});
+					}
+					return items;
+				};
+	
+				if (typeof data === 'object' && data !== null) {
+					if (Array.isArray(data.workplaces)) {
+						data.workplaces = processCoordinates(data.workplaces);
+					}
+	
+					if (Array.isArray(data.meetingRooms)) {
+						data.meetingRooms = processCoordinates(data.meetingRooms);
+					}
+				} else {
+					console.error("Ошибка: JSON должен быть объектом.");
+					alert("Ошибка: JSON должен быть объектом.");
+					return;
+				}
+	
+				const modifiedJsonString = JSON.stringify(data);
+				const modifiedFile = new File([modifiedJsonString], file.name, { type: 'application/json' });
+	
+				const formData = new FormData();
+				formData.append('file', modifiedFile);
+	
+				this.http.post(this.baseUrl + `/api/imports`, formData, {
+					headers: this.getAuthHeaders()
+				}).subscribe({
+					next: (response) => {
+						console.log('Ответ пришел')
+						this.roomsList();
+						console.log('Room layout imported successfully');
+						alert('Room layout imported successfully!');
+					},
+					error: (error) => {
+						console.error('Error importing room layout', error);
+						alert('Error importing room layout: ' + error.message);
+					}
+				});
+	
+			} catch (error) {
+				console.error("Ошибка при обработке JSON:", error);
+				alert("Ошибка при обработке JSON: " + error);
+			}
+		};
+	
+		reader.onerror = (error) => {
+			console.error("Ошибка при чтении файла:", error);
+			alert("Ошибка при чтении файла: " + error);
+		};
+	
+		reader.readAsText(file);
+	}
+
+	onFileSelected(event: any) {
+		this.selectedFile = event.target.files[0];
+		if (!this.selectedFile) {
+			console.warn('No file selected.');
+		}
+	}
+
+	loadData() {
+		if (this.selectedFile) {
+			console.log('Запрос отправлен');
+			this.importRoom(this.selectedFile);
+		} else {
+			alert('Выберите файл');
+		}
+	}
+
+
+	workplaceList(selectedRoom: any) {
+		if (!selectedRoom || !selectedRoom.id) {
+			console.error('Selected room or roomId is undefined');
+			return;
+		}
+		this.http.get(this.baseUrl + `/api/workplaces`, {
+			headers: this.getAuthHeaders(),
+			params: { roomId: selectedRoom.id }
+		}).subscribe({
+			next: (data) => {
+				this.workplaces = Object.values(data).map((table: any) => ({
+					id: table.id,
+					mon: table.numberOfMonitors,
+					x: table.x,
+					y: table.y,
+					width: table.width,
+					height: table.height,
+					room: table.roomId
+				}));
+				if (this.authService.data.user.role === 'EMPLOYEE') {
+					this.getWorkplaceBookings();
+				}
+			},
+			error: (err) => {
+				console.error('Error fetching workplace data', err);
+			}
+		});
+	}
+
+	meetingRoomList(selectedRoom: any) {
+		if (!selectedRoom || !selectedRoom.id) {
+			console.error('Selected room or roomId is undefined');
+			return;
+		}
+
+		this.http.get(this.baseUrl + `/api/meetingRooms`, {
+			headers: this.getAuthHeaders(),
+			params: { roomId: selectedRoom.id }
+		}).subscribe({
+			next: (data) => {
+				this.meetingRooms = Object.values(data).map((room: any) => ({
+					id: room.id,
+					name: room.name,
+					x: room.x,
+					y: room.y,
+					width: room.width,
+					height: room.height,
+					room: room.roomId
+				}));
+				if (this.authService.data.user.role === 'EMPLOYEE') {
+					this.getMeetingRoomBookings();
+				}
+			},
+			error: (err) => {
+				console.error('Error fetching meeting room data', err);
+			}
+		});
+	}
+
+	getWorkplaceBookings(): void {
+		this.http.get(this.baseUrl + `/api/workplaceBookings`, { headers: this.getAuthHeaders() })
+			.subscribe((data: any) => {
+				const currentUser = this.users.find(user => user.username === this.authService.data.user.username);
+
+				if (!currentUser) {
+					console.error("Не удалось найти текущего пользователя в users.");
+					return;
+				}
+
+				this.myBookings = data
+					.filter((book: any) => book.employeeId === currentUser.id)
+					.map((book: any) => ({
+						id: book.id,
+						employeeId: book.employeeId,
+						workplaceId: book.workplaceId,
+						date: book.date
+					}));
+				this.bookings = data
+					.map((book: any) => ({
+						id: book.id,
+						employeeId: book.employeeId,
+						workplaceId: book.workplaceId,
+						date: book.date
+					}));
+			});
+	}
+
+	getMeetingRoomBookings(): void {
+		this.http.get(this.baseUrl + `/api/meetingRoomBookings`, { headers: this.getAuthHeaders() })
+			.subscribe((data: any) => {
+				const currentUser = this.users.find(user => user.username === this.authService.data.user.username);
+
+				if (!currentUser) {
+					console.error("Не удалось найти текущего пользователя в users.");
+					return;
+				}
+
+				this.myMRBookings = data
+					.filter((book: any) => book.employeeId === currentUser.id)
+					.map((book: any) => ({
+						id: book.id,
+						description: book.description,
+						date: book.date,
+						startTime: book.startTime,
+						endTime: book.endTime,
+						meetingRoomId: book.meetingRoomId,
+						employeeId: book.employeeId
+					}));
+			});
+	}
+
+
+
 }

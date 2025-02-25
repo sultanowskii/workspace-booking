@@ -29,9 +29,6 @@ export class UsersComponent {
     get role(): any {
         return this.authService.data?.user.role;
     }
-    // offices: Array<{ id: number; name: string; address: string }> = [];
-    // groups: Array<{ id: number; name: string; office: string[]; }> = [];
-    // users: Array<{ id: number; group: string; username: string; }> = [];
     currentUserPage = 1;
     usersPerPage = 5;
     showGroupForm: boolean = false;

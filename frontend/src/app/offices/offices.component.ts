@@ -97,7 +97,6 @@ export class OfficesComponent {
     }
   }
 
-
   addOffice() {
     if (this.officeForm.name != "" && this.officeForm.address != "") {
       const off = { name: this.officeForm.name, address: this.officeForm.address };
@@ -204,11 +203,9 @@ export class OfficesComponent {
       this.filteredOffices = [...this.offices];
     } else if (this.groups && this.users) {
       const currentUser = this.users.find(user => user.username === this.authService.data.user.username);
-  
       if (currentUser) {
         console.log("Current user's groupId:", currentUser.group);
         const userGroup = this.groups.find(group => group.id.toString().match(currentUser.group));
-  
         if (userGroup) {
           console.log("User's group:", userGroup);
   
@@ -225,7 +222,6 @@ export class OfficesComponent {
         console.log("User not found in the list");
         this.filteredOffices = [];
       }
-  
       console.log("Filtered offices:", this.filteredOffices);
     }
   }

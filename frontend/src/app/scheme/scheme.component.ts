@@ -58,6 +58,13 @@ export class SchemeComponent {
   isWorkplaceFormOpen = false;
   isMeetingRoomFormOpen = false;
   roomSearch: string = '';
+  scale: number = 1;
+  minScale: number = 0.5;
+  maxScale: number = 2;
+  scaleStep: number = 0.1;
+
+  roomWidth: number = 500;
+  roomHeight: number = 1300;
   officeForm:
     any = {
       office: '',
@@ -99,7 +106,6 @@ export class SchemeComponent {
   isWorkplaceFound: boolean = false;
   selectedBooking: any = null;
   selectedMRBooking: any = null;
-
 
   findWorkplaceById(event: number) {
     const foundWorkplace = this.workplaces.find(workplace => workplace.id === event);
@@ -217,7 +223,7 @@ export class SchemeComponent {
         this.users.sort((a, b) => a.id - b.id);
       });
   }
-  
+
   groupsList() {
     this.http
       .get(this.baseUrl + `/api/employeeGroups`, {
@@ -443,7 +449,6 @@ export class SchemeComponent {
       });
   }
 
-
   toggleParticipant(userId: number) {
     if (this.meetingRoomBookingForm.participants.includes(userId)) {
       this.meetingRoomBookingForm.participants = this.meetingRoomBookingForm.participants.filter((id: any) => id !== userId);
@@ -531,13 +536,6 @@ export class SchemeComponent {
     const status = this.isWorkplaceBooked(workplaceId, date);
     return status === 'bookedByUser' ? '#add8e6' :
       status === 'booked' ? '#d3d3d3' : '#808080';
-  }
-
-  updateFilteredRooms(): void {
-    this.filteredRooms = this.rooms.filter(room =>
-      room.office === this.officeForm.office
-    );
-    this.userRooms = this.filteredRooms;
   }
 
   saveWorkplace() {
@@ -797,7 +795,7 @@ export class SchemeComponent {
   meetingRoomList(selectedRoom: any) {
     if (!selectedRoom || !selectedRoom.id) {
       console.error('Selected room or roomId is undefined');
-      return;  // Прерываем выполнение функции, если roomId не существует
+      return;
     }
 
     this.http.get(this.baseUrl + `/api/meetingRooms`, {
@@ -848,9 +846,9 @@ export class SchemeComponent {
       const existingEnd = new Date(`${existingBooking.date}T${existingBooking.endTime}`);
 
       return (
-        (newBookingStart >= existingStart && newBookingStart < existingEnd) || // Начало внутри другого бронирования
-        (newBookingEnd > existingStart && newBookingEnd <= existingEnd) || // Конец внутри другого бронирования
-        (newBookingStart <= existingStart && newBookingEnd >= existingEnd) // Полностью покрывает другое бронирование
+        (newBookingStart >= existingStart && newBookingStart < existingEnd) ||
+        (newBookingEnd > existingStart && newBookingEnd <= existingEnd) ||
+        (newBookingStart <= existingStart && newBookingEnd >= existingEnd)
       );
     });
 
@@ -967,70 +965,7 @@ export class SchemeComponent {
     }
   }
 
-  loadData() {
-    this.schemeService.getWorkplaces().subscribe(
-      data => {
-        if (this.isValidStructure(data)) {
-          const newWorkplaces = data.workplaces.filter(
-            (wp: any) => !this.workplaces.some(existingWp => existingWp.id === wp.id)
-          );
 
-          const newMeetingRooms = data.meetingRooms.filter(
-            (mr: any) => !this.meetingRooms.some(existingMr => existingMr.id === mr.id)
-          );
-
-          this.workplaces = this.workplaces.concat(newWorkplaces);
-          this.meetingRooms = this.meetingRooms.concat(newMeetingRooms);
-
-          newWorkplaces.forEach((workplace: any) => {
-            this.currentWorkplace = workplace;
-            this.saveWorkplace();
-          });
-
-          newMeetingRooms.forEach((meetingRoom: any) => {
-            this.currentMeetingRoom = meetingRoom;
-            this.saveMeetingRoom();
-          });
-
-        } else {
-          alert('Проверьте координаты и структуру json-файла');
-          console.error('Ошибка: Неверная структура JSON-файла!');
-        }
-      },
-      error => {
-        console.error('Ошибка загрузки JSON-файла!', error);
-      }
-    );
-  }
-
-
-  private isValidStructure(data: any): boolean {
-    return (
-      data &&
-      Array.isArray(data.workplaces) &&
-      Array.isArray(data.meetingRooms) &&
-      data.workplaces.every((wp: any) =>
-        (wp.x < 50 || wp.y < 270 || wp.x > 1300 || wp.y > 720)
-        &&
-        typeof wp.mon === 'number' &&
-        typeof wp.x === 'number' &&
-        typeof wp.y === 'number' &&
-        typeof wp.width === 'number' &&
-        typeof wp.height === 'number' &&
-        typeof wp.room === 'number'
-      ) &&
-      data.meetingRooms.every((mr: any) =>
-        (mr.x < 50 || mr.y < 270 || mr.x > 1300 || mr.y > 720)
-        &&
-        typeof mr.name === 'string' &&
-        typeof mr.x === 'number' &&
-        typeof mr.y === 'number' &&
-        typeof mr.width === 'number' &&
-        typeof mr.height === 'number' &&
-        typeof mr.room === 'number'
-      )
-    );
-  }
   delWorkplace(id: number) {
     this.http.delete(this.baseUrl + `/api/workplaces/${id}`, { headers: this.getAuthHeaders() }).subscribe(
       () => {
@@ -1083,12 +1018,6 @@ export class SchemeComponent {
     this.meetingRoomBookingForm.startTime = '',
       this.meetingRoomBookingForm.endTime = '';
   }
-
-  // openWorkplaceForm(isEditingWorkplace: boolean, workplaceId: number) {
-  //   this.currentWorkplace.id = workplaceId;
-  //   this.isEditingWorkplace = isEditingWorkplace;
-  //   this.isWorkplaceFormOpen = true;
-  // }
 
   openAddWorkplaceForm(isEditingWorkplace: boolean) {
     this.isEditingWorkplace = isEditingWorkplace;

@@ -48,12 +48,6 @@ export class WorkloadComponent {
       this.usersList();
       this.groupsList();
       this.getOffices();
-      this.route.paramMap.subscribe(params => {
-        const officeIdFromRoute = params.get('officeId');
-        if (officeIdFromRoute) {
-          this.officeForm.office = +officeIdFromRoute;
-        }
-      });
     }
   }
 

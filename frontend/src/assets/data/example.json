@@ -1,0 +1,45 @@
+{
+    "officeId": 1,
+    "name": "room #123",
+    "walls": [
+    ],
+    "workplaces": [
+        {
+            "numberOfMonitors": 2,
+            "x": 551,
+            "y": 275,
+            "width": 15,
+            "height": 35
+        },
+        {
+            "numberOfMonitors": 2,
+            "x": 60,
+            "y": 280,
+            "width": 6,
+            "height": 15
+        },
+        {
+            "numberOfMonitors": 2,
+            "x": 415,
+            "y": 280,
+            "width": 30,
+            "height": 15
+        }
+    ],
+    "meetingRooms": [
+        {
+            "name": "blue",
+            "x": 700,
+            "y": 246,
+            "width": 30,
+            "height": 40
+        },
+        {
+            "name": "red",
+            "x": 120,
+            "y": 300,
+            "width": 25,
+            "height": 30
+        }
+    ]
+}
