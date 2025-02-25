@@ -1,0 +1,260 @@
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.hid {
+
+  visibility: hidden;
+
+}
+
+.vis {
+
+  visibility: visible;
+
+}
+
+.participant-list {
+  display: flex;  /* Или grid, или другие способы компоновки */
+  flex-direction: column; /* Располагает элементы в столбец */
+  gap: 5px; /* Расстояние между элементами */
+}
+
+.participant-item {
+  display: flex;
+  align-items: center; /* Выравнивает элементы по вертикали */
+}
+
+.participant-item label {
+  margin-left: 5px; /* Отступ между checkbox и текстом */
+  cursor: pointer; /* Курсор-указатель при наведении на label */
+}
+
+.workplace,
+.meeting-room {
+  position: absolute;
+  padding: 12px;
+  background-color: #808080;
+  border: 1px solid #444;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.workplace {
+  border: 1px solid #ccc;
+  position: absolute;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.meeting-room {
+  border: 2px solid #444;
+  position: absolute;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  min-width: 300px;
+  max-width: 600px;
+  text-align: center;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+.blue-button {
+  background-color: blue;
+  color: white;
+}
+
+.right-aligned-upload {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.right-aligned-upload input {
+  margin-right: 10px;
+}
+
+.submit-button, .close, .delete-button {
+  width: 100%;
+  margin-top: 1px;
+  background-color: blue;
+  color: white;
+}
+
+.workplace.booked {
+  background-color: #d3d3d3;
+}
+
+.workplace.bookedByUser {
+  background-color: #add8e6;
+}
+
+.workspace.available {
+  background-color: #808080;
+}
+
+
+.meeting-room {
+  background-color: #808080;
+}
+
+.parent {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.image1 {
+  position: relative;
+  top: 0;
+  left: 0;
+  border: 1px red solid;
+}
+
+.image2 {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  border: 1px green solid;
+}
+
+.wind2 {
+  position: absolute;
+  width: 300px;
+  left: 35%;
+  top: 300px;
+  border: solid #4699C3 4px;
+  text-align: left;
+  display: none;
+  z-index: 10;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+
+  padding: 10px;
+}
+
+.wind2_vis {
+  position: absolute;
+  width: 300px;
+  left: 35%;
+  top: 300px;
+  border: solid #4699C3 4px;
+  text-align: left;
+  display: block;
+  z-index: 10;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+
+  padding: 10px;
+}
+
+
+.alert div {
+  background-color: #fed3d3;
+  color: #820000;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.example-list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 505px;
+
+  gap: 15px;
+  padding: 15px;
+  border: solid 1px #ccc;
+  min-height: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-box {
+  padding: 20px 10px;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.87);
+  display: inline-block;
+  box-sizing: border-box;
+  cursor: move;
+  background: #603737;
+  text-align: center;
+  font-size: 14px;
+  min-width: 115px;
+  position: absolute;
+}
+
+.example-box-booked {
+  padding: 20px 10px;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.87);
+  display: inline-block;
+  box-sizing: border-box;
+  cursor: move;
+  background: #9d8484;
+  text-align: center;
+  font-size: 14px;
+  min-width: 115px;
+  position: absolute;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

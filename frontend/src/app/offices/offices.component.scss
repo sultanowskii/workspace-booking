@@ -1,0 +1,66 @@
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+.blue-button {
+  background-color: blue;
+  color: white;
+}
+.delete-button {
+  background-color: red;
+  color: white;
+}
+.create-button-container {
+  text-align: right;
+  margin-top: 10px;
+}
+table.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 18px;
+  text-align: left;
+}
+
+table.styled-table thead tr {
+  background-color: #04AA6D;
+  color: white;
+  text-align: left;
+}
+
+table.styled-table th,
+table.styled-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+table.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+table.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #037d50;
+}

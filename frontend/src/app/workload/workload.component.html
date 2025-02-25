@@ -1,0 +1,73 @@
+<br /><br />
+<div *ngIf="isreg == 1">
+  <div>
+    <label>Введите название офиса:</label>&nbsp;
+    <input type="text" [(ngModel)]="officeSearch" (input)="filterOffices()" placeholder="Введите название офиса" />
+    <ul *ngIf="officeSearch && filteredOffices.length > 0" class="dropdown">
+      <li *ngFor="let office of filteredOffices" (click)="selectOffice(office)" class="dropdown-item" tabindex="0"
+        (keydown.enter)="selectOffice(office)">
+        {{ office.name }}
+      </li>
+    </ul>
+  </div>
+
+  <br />
+
+  <div *ngIf="officeForm.office">
+    <label for="start">Выберите дату: </label>
+    <input type="date" id="start" name="trip-start" (change)="checkDate(bookingForm.date)"
+      [(ngModel)]="bookingForm.date" />
+  </div>
+
+
+  <div *ngIf="officeForm.office && bookingForm.date" class="box">
+    <h3>Загруженность офиса: {{ officeSearch }}</h3>
+    <p>{{ officeLoad }}%</p>
+  </div>
+
+  <br />
+
+  <div *ngIf="bookingForm.date" class="box">
+      <label>Введите название помещения:</label>
+      <input type="text" [(ngModel)]="roomSearch" (input)="filterRooms()" placeholder="Введите название помещения" />
+      <ul *ngIf="roomSearch && filteredRooms.length > 0" class="dropdown">
+        <li *ngFor="let room of filteredRooms" (click)="selectRoom(room)" class="dropdown-item" tabindex="0"
+          (keydown.enter)="getRoomOccupancy()">
+          {{ room.name }}
+        </li>
+      </ul>
+
+    <div *ngIf="room">
+      <h3>Загруженность помещения:
+        {{ getRoomLoad() + '%'}}
+      </h3>
+    </div>
+  </div>
+  <br />
+
+  <h3 *ngIf="roomsLoadPercentages.length">Загруженность помещений на {{ bookingForm.date }}</h3>
+
+  <table class="styled-table" *ngIf="roomsLoadPercentages.length">
+    <thead>
+      <tr>
+        <th>Помещение</th>
+        <th>Загруженность</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let roomData of roomsLoadPercentages">
+        <td>{{ roomData.room }}</td>
+        <td>{{ roomData.load }}%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="roomsLoadPercentages.length" class="pagination">
+  <button class="blue-button" (click)="prevPage()" [disabled]="currentPage === 1"> Назад</button>
+  <span style="margin: 0 15px;">Страница {{ currentPage }} из {{ totalPages }}</span>
+  <button class="blue-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Вперёд</button>
+</div>
+
+<div [class.hide]="isreg==1">
+  <p>Для просмотра данного раздела необходимо <a href="/">авторизоваться</a></p>
+</div>

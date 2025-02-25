@@ -1,0 +1,28 @@
+<div class="topnav">
+  <table border=0 width=100%>
+    <tr>
+      <td>
+        <a [class.active]="act==''" href="/">Главная</a>
+        <a [class.active]="act=='/offices'" href="/offices">Офисы</a>
+        <a [class.active]="act=='/rooms'" href="/rooms">Помещения</a>
+        <a [class.active]="act=='/groups'" href="/groups">Группы</a>
+        <a [class.active]="act=='/users'" href="/users">Пользователи</a>
+        <a [class.active]="act=='/scheme'" href="/scheme">Карты</a>
+        <a [class.active]="act=='/workload'" href="/workload">Загруженности</a>
+      </td>
+      <td align=right>
+        <div [class.hide]="doauth==0">
+          <b *ngIf="authService.data?.user?.username && authService.data?.user?.role" class="white-text">{{ authService.data?.user.username + '(' + authService.data?.user.role + ')' }}</b>
+          <input type="button" (click)="signOut()" value="Выйти">
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<div style="margin-left: 20px; min-height: 600px;">
+  <router-outlet></router-outlet>
+</div>
+<br /><br />
+<div class="footer"><br>
+  Бронирование офисов
+</div>
