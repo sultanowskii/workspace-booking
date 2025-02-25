@@ -281,11 +281,11 @@ export class WorkloadComponent {
 
   get paginatedWorkloads() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.roomLoadPercentages.slice(startIndex, startIndex + this.itemsPerPage);
+    return this.roomsLoadPercentages.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   get totalPages() {
-    return Math.ceil(this.roomLoadPercentages.length / this.itemsPerPage);
+    return Math.ceil(this.roomsLoadPercentages.length / this.itemsPerPage);
   }
 
   nextPage() {
